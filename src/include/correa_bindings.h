@@ -26,6 +26,7 @@
 #include <cstdlib>
 #include <limits>
 #include <assert.h>
+#include <algorithm>
 
 
 /*================================================================================================
@@ -44,23 +45,13 @@ pthread_t threads[NUM_THREADS];
 #include "InOut.h"
 #include "PolygonBuilder.h"
 #include "Polygon.h"
-#include "Ellipse.h"
-#include "OT1.h"
-
-OT1 ot1;
-
-#include "PH0.h"
+//#include "Ellipse.h"
+//#include "OT1.h"
+//#include "PH0.h"
 #include "PersistenceDiagram.h"
-#include "Curvature.h"
-#include "Component.h"
+//#include "Curvature.h"
+//#include "Component.h"
 
-
-INOUT inout;
-Polygon poly;
-PolygonBuilder pbuilder;
-Ellipse ellipse;
-Curvature curv;
-PersistenceDiagram PD;
 
 
 #endif

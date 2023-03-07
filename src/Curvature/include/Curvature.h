@@ -22,7 +22,7 @@
 
 #include <vector>
 #include <cmath>
-#include "OT1.h"
+#include <OT1.h>
 
 /*================================================================================================
   Prototypes for BLAS and LAPACK
@@ -49,6 +49,7 @@ class Curvature
 		double histOT(Polygon& curve1, Polygon& curve2);
 
 	private:
+		OT1 ot1;
 
 	protected:
 

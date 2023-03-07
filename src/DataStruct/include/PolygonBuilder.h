@@ -30,7 +30,7 @@
 		// List boundary edges
 		int boundaryEdges(Polygon& polygon);
 
-		// List boundary edges
+		// List triangle edges
 		int trigEdges(Polygon& polygon, int ntrig, int *indices);
 
 	private:
