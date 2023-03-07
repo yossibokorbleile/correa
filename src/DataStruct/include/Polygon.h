@@ -18,7 +18,7 @@
 
 	public:
 		// constructor
-		Polygon();
+		Polygon() = default;
 
 		// copy constructor
 		Polygon(Polygon& polygon);
@@ -182,10 +182,6 @@
  * Constructor
  ==============================================================================================*/
 
-  Polygon::Polygon()
-  {
-
-  }
 
 /*********************************************************************************
   Copy Constructor

@@ -34,7 +34,7 @@ public:
 
 	vector<Comp> comps;
 
-	PersistenceDiagram pd;
+	correa::PersistenceDiagram pd;
 
 	PH0(vector<pair<int, double>> x);
 
