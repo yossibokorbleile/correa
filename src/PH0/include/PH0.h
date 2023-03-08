@@ -23,7 +23,7 @@
 using namespace std;
 
 /* Lets do the the persistent homology in dimension 0 now */
-
+namespace correa {
 class PH0{
 
 public:
@@ -202,4 +202,5 @@ void PH0::Persistence(){
 		};
 	};
 };
+} //end namespace correa
 #endif

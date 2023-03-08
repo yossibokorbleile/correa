@@ -13,6 +13,7 @@
 #include <Ellipse.h>
 #include <Curvature.h>
 #include <PH0.h>
+//#include <hera/wasserstein.h>
 
 namespace correa{
 
@@ -44,12 +45,26 @@ namespace correa{
         return poly;
     }
 
+    /*auto wasserstein_distance(std::vector<std::pair<double,double>> diagram_1, std::vector<std::pair<double,double>> diagram_2, double wasserstein_power, double delta) {
+        hera::AuctionParams<double> params;
+        params.max_num_phases = 800;
+        params.wasserstein_power = wasserstein_power;
+        params.delta = delta;
+        params.internal_p = wasserstein_power;
+
+        auto res = hera::wasserstein_cost_detailed(diagram_1, diagram_2, params);
+
+        std::cout << "Relative error: " << res.final_relative_error << std::endl;
+
+        return res.distance;
+    }*/
+
     class PyPolygon{
         private:
             Polygon polygon;
-            std::vector<double> min_ellipse;
-            std::vector<double> max_ellipse;
-            std::vector<double> lsq_ellipse;
+            std::vector<double> ellipse_min_;
+            std::vector<double> ellipse_max_;
+            std::vector<double> ellipse_lsq_;
             double willmore_;
             std::vector<std::vector<double>> persistence_diagram;
 
@@ -62,17 +77,17 @@ namespace correa{
                 Curvature curv;
                 double a, b; 
                 ellipse.EllipseMin(polygon, &a, &b);
-                min_ellipse.push_back(a);
-                min_ellipse.push_back(b);
-                min_ellipse.push_back(a/b);
+                ellipse_min_.push_back(a);
+                ellipse_min_.push_back(b);
+                ellipse_min_.push_back(a/b);
                 ellipse.EllipseMax(polygon, &a, &b);
-                max_ellipse.push_back(a);
-                max_ellipse.push_back(b);
-                max_ellipse.push_back(a/b);
+                ellipse_max_.push_back(a);
+                ellipse_max_.push_back(b);
+                ellipse_max_.push_back(a/b);
                 ellipse.EllipseLSQ(polygon, &a, &b);
-                lsq_ellipse.push_back(a);
-                lsq_ellipse.push_back(b);
-                lsq_ellipse.push_back(a/b);
+                ellipse_lsq_.push_back(a);
+                ellipse_lsq_.push_back(b);
+                ellipse_lsq_.push_back(a/b);
 
                 willmore_ = curv.Willmore(polygon);
                 PH0 f(polygon.vertices);
@@ -96,18 +111,18 @@ namespace correa{
             };
 
             auto ellipse_min() {
-                std::cerr << "min_ellipse is: (" << min_ellipse[0] << ", " << min_ellipse[1] << ", " << min_ellipse[2] << ")." << std::endl;
-                return min_ellipse;
+                std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
+                return ellipse_min_;
             };
 
             auto ellipse_max() {
-                std::cerr << "max_ellipse is: (" << max_ellipse[0] << ", " << max_ellipse[1] << ", " << max_ellipse[2] << ")." << std::endl;
-                return max_ellipse;
+                std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return ellipse_max_;
             };
 
             auto ellipse_lsq() {
-                std::cerr << "lsq_ellipse is: (" << lsq_ellipse[0] << ", " << lsq_ellipse[1] << ", " << lsq_ellipse[2] << ")." << std::endl;
-                return lsq_ellipse;
+                std::cerr << "ellipse_lsq_ is: (" << ellipse_lsq_[0] << ", " << ellipse_lsq_[1] << ", " << ellipse_lsq_[2] << ")." << std::endl;
+                return ellipse_lsq_;
             };
 
             auto willmore() {
@@ -116,6 +131,16 @@ namespace correa{
             };
 
     };
+
+    class ComparePolygons {
+        private:
+            Polygon poly1, poly2;
+
+        public:
+            
+    };
+
+
 
 
    
