@@ -20,8 +20,8 @@ endif()
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/nanobind)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/hera)
 
-
-#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/hera/include)
+include_directories(/opt/homebrew/Cellar/boost/1.81.0_1/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/hera/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/Clustering/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/Curvature/include)
@@ -33,4 +33,4 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/PH0/include)
 
 #target_link_libraries(correa PRIVATE hera)
 
-nanobind_add_module(correa src/correa.cpp)
+nanobind_add_module(_correa src/correa.cpp)
