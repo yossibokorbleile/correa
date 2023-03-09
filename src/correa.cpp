@@ -28,6 +28,7 @@ NB_MODULE(_correa, m) {
 
     
     m.def("load_poly", &correa::load_poly);
+    m.def("print_polygon", &correa::print_polygon);
 
         
 }

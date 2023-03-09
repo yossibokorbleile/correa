@@ -62,9 +62,9 @@ namespace correa{
     class PyPolygon{
         private:
             Polygon polygon;
-            std::vector<double> ellipse_min_;
-            std::vector<double> ellipse_max_;
-            std::vector<double> ellipse_lsq_;
+            std::tuple<double, double, double> ellipse_min_;
+            std::tuple<double, double, double> ellipse_max_;
+            std::tuple<double, double, double> ellipse_lsq_;
             double willmore_;
             std::vector<std::vector<double>> persistence_diagram;
 
@@ -77,17 +77,17 @@ namespace correa{
                 Curvature curv;
                 double a, b; 
                 ellipse.EllipseMin(polygon, &a, &b);
-                ellipse_min_.push_back(a);
-                ellipse_min_.push_back(b);
-                ellipse_min_.push_back(a/b);
+                std::get<0>(ellipse_min_)= a;
+                std::get<1>(ellipse_min_) = b;
+                std::get<2>(ellipse_min_)= a/b;
                 ellipse.EllipseMax(polygon, &a, &b);
-                ellipse_max_.push_back(a);
-                ellipse_max_.push_back(b);
-                ellipse_max_.push_back(a/b);
+                std::get<0>(ellipse_max_)= a;
+                std::get<1>(ellipse_max_) = b;
+                std::get<2>(ellipse_max_)= a/b;
                 ellipse.EllipseLSQ(polygon, &a, &b);
-                ellipse_lsq_.push_back(a);
-                ellipse_lsq_.push_back(b);
-                ellipse_lsq_.push_back(a/b);
+                std::get<0>(ellipse_lsq_)= a;
+                std::get<1>(ellipse_lsq_) = b;
+                std::get<2>(ellipse_lsq_)= a/b;
 
                 willmore_ = curv.Willmore(polygon);
                 PH0 f(polygon.vertices);
@@ -98,8 +98,23 @@ namespace correa{
 
             //std::vector<std::vector<double>> vertices();
 
+            auto pd() {
+                return persistence_diagram;
+            }
+            int size() {
+                return polygon.size();
+            };
+
+            double length() {
+                return polygon.length();
+            };
+
+            double area() {
+                return polygon.area();
+            };
+
             auto vertices() {
-                std::cerr << "there are " << polygon.vertices.size() << " vertices in this polygon" << std::endl;
+                //std::cerr << "there are " << polygon.vertices.size() << " vertices in this polygon" << std::endl;
                 std::vector<std::vector<double>> vertices;
                 for (int i = 0; i < polygon.vertices.size(); i++) {
                     std::vector<double> vert_i;
@@ -110,27 +125,82 @@ namespace correa{
                 return vertices;
             };
 
-            auto ellipse_min() {
-                std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
-                return ellipse_min_;
-            };
-
             auto ellipse_max() {
-                std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                //std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
                 return ellipse_max_;
             };
 
+            auto ellipse_max_a() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<0>(ellipse_max_);
+            };
+            auto ellipse_max_b() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<1>(ellipse_max_);
+            };
+            auto ellipse_max_ratio() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<2>(ellipse_max_);
+            };
+           auto ellipse_min() {
+                //std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
+                return ellipse_min_;
+            };
+
+            auto ellipse_min_a() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<0>(ellipse_min_);
+            };
+            auto ellipse_min_b() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<1>(ellipse_min_);
+            };
+            auto ellipse_min_ratio() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<2>(ellipse_min_);
+            };
+
             auto ellipse_lsq() {
-                std::cerr << "ellipse_lsq_ is: (" << ellipse_lsq_[0] << ", " << ellipse_lsq_[1] << ", " << ellipse_lsq_[2] << ")." << std::endl;
+                //std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
                 return ellipse_lsq_;
             };
 
+            auto ellipse_lsq_a() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<0>(ellipse_lsq_);
+            };
+            auto ellipse_lsq_b() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<1>(ellipse_lsq_);
+            };
+            auto ellipse_lsq_ratio() {
+                //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
+                return std::get<2>(ellipse_lsq_);
+            };
+
             auto willmore() {
-                std::cerr << "willmore enegery is: " << willmore_ << "." << std::endl;
+                //std::cerr << "willmore enegery is: " << willmore_ << "." << std::endl;
                 return willmore_;
             };
 
-    };
+            friend ostream &operator<<( ostream &out, PyPolygon &P ) { 
+                out << "====================================\n";
+                out << "Displaying Polygon Information:     \n";
+                out << "Number of vertices:                 " << P.size() << "\n";
+                out << "Length:                             " << P.length() << "\n";
+                out << "Area:                               " << P.area() << "\n";
+                out << "Sphericity (4*Pi*Area/L^2):         " <<  4*M_PI*P.area()/(P.length()*P.length()) << "\n";
+                out << "Maximum volume inscribed ellipse:   a: " << P.ellipse_max_a() << " b: " << P.ellipse_max_b() << " ratio: " << P.ellipse_max_ratio()<< "\n";
+                out << "Minimum volume inscribing ellipse:  a: " << P.ellipse_min_a() << " b: " << P.ellipse_min_b() << " ratio: " << P.ellipse_min_ratio() << "\n";
+                out << "Least square ellipse:               a: " << P.ellipse_lsq_a() << " b: " << P.ellipse_lsq_b() << " ratio: " << P.ellipse_lsq_ratio() << "\n";
+                out << "Wilmore energy:                     " << P.willmore() << "\n";
+               // out << "Persistence diagram: number points: " << P.
+                return out;            
+            };
+
+    };  
+
+ 
 
     class ComparePolygons {
         private:
@@ -141,7 +211,9 @@ namespace correa{
     };
 
 
-
+    void print_polygon(PyPolygon P) {
+        std::cout << P << std::endl;
+    }
 
    
 }
