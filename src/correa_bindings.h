@@ -209,7 +209,7 @@ namespace correa{
 
         public:
 
-            ComparePolygons(PyPolygon p1, PyPolygon p2)
+            ComparePolygons(PyPolygon p1, PyPolygon p2);
             
     };
 
