@@ -111,7 +111,7 @@ void PH0::Persistence(){
 					parent = get<2>(unsorted_nodes[n_pts-1]);
 					old_parent = get<2>(unsorted_nodes[1]);
 					get<2>(unsorted_nodes[looking_at]) = parent;
-					vector<double> pt {get<1>(unsorted_nodes[get<2>(unsorted_nodes[old_parent])]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
+					correa::PersistencePoint pt (get<1>(unsorted_nodes[get<2>(unsorted_nodes[old_parent])]), get<1>(unsorted_nodes[looking_at])); //Add a point to the persistence diagram.
 					pd.addPoint(pt);
 					for (int j =0; j < unsorted_nodes.size(); j++){
 						if (get<2>(unsorted_nodes[j]) == old_parent){
@@ -123,7 +123,7 @@ void PH0::Persistence(){
 					parent = get<2>(unsorted_nodes[1]);
 					old_parent = get<2>(unsorted_nodes[n_pts-1]);
 					get<2>(unsorted_nodes[looking_at]) = parent;
-					vector<double> pt {get<1>(unsorted_nodes[old_parent]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
+					correa::PersistencePoint pt {get<1>(unsorted_nodes[old_parent]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
 					pd.addPoint(pt);
 					for (int j =0; j < unsorted_nodes.size(); j++){
 						if (get<2>(unsorted_nodes[j]) == old_parent){
@@ -144,7 +144,7 @@ void PH0::Persistence(){
 					int parent;
 					parent = get<2>(unsorted_nodes[looking_at-1]);
 					get<2>(unsorted_nodes[looking_at]) = parent;
-					vector<double> pt {get<1>(unsorted_nodes[get<2>(unsorted_nodes[0])]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
+					correa::PersistencePoint pt {get<1>(unsorted_nodes[get<2>(unsorted_nodes[0])]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
 					pd.addPoint(pt);
 					for (int j = 0; j < unsorted_nodes.size(); j++){
 						if (get<2>(unsorted_nodes[j]) ==get<2>(unsorted_nodes[0])){
@@ -156,7 +156,7 @@ void PH0::Persistence(){
 					parent = get<2>(unsorted_nodes[0]);
 					old_parent = get<2>(unsorted_nodes[looking_at-1]);
 					get<2>(unsorted_nodes[looking_at]) = parent;
-					vector<double> pt {get<1>(unsorted_nodes[old_parent]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
+					correa::PersistencePoint pt {get<1>(unsorted_nodes[old_parent]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
 					pd.addPoint(pt);
 					for (int j =0; j < unsorted_nodes.size(); j++){
 						if (get<2>(unsorted_nodes[j]) == old_parent){
@@ -178,7 +178,7 @@ void PH0::Persistence(){
 					parent = get<2>(unsorted_nodes[looking_at-1]);
 					old_parent = get<2>(unsorted_nodes[looking_at+1]);
 					get<2>(unsorted_nodes[looking_at]) = parent;
-					vector<double> pt {get<1>(unsorted_nodes[get<2>(unsorted_nodes[looking_at+1])]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
+					correa::PersistencePoint pt {get<1>(unsorted_nodes[get<2>(unsorted_nodes[looking_at+1])]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
 					pd.addPoint(pt);
 					for (int j = 0; j < unsorted_nodes.size(); j++){
 						if (get<2>(unsorted_nodes[j]) == old_parent){
@@ -190,7 +190,7 @@ void PH0::Persistence(){
 					parent = get<2>(unsorted_nodes[looking_at+1]);
 					old_parent = get<2>(unsorted_nodes[looking_at-1]);
 					get<2>(unsorted_nodes[looking_at]) = parent;
-					vector<double> pt {get<1>(unsorted_nodes[get<2>(unsorted_nodes[looking_at-1])]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
+					correa::PersistencePoint pt {get<1>(unsorted_nodes[get<2>(unsorted_nodes[looking_at-1])]), get<1>(unsorted_nodes[looking_at])}; //Add a point to the persistence diagram.
 					pd.addPoint(pt);
 					for (int j =0; j < unsorted_nodes.size(); j++){
 						if (get<2>(unsorted_nodes[j]) == old_parent){

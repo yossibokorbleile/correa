@@ -66,7 +66,7 @@ namespace correa{
             std::tuple<double, double, double> ellipse_max_;
             std::tuple<double, double, double> ellipse_lsq_;
             double willmore_;
-            std::vector<std::vector<double>> persistence_diagram;
+            correa::PersistenceDiagram  persistence_diagram_;
 
 
         public:
@@ -92,14 +92,13 @@ namespace correa{
                 willmore_ = curv.Willmore(polygon);
                 PH0 f(polygon.vertices);
                 f.Persistence();
-                persistence_diagram = f.pd.points;
-                std::cerr << "there are " << persistence_diagram.size() << " points in the persistence diagram." << std::endl;
+                persistence_diagram_ = f.pd;
             }
 
             //std::vector<std::vector<double>> vertices();
 
-            auto pd() {
-                return persistence_diagram;
+            auto persistence_diagram() {
+                return persistence_diagram_;
             }
             int size() {
                 return polygon.size();
@@ -184,7 +183,7 @@ namespace correa{
             };
 
             friend ostream &operator<<( ostream &out, PyPolygon &P ) { 
-                out << "====================================\n";
+                out <<  "====================================\n";
                 out << "Displaying Polygon Information:     \n";
                 out << "Number of vertices:                 " << P.size() << "\n";
                 out << "Length:                             " << P.length() << "\n";
@@ -194,10 +193,12 @@ namespace correa{
                 out << "Minimum volume inscribing ellipse:  a: " << P.ellipse_min_a() << " b: " << P.ellipse_min_b() << " ratio: " << P.ellipse_min_ratio() << "\n";
                 out << "Least square ellipse:               a: " << P.ellipse_lsq_a() << " b: " << P.ellipse_lsq_b() << " ratio: " << P.ellipse_lsq_ratio() << "\n";
                 out << "Wilmore energy:                     " << P.willmore() << "\n";
-               // out << "Persistence diagram: number points: " << P.
+                out << "Persistence diagram: number of points:     " << P.persistence_diagram().NumberPoints() << "\n";
+			    for (int i = 0; i < P.persistence_diagram().NumberPoints(); i++) {
+					out << P.persistence_diagram().Points()[i];
+				}
                 return out;            
             };
-
     };  
 
  
@@ -207,6 +208,8 @@ namespace correa{
             Polygon poly1, poly2;
 
         public:
+
+            ComparePolygons(PyPolygon p1, PyPolygon p2)
             
     };
 

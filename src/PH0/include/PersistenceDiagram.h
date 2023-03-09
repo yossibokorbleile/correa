@@ -21,36 +21,46 @@ namespace correa {
 	class PersistencePoint{
 		
 		private:
-			double birth;
-			double death;
+			std::pair<double, double> point;
 		
 		public:
-			double Birth(){
-				return birth;
+			double birth(){
+				return std::get<0>(point);
 			}
 
-			double Death(){
-				return death;
+			double death(){
+				return std::get<1>(point);
 			}
 
-			double Lifetime(){
-				return death - birth;
+			double lifetime(){
+				return std::get<1>(point) - std::get<0>(point);
 			}
+
+			friend ostream &operator<<( ostream &out, PersistencePoint &point ) {
+				out << "(" << point.birth() << ", " << point.death() << ")\n";
+				return out;
+			};
+
+			PersistencePoint (double birth_, double death_) :
+			point(birth_, death_) {
+			};
 
 	};
 
 	//template<typename Real>
 	class PersistenceDiagram{
-		using Point = std::vector<double>;//PersistencePoint;
+		using Point = PersistencePoint;
 
 		private:
-			
+			std::vector<Point> points;
+			int np;
+
 
 		public:
 
-			std::vector<Point> points;
-
-			int np;
+			int NumberPoints() {
+				return np;
+			}
 
 			PersistenceDiagram(){
 				np = 0;
@@ -61,10 +71,22 @@ namespace correa {
 					np = points.size();
 			}
 
-			void addPoint(Point pt);
+			void addPoint(Point pt){
+				points.push_back(pt);
+				np++;
+			};
 
-			void printPD() {
+			std::vector<Point> Points() {
+				return points;
+			}
 
+			friend ostream &operator<<(ostream &out, PersistenceDiagram &PD ) {
+				out << "Persistence diagram \n";
+				out << "number of points:     " << PD.NumberPoints() << "\n";
+				for (int i = 0; i < PD.NumberPoints(); i++) {
+					out << PD.Points()[i] << ")\n";
+				}
+				return out;
 			};
 
 		
@@ -73,14 +95,6 @@ namespace correa {
 
 	
 	/* Constructor */
-	
-
-	/* Add a point to the persistence diagram*/
-	void PersistenceDiagram::addPoint(vector<double> pt){
-		points.push_back(pt);
-		np += 1;
-	};
-
 
 	/*Wasserstein distance between two persistence diagrams */
 	/*double WassersteinDistance(PersistenceDiagram D1, PersistenceDiagram D2){
