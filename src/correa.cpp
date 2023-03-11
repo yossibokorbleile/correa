@@ -11,7 +11,7 @@
 #include <nanobind/stl/array.h>
 #include <include/correa_bindings.h>
 
-#include <correa_bindings.h>
+#include <correa_bindings.h> 
 
 namespace nb = nanobind;
 
@@ -24,10 +24,11 @@ NB_MODULE(_correa, m) {
         .def("ellipse_min", &correa::PyPolygon::ellipse_min)
         .def("ellipse_max", &correa::PyPolygon::ellipse_max)
         .def("ellipse_lsq", &correa::PyPolygon::ellipse_lsq)
-        .def("willmore", &correa::PyPolygon::willmore);
+        .def("willmore", &correa::PyPolygon::willmore)
+        .def("size", &correa::PyPolygon::size);
 
     
-    m.def("load_poly", &correa::load_poly);
+    m.def("load_polygon", &correa::load_polygon);
     m.def("print_polygon", &correa::print_polygon);
 
         

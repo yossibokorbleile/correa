@@ -40,7 +40,7 @@ namespace correa{
     } 
 
 
-     auto load_poly(std::string file_path) {
+     auto load_polygon(std::string file_path) {
         Polygon poly = initialise_polygon(file_path);
         return poly;
     }
@@ -72,7 +72,7 @@ namespace correa{
         public:
 
             PyPolygon(std::string file_path) {
-                polygon = load_poly(file_path);
+                polygon = load_polygon(file_path);
                 Ellipse ellipse;
                 Curvature curv;
                 double a, b; 
@@ -141,6 +141,7 @@ namespace correa{
                 //std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
                 return std::get<2>(ellipse_max_);
             };
+           
            auto ellipse_min() {
                 //std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
                 return ellipse_min_;

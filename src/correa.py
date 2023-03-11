@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 def create_polygon(path_file : str):
     return _correa.PyPolygon(path_file)
 
+
 def print_polygon(p) :
     _correa.print_polygon(p)
 
@@ -22,8 +23,4 @@ def plot_polygon(p):
     ax.plot(x, y, color='#6699cc', alpha=0.7, linewidth=3, solid_capstyle='round', zorder=2)
     ax.set_title('Polygon')
     
-def analyse_polygon(path : str):
-    p = _correa.PyPolygon('/Users/yossi/AAU/ToMaCo/contours/contours/01kPa/24h_Trypsin24h_2-FITC_001_png_contour.csv')
-    _correa.print_polygon(p)
-    plot_polygon(p)
-    
+#def analyse_polygon(p : PyPolygon):

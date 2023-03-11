@@ -1,8 +1,9 @@
 import sys
 import os
 import PySimpleGUI as sg
-
-
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import csv
 
 os.chdir('..')
 path = os.getcwd()+"/src/"
@@ -10,29 +11,92 @@ sys.path.append(os.getcwd())
 
 import correa
 
-layout = [[sg.Text("Hello from PySimpleGUI")], [sg.Button("LOAD")],[sg.Button("CLOSE")]]
 
+def draw_figure(canvas, figure):
+    figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+    figure_canvas_agg.draw()
+    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+    return figure_canvas_agg
 
-# Create the window
+AppFont = 'Any 20'
+sg.theme('LightGrey')
 
-window = sg.Window("Demo", layout)
-right_click_menu=sg.MENU_RIGHT_CLICK_EDITME_VER_EXIT
+layout_main = [[sg.Text("Correa main menu")], [sg.Button("LOAD CONTOUR")],[sg.Button("PLOT")], [sg.Button("INFO")],[sg.Button("CLOSE")]]
 
-MENU_RIGHT_CLICK_EDITME_VER_EXIT = ['', ['Edit Me']]
+window_main = sg.Window("Correa", layout_main, resizable=True)
+
+loaded = False
 
 # Create an event loop
 while True:
-	event, values = window.read()
+	event_main, values_main = window_main.read()
     # End program if user closes window or
     # presses the OK button
     
-	if event == 'Edit Me':
-		sg.execute_editor(__file__)
-	if event == "LOAD":
-		correa.analyse_polygon('/Users/yossi/AAU/ToMaCo/contours/contours/01kPa/24h_Trypsin24h_2-FITC_001_png_contour.csv')
+	if event_main == "LOAD CONTOUR":
+		filename = sg.popup_get_file('Enter the file containing the contour you wish to process.')
+		p = correa.create_polygon(filename)
+		loaded= True
 		
-		
-	if event == "CLOSE" or event == sg.WIN_CLOSED:
+	#if (event_main == "ANALYSE") & (loaded == True):
+	#	correa.analyse_polygon(p)
+  
+	#if (event_main == "ANALYSE") & (loaded == False):
+	#	sg.popup_ok("You have not loaded a contour please load one.", title = "Warning: no contour")
+	
+	if (event_main == "PLOT") & (loaded == True):
+		_VARS = {'window': False}
+		layout = [[sg.Canvas(key='figCanvas')],
+          [sg.Button('Exit', font=AppFont)]]
+		_VARS['window'] = sg.Window('Correa: display contour',
+                            layout,
+                            finalize=True,
+                            resizable=True,
+                            element_justification="right",
+                            size=(500,500), 
+                            modal=False)
+		x = []
+		y = []
+		for i in range(len(p.vertices())):
+			x.append(p.vertices()[i][0])
+			y.append(p.vertices()[i][1])
+		# make fig and plot
+		fig = plt.figure()
+		plt.plot(x, y)
+		# Instead of plt.show
+		draw_figure(_VARS['window']['figCanvas'].TKCanvas, fig)
+		# MAIN LOOP
+		while True:
+			event_plot, values_plot = _VARS['window'].read(timeout=200)
+			if event_plot == sg.WIN_CLOSED or event_plot == 'Exit':
+				break
+		_VARS['window'].close()
+  
+	if (event_main == "PLOT") & (loaded == False):
+		sg.popup_ok("You have not loaded a contour, please load one.", title = "Warning: no contour")
+  
+	if (event_main == "INFO") & (loaded == True):
+		polygon_size = p.size()
+		layout_info = [[sg.Text(f"information for contour {filename}")], [sg.Text(f"Number of points in contour {polygon_size}.\nWilmore energy is {p.willmore()}")]]
+		window_info = sg.Window("Correa information", layout_info, modal = False)
+  
+		while True:
+			event_info, values_info = window_info.read()
+			if event_info == "CLOSE" or event_info == sg.WIN_CLOSED:
+				break
+
+	if (event_main == "INFO") & (loaded == False):
+		sg.popup_ok("You have not loaded a contour, please load one.", title = "Warning: no contour")
+
+	
+	if event_main == "CLOSE" or event_main == sg.WIN_CLOSED:
 		break
 
-window.close()
+if loaded == True:
+    del(p)
+
+window_main.close()
+
+
+
+
