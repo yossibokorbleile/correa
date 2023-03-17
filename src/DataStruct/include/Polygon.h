@@ -43,6 +43,14 @@
 
 		double distorsion();
 
+		void shift(Vector2D center) {
+			for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
+				v->position -= center;
+			};
+			std::cout << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
+  		};
+
+
 		int size() {
 			return vertices.size();
 		};

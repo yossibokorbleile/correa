@@ -17,7 +17,8 @@
 
 namespace correa{
 
-    auto initialise_polygon(std::string path_to_file) {
+    // construct a polygon with focal point center of mass of the vertices supplied
+    auto initialise_polygon(std::string path_to_vertices) {
 
         PolygonBuilder pbuilder;
         Polygon polygon;
@@ -28,7 +29,7 @@ namespace correa{
         double *X;
         X = nullptr;
 
-        inout.read(path_to_file, &ndim, &npoint, &X);
+        inout.read(path_to_vertices, &ndim, &npoint, &X);
         pbuilder.clean_points(&npoint, X);
         pbuilder.buildPolygon(npoint, X, polygon);
 
@@ -38,6 +39,28 @@ namespace correa{
         polygon.centerScale(range,iscale);
         return polygon;
     } 
+
+    auto initialise_polygon(std::string path_to_vertices) {
+
+        PolygonBuilder pbuilder;
+        Polygon polygon;
+        INOUT inout; 
+        int ndim;
+        int npoint;
+
+        double *X;
+        X = nullptr;
+
+        inout.read(path_to_vertices , &ndim, &npoint, &X);
+        pbuilder.clean_points(&npoint, X);
+        pbuilder.buildPolygon(npoint, X, polygon);
+
+        // Center polygon
+        int iscale = 0;
+        double range = 100;
+        polygon.centerScale(range,iscale);
+        return polygon;
+    }
 
 
      auto load_polygon(std::string file_path) {
