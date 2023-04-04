@@ -8,7 +8,7 @@
    Includes
    =============================================================================================== */
 
-#include "Comp2DShapes.h"
+#include "Comp2D.h"
 
 
 /* ===============================================================================================
@@ -41,9 +41,11 @@ int main(int argc, char **argv)
 
 	std::string INfile1;
 	std::string INfile2;
+	std::string INfocal1;
+	std::string INfocal2;
 	int disttype = 0;
 
-        if (!parse_args(argc, argv, &INfile1, &INfile2, &disttype)) return 1;
+        if (!parse_args(argc, argv, &INfile1, &INfile2, &INfocal1, &INfocal2, &disttype)) return 1;
 
 /*	==========================================================================================
 	Read in the polygon1 from input file1
@@ -101,9 +103,6 @@ int main(int argc, char **argv)
 	double a1_m, b1_m, r1_m, a2_m, b2_m, r2_m;
 	double a1_l, b1_l, r1_l, a2_l, b2_l, r2_l;
 	double willmore1, willmore2;
-	PersistenceDiagram pd1, pd2;
-	//PersistenceDiagram pd2;
-
 
 	if(disttype == 0) {
 		dFrechet = frechet.dFD(polygon1, polygon2);
@@ -258,38 +257,7 @@ int main(int argc, char **argv)
 	cout << " " << endl;
 	
 	}
-/*	
-	std::cout << " " << std::endl;
-	PH0 f3(polygon1.vertices);
-	PH0 f4(polygon2.vertices);
-	cout << "Got the filtrations." << endl;
-	cout << "Doing first persistence." << endl;
-	f3.Persistence();
-	cout << "Doing second persistence." << endl;
-	f4.Persistence();
-	cout << "Generated the persistence diagrams." << endl;
 	
-	PersistenceDiagram pd3(f3.pd);
-	PersistenceDiagram pd4(f4.pd);
-	cout << "First point in pd1 is (" << pd3.points[0][0] << ", " << pd3.points[0][1] <<") and last point in pd1 is (" << pd3.points.back()[0] << ", " << pd3.points.back()[1] << ")." << endl;
-	cout << "Last point in pd2 is (" << pd4.points[0][0] << ", " << pd4.points[0][1] <<") and last point in pd2 is (" << pd4.points.back()[0] << ", " << pd4.points.back()[1] << ")." << endl;
-	
-	
-	cout << "The first persistence diagram is: " << endl;
-	for (int i = 0; i < pd3.np; i++){
-		vector<double> pt;
-		pt = pd3.points[i];
-		cout << "point " << i+1 << " out of " << pd3.np << " is (" << pt[0] << ", " << pt[1] << ")" << endl;
-	};
-
-	cout << "\nand the second persistence diagram is: " << endl;;
-	for (int i = 0; i < pd4.np; i++){
-		vector<double> pt;
-		pt = pd4.points[i];
-		cout << "(" << pt[0] << ", " << pt[1] << ")" << endl;
-	};
-	cout << " " << endl;
-*/	
 	return 0;
 
 }
@@ -310,9 +278,11 @@ static void usage(char** argv)
     std::cout << "     " << "=          Comp2DShapes -i1 FILE1 -i2 FILE2 -d disttype                                        ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     where:                                                                                   ="<<std::endl;
-    std::cout << "     " << "=                 -i1 FILE1     --> Input file (Curve; ascii or csv file with 1 point / line)  ="<<std::endl;
-    std::cout << "     " << "=                 -i2 FILE2     --> Input file (Curve; ascii or csv file with 1 point / line)  ="<<std::endl;
-    std::cout << "     " << "=                 -d disttype   --> Flag:                                                      ="<<std::endl;
+    std::cout << "     " << "=               -c1 FILE1     --> Input file (Curve; ascii or csv file with 1 point / line)    ="<<std::endl;
+    std::cout << "     " << "=               -f1 FILE2     --> Input file (Point; ascii or csv file with 1 point, 1 line)   ="<<std::endl;
+	std::cout << "     " << "=               -c2 FILE3     --> Input file (Curve; ascii or csv file with 1 point / line)    ="<<std::endl;
+	std::cout << "     " << "=               -f2 FILE4     --> Input file (Point; ascii or csv file with 1 point, 1 line)   ="<<std::endl;
+    std::cout << "     " << "=               -d disttype   --> Flag:                                                        ="<<std::endl;
     std::cout << "     " << "=                                   (0) Frechet distance                                       ="<<std::endl;
     std::cout << "     " << "=                                   (1) Aspect ratio distances (based on ellipses)             ="<<std::endl;
     std::cout << "     " << "=                                   (2) Curvature-based distances                              ="<<std::endl;
@@ -352,6 +322,12 @@ bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, i
 			}
 			if (param == "-d") {
 				*disttype = std::atoi(argv[i + 1]);
+			}
+			if (param == "-f1") {
+				*focal1 = argv[i + 1];
+			}
+			if (param == "-f2") {
+				*focal2 = argv[i + 1];
 			}
 		}
   	}

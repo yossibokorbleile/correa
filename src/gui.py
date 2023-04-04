@@ -39,8 +39,8 @@ while True:
 	event_main, values_main = window_main.read()
     # End program if user closes window or
 	if event_main == "SINGLE CONTOUR MODE":
-		layout_main = layout_main_single
-		refresh(window_main)# = sg.Window("Correa", layout_main_single, resizable = True)
+		window_single = wg.Window("Correa single contour mode", layout_main_single, resizable=True)
+		window_main.close()# = sg.Window("Correa", layout_main_single, resizable = True)
   
 	if event_main == "BATCH MODE":
 		window_main = sg.Window("Correa", layout_main_batch, resizable = True)

@@ -40,7 +40,7 @@ namespace correa{
         return polygon;
     } 
 
-    auto initialise_polygon(std::string path_to_vertices) {
+    auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point) {
 
         PolygonBuilder pbuilder;
         Polygon polygon;
@@ -83,13 +83,14 @@ namespace correa{
     }*/
 
     class PyPolygon{
+        using PersistenceDiagram = std::vector<std::pair<double,double>>;
         private:
             Polygon polygon;
             std::tuple<double, double, double> ellipse_min_;
             std::tuple<double, double, double> ellipse_max_;
             std::tuple<double, double, double> ellipse_lsq_;
             double willmore_;
-            correa::PersistenceDiagram  persistence_diagram_;
+            PersistenceDiagram  persistence_diagram_;
 
 
         public:
@@ -217,9 +218,9 @@ namespace correa{
                 out << "Minimum volume inscribing ellipse:  a: " << P.ellipse_min_a() << " b: " << P.ellipse_min_b() << " ratio: " << P.ellipse_min_ratio() << "\n";
                 out << "Least square ellipse:               a: " << P.ellipse_lsq_a() << " b: " << P.ellipse_lsq_b() << " ratio: " << P.ellipse_lsq_ratio() << "\n";
                 out << "Wilmore energy:                     " << P.willmore() << "\n";
-                out << "Persistence diagram: number of points:     " << P.persistence_diagram().NumberPoints() << "\n";
-			    for (int i = 0; i < P.persistence_diagram().NumberPoints(); i++) {
-					out << P.persistence_diagram().Points()[i];
+                out << "Persistence diagram: number of points:     " << P.persistence_diagram().size() << "\n";
+			    for (int i = 0; i < P.persistence_diagram().size(); i++) {
+					out << "( " << P.persistence_diagram()[i].first << ", " << P.persistence_diagram()[i].second << ")" << std::endl;
 				}
                 return out;            
             };
