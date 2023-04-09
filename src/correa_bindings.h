@@ -15,7 +15,7 @@
 #include <PH0.h>
 //#include <hera/wasserstein.h>
 
-namespace correa{
+namespace correa{   
 
     // construct a polygon with focal point center of mass of the vertices supplied
     auto initialise_polygon(std::string path_to_vertices) {
