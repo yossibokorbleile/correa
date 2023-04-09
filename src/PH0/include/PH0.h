@@ -27,16 +27,23 @@ using namespace std;
 namespace correa {
 class PH0{
 	using PersistenceDiagram = std::vector<std::pair<double,double>>;
-	public:
 
-		int n_pts;
+	private:
 		vector<tuple<int, double, int>> unsorted_nodes;
 		vector<Comp> comps;
 		PersistenceDiagram pd;
+
+	public:
+
+		int n_pts;
+
 		PH0(vector<pair<int, double>> x);
 		PH0(vector<Vertex> points);
 		void AddNode(pair<int, double>& y);
 		void Persistence();
+		PersistenceDiagram persistence_diagram() {
+			return pd;
+		};
 
 };
 

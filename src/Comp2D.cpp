@@ -103,6 +103,8 @@ int main(int argc, char **argv)
 	double a1_m, b1_m, r1_m, a2_m, b2_m, r2_m;
 	double a1_l, b1_l, r1_l, a2_l, b2_l, r2_l;
 	double willmore1, willmore2;
+	correa::PH0 f1(polygon1.vertices);
+	correa::PH0 f2(polygon2.vertices);
 
 	if(disttype == 0) {
 		dFrechet = frechet.dFD(polygon1, polygon2);
@@ -119,11 +121,14 @@ int main(int argc, char **argv)
 		dW = std::abs(willmore1-willmore2);
 		dcOT1 = curv.curvOT(polygon1, polygon2);
 	} else if(disttype == 3){
-		PH0 f1(polygon1.vertices);
-		PH0 f2(polygon2.vertices);
 		f1.Persistence();
 		f2.Persistence();
-		pdWasserstein = WassersteinDistance(f1.pd, f2.pd);
+		hera::AuctionParams<double> params;
+    	params.max_num_phases = 800;
+		params.wasserstein_power = 2;
+		params.internal_p = 2;
+		auto res = hera::wasserstein_cost_detailed(f1.persistence_diagram(), f2.persistence_diagram(), params);
+		//pdWasserstein = WassersteinDistance(f1.persistence_diagram(), f2.persistence_diagram());
 	} else {
 		dFrechet = frechet.dFD(polygon1, polygon2);
 		dE_m = ellipse.dEllipseMin(polygon1, polygon2, &a1_m, &b1_m, &a2_m, &b2_m);
@@ -136,13 +141,15 @@ int main(int argc, char **argv)
 		willmore2 = curv.Willmore(polygon2);
 		dW = std::abs(willmore1-willmore2);
 		dcOT1 = curv.curvOT(polygon1, polygon2);
-		PH0 f1(polygon1.vertices);
-		PH0 f2(polygon2.vertices);
 		f1.Persistence();
 		f2.Persistence();
-		std::cout << "got to do the persistence" << std::endl;
 		double pdWasserstein;
-		pdWasserstein = WassersteinDistance(f1.pd, f2.pd);
+		hera::AuctionParams<double> params;
+    	params.max_num_phases = 800;
+		params.wasserstein_power = 2;
+		params.internal_p = 2;
+		auto res = hera::wasserstein_cost_detailed(f1.persistence_diagram(), f2.persistence_diagram(), params);
+		//pdWasserstein = WassersteinDistance(f1.persistence_diagram(), f2.persistence_diagram());
 	}
 
 /*	==========================================================================================
@@ -171,18 +178,11 @@ int main(int argc, char **argv)
 	}
 	if(disttype==3 || disttype==4) {
 		std::cout << "Persistence diagram of polygon    : ";
-		std::vector<std::vector<double>> pdpoints;
-		int num_points;
-		pdpoints =pd1.points;
-		num_points = pdpoints.size();
-		std::cout<< "There are " << num_points << " points in the persistence diagram." << std::endl;
-		for (int i = 0; i < num_points; i++){
-			std::vector<double> p = pdpoints[i];
-			std::cout << "(" << p[0] << ", " << p[1] << ")" << std::endl;
+		std::cout<< "There are " << f1.persistence_diagram().size() << " points in the persistence diagram." << std::endl;
+		for (int i = 0; i < f1.persistence_diagram().size(); i++){
+			std::cout << "(" << get<0>(f1.persistence_diagram()[i]) << ", " << get<1>(f1.persistence_diagram()[i]) << ")" << std::endl;
 		};
 	}
-
-	std::cout << " " << std::endl;
 
 	// Info on polygon 2:
 
@@ -206,13 +206,9 @@ int main(int argc, char **argv)
 	}
 	if(disttype==3 || disttype==4) {
 		std::cout << "Persistence diagram of polygon    : ";
-		std::vector<std::vector<double>> pdpoints;
-		pdpoints =pd2.points;
-		int num_points = pdpoints.size();
-		std::cout<< "There are " << num_points << " points in the persistence diagram." << std::endl;
-		for (int i = 0; i < num_points; i++){
-			std::vector<double> p = pdpoints[i];
-			std::cout << "(" << p[0] << ", " << p[1] << ")" << std::endl;
+		std::cout<< "There are " << f2.persistence_diagram().size() << " points in the persistence diagram." << std::endl;
+		for (int i = 0; i < f2.persistence_diagram().size(); i++){
+			std::cout << "(" << get<1>(f2.persistence_diagram()[i]) << ", " << get<1>(f2.persistence_diagram()[i]) << ")" << std::endl;
 		};
 	}
 
@@ -240,21 +236,7 @@ int main(int argc, char **argv)
 		std::cout << "Distance (Wasserstein-curvature)                    : " << std::scientific << dcOT1 << std::endl;
 	}
 	if(disttype==3 || disttype == 4) {
-		std::cout << "Distance (2-Wasserstein between persitence diagrams): " << std::setprecision(10) << pdWasserstein << std::endl;
-		cout << "The first persistence diagram is: " << endl;
-	for (int i = 0; i < pd1.np; i++){
-		vector<double> pt;
-		pt = pd1.points[i];
-		cout << "point " << i+1 << " out of " << pd1.np << " is (" << pt[0] << ", " << pt[1] << ")" << endl;
-	};
-
-	cout << "and the second persistence diagram is: " << endl;
-	for (int i = 0; i < pd2.np; i++){
-		vector<double> pt;
-		pt = pd2.points[i];
-		cout << "(" << pt[0] << ", " << pt[1] << ")" << endl;
-	};
-	cout << " " << endl;
+		std::cout << "Distance (2-Wasserstein between persitence diagrams): i need to figure out how hera works" <<  std::endl;
 	
 	}
 	
@@ -298,7 +280,7 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
-bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, int *disttype)
+bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, std::string *focal1, std::string *focal2, int *disttype)
 {
 //
 // Make sure we have at least two parameters....

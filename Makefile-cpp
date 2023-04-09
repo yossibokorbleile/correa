@@ -8,6 +8,8 @@ OT1_INCLUDE_DIR = ./src/OT1/include
 PH0_INCLUDE_DIR = ./src/PH0/include
 NANOGUI_INCLUDE_DIR = ./nanogui/include
 HERA_INCLUDE_DIR = ./ext/hera/include
+BOOST_INCLUDE_DIR = /opt/homebrew/Cellar/boost/1.81.0_1/include
+
 BLAS_LIBS = -lblas -llapack
 THREAD_LIBS = -lpthread
 
@@ -37,7 +39,7 @@ CPP		:= g++
 CPPFLAGS	:= -c -std=c++17 -O3 -Wdeprecated-declarations -Wuninitialized -ansi -Wall -std=c++0x
 
 INCLUDE_DIRS = -I$(INC_DIR) -I$(DATASTRUCT_INCLUDE_DIR) -I$(INOUT_INCLUDE_DIR)\
-		-I$(METRIC_INCLUDE_DIR) -I$(CURV_INCLUDE_DIR) -I$(OT1_INCLUDE_DIR) -I$(PH0_INCLUDE_DIR) -I$(NANOGUI_INCLUDE_DIR) -I$(HERA_INCLUDE_DIR)
+		-I$(METRIC_INCLUDE_DIR) -I$(CURV_INCLUDE_DIR) -I$(OT1_INCLUDE_DIR) -I$(PH0_INCLUDE_DIR) -I$(NANOGUI_INCLUDE_DIR) -I$(HERA_INCLUDE_DIR) -I$(BOOST_INCLUDE_DIR)
 
 LIB_DIRS =
 
