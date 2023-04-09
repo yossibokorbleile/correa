@@ -1,12 +1,12 @@
-/* ===============================================================================================
-   Author:  Patrice Koehl & Yossi Bokor
-   Date:    January 18 2022
-   Version: 1.1
-   =============================================================================================== */
+/*
+ 	2DShape.cpp
 
-/* ===============================================================================================
-   Includes
-   =============================================================================================== */
+ 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
+
 
 #include "2DShape.h"
 

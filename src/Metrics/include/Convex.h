@@ -1,13 +1,12 @@
-/* ====CONVEX_H =================================================================================
- *
- * Author: Patrice Koehl (in collaboration with Yossi Bokor, U. of Sydney), October 2021
- * Department of Computer Science
- * University of California, Davis
- *
- * This file implements the computation of the convex hull of a set of points
- *
- * LGPL licensing
- =============================================================================================== */
+/*
+ 	Convex.h
+
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
+
 
 #ifndef _CONVEX_H_
 #define _CONVEX_H_
@@ -15,7 +14,7 @@
   #include <cmath>
   #include <algorithm>
   #include <functional>
-
+namespace correa {
 /* ===============================================================================================
    The ConvexHull class
    =============================================================================================== */
@@ -151,7 +150,7 @@
 	return;
 
    }
-
+} //end namespace correa
 #endif
 
 

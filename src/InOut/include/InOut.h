@@ -1,15 +1,11 @@
-/* ===============================================================================================
-   InOut.h
+/*
+ 	InOut.h
 
-   Small functions that read in a curve in 2D or 3D
-  
-   Authors:  Patrice Koehl
-   Date:    9/23/2020
-   Version: 1
-
-   Methods:
- 
-   =============================================================================================== */
+ 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
 
 #ifndef _INOUT_H_
 #define _INOUT_H_
@@ -18,6 +14,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+namespace correa {
   /* ===============================================================================================
    class
    =============================================================================================== */
@@ -189,5 +186,5 @@ void INOUT::readPoints(std::ifstream & inFile, int ndim, int npoint, double *coo
 
 	output.close();
   }
-
+} //end namespace corera
 #endif

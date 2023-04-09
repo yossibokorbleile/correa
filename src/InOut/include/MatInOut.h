@@ -1,15 +1,12 @@
-/* ===============================================================================================
+/*
    MatInOut.h
 
-   Small functions that read in a matrix of values.
-  
-   Authors:  Yossi Bokor
-   Date:    March 7, 2022
-   Version: 1
+ 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
 
-   Methods:
- 
-   =============================================================================================== */
 
 #ifndef _MATINOUT_H_
 #define _MATINOUT_H_
@@ -19,16 +16,18 @@
 #include <unistd.h>
 
 using namespace std;
+namespace correa {
+
 
 class MATINOUT {
 
 	public:
-		vector<vector<double>> read(string infile);
+		vector<vector<double> > read(string infile);
 
 };
 
-vector<vector<double>> read(string infile) {
-   vector<vector<double>> X;
+vector<vector<double> > read(string infile) {
+   vector<vector<double> > X;
    ifstream in(infile);
    string line;
    double val;
@@ -43,5 +42,5 @@ vector<vector<double>> read(string infile) {
    };
    return X;
 };
-
+} //end namespace correa
 #endif

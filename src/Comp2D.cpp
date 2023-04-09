@@ -1,8 +1,11 @@
-/* ===============================================================================================
-   Author:  Patrice Koehl
-   Date:    10/19/2021
-   Version: 1
-   =============================================================================================== */
+/*
+ 	Comp2DShapce.cpp
+
+ 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
 
 /* ===============================================================================================
    Includes

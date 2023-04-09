@@ -1,19 +1,59 @@
+/*
+ 	CorreaBindings.h
+
+ 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
+
+
+#ifndef _CORREABINDINGS_H_
+#define _CORREABINDINGS_H_
+
 /* ===============================================================================================
-   Author:  Patrice Koehl & Yossi Bokor
-   Date:    March 03 2023
-   Version: 0.1
+   System includes
    =============================================================================================== */
 
-#ifndef _CORREA_BINDINGS_H_
-#define _CORREA_BINDINGS_H_
 #include <iostream>
-#include <include/correa_bindings.h>
-#include <Polygon.h>
-#include <InOut.h>
-#include <Ellipse.h>
-#include <Curvature.h>
-#include <PH0.h>
-//#include <hera/wasserstein.h>
+#include <iomanip>
+#include <sstream>
+#include <string>
+#include <cstring>
+#include <stdlib.h>
+#include <fstream>
+#include <cmath>
+#include <ctime>
+#include <unistd.h>
+#include <cstdlib>
+#include <limits>
+#include <assert.h>
+#include <algorithm>
+
+
+/*================================================================================================
+ Definitions for multi-threading
+================================================================================================== */
+
+#define NUM_THREADS 32
+
+int threadids[NUM_THREADS];
+pthread_t threads[NUM_THREADS];
+
+/* ===============================================================================================
+   Local includes
+   =============================================================================================== */
+
+#include "InOut.h"
+#include "PolygonBuilder.h"
+#include "Polygon.h"
+#include "Ellipse.h"
+#include "OT1.h"
+#include "PH0.h"
+//#include "PersistenceDiagram.h"
+#include "Curvature.h"
+#include "Component.h"
+
 
 namespace correa{   
 
@@ -116,7 +156,7 @@ namespace correa{
                 willmore_ = curv.Willmore(polygon);
                 PH0 f(polygon.vertices);
                 f.Persistence();
-                persistence_diagram_ = f.pd;
+                persistence_diagram_ = f.persistence_diagram();
             }
 
             //std::vector<std::vector<double>> vertices();
@@ -245,4 +285,6 @@ namespace correa{
 
    
 }
+
+
 #endif

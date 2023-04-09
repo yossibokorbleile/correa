@@ -1,3 +1,12 @@
+/*
+ 	Vector2D.h
+
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
+
 /*********************************************************************************
  *      The Vector2D class
  *********************************************************************************/
@@ -7,6 +16,7 @@
 
 #include "math.h"
 
+namespace correa {
 /*********************************************************************************
   class
  *********************************************************************************/
@@ -246,5 +256,5 @@
   {
 	return u.x*v.x + u.y*v.y;
   }
-
+} //end namespace correa
 #endif

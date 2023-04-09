@@ -1,3 +1,13 @@
+/*
+ 	PolygonBuilder.h
+
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
+
+
 /* ===========================================================================================
  *
  * Class that contains tools to manipulate a 2D polygon
@@ -13,7 +23,7 @@
 /* ===========================================================================================
  The MeshBuilder class
  ==============================================================================================*/
-
+namespace correa {
   class PolygonBuilder {
 
 	public:
@@ -620,4 +630,5 @@
 	return nedges;
 
   }
+} //end namespace correa	
 #endif

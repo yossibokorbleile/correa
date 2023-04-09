@@ -1,7 +1,16 @@
+/*
+ 	Vector.h
+
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
+
 #pragma once
 
 #include "math.h"
-
+namespace correa {
 class Vector {
 public:
 	// initializes all components to zero
@@ -190,3 +199,4 @@ inline Vector cross(const Vector& u, const Vector& v)
 {
 	return Vector(u.y*v.z - u.z*v.y, u.z*v.x - u.x*v.z, u.x*v.y - u.y*v.x);
 }
+} // end namespace correa

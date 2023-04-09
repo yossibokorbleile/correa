@@ -1,12 +1,11 @@
 /*
- PH0.hpp
+ 	PH0.h
 
- Create a filtration of a polygon
-
- Author: Yossi Bokor
- Date: January 28, 2022
- Version 1
- */
+ 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
 
 #ifndef _PH0_H
 #define _PH0_H

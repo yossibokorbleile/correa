@@ -1,26 +1,28 @@
-/* ====FRECHET_H =================================================================================
- *
- * Author: Patrice Koehl (in collaboration with Yossi Bokor, U. of Sydney), October 2021 
- * Department of Computer Science
- * University of California, Davis
- *
- * This file implements the discrete Frechet distance for comparing two polygonal curves
- *
- * Implementation based on:
- *      Eiter, Thomas; Mannila, Heikki (1994), Computing discrete Fréchet distance
- *      Tech. Report CD-TR 94/64, Christian Doppler Laboratory for Expert Systems, TU Vienna, Austria.
- *
- * LGPL licensing
- =============================================================================================== */
+/*
+ 	Frechet.h
+
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				  Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+
+  This file implements the discrete Frechet distance for comparing two polygonal curves
+
+  Implementation based on:
+    Eiter, Thomas; Mannila, Heikki (1994), Computing discrete Fréchet distance
+    Tech. Report CD-TR 94/64, Christian Doppler Laboratory for Expert Systems, TU Vienna, Austria.
+    LGPL licensing
+*/
+
 
 #ifndef _FRECHET_H_
 #define _FRECHET_H_
 
-  #include <cmath>
-  #include <float.h>
-  #include <algorithm>
-  #include <functional>
-
+#include <cmath>
+#include <float.h>
+#include <algorithm>
+#include <functional>
+namespace correa {
 /* ===============================================================================================
    The Frechet class
    =============================================================================================== */
@@ -126,6 +128,6 @@
 	}
 	return CA[i+j*n1];
   }
-
+} //end namespace correa
 #endif
 

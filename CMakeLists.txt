@@ -30,6 +30,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/InOut/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/Metrics/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/OT1/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/PH0/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 
 

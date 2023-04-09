@@ -51,7 +51,7 @@ pthread_t threads[NUM_THREADS];
 #include "Curvature.h"
 #include "hera/wasserstein.h"
 
-
+using namespace correa;
 
 INOUT inout;
 Polygon poly;

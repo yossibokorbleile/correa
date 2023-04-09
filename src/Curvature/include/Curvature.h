@@ -1,17 +1,21 @@
-/* ====Curvature.h ===========================================================================
- *
- * Author: Patrice Koehl, Oct 2021
- * Department of Computer Science
- * University of California, Davis
- *
- * This file looks at option to compare two curves based on the curvatures of their vertices
- *
- * It is based on the paper:
- *      K. Crane, U. Pinkall, and P. Schroeder, "Robust fairing via conformal curvature flow"
- *       ACM Transactions on Graphics, Vol. 32, No. 4 (2013).
- * and on the code SpinXform_OpenGL from Keenan Crane (available at:
- *	https://www.cs.cmu.edu/~kmcrane/index.html#code
- =============================================================================================== */
+/*
+ 	Curvature.h
+
+ 	Author: Patrice Koehl, Department of Computer Science, University of California, Davis
+	Date: October 2021
+ 	Version: 1
+
+
+ 	This file looks at option to compare two curves based on the curvatures of their vertices
+
+ 	It is based on the paper:
+ 		K. Crane, U. Pinkall, and P. Schroeder, "Robust fairing via conformal curvature flow"
+       	ACM Transactions on Graphics, Vol. 32, No. 4 (2013).
+ 	and on the code SpinXform_OpenGL from Keenan Crane (available at:
+		https://www.cs.cmu.edu/~kmcrane/index.html#code
+*/
+
+
 
 #ifndef _CURVATURE_H
 #define _CURVATURE_H
@@ -24,6 +28,7 @@
 #include <cmath>
 #include <OT1.h>
 
+namespace correa {
 /*================================================================================================
   Prototypes for BLAS and LAPACK
 ================================================================================================== */
@@ -250,6 +255,6 @@ class Curvature
 	return d_OT;
 
    }
-
+}//end namespace correa
 #endif
 

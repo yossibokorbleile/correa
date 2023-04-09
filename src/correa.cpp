@@ -1,17 +1,18 @@
-/* ===============================================================================================
-   Author:  Patrice Koehl & Yossi Bokor
-   Date:    March 03 2023
-   Version: 0.1
-   =============================================================================================== */
+/*
+ 	Correa.cpp
+
+ 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
 
 #include <iostream>
 #include <nanobind/nanobind.h>
 #include <nanobind/stl/vector.h>
 #include <nanobind/stl/string.h>
 #include <nanobind/stl/array.h>
-#include <include/correa_bindings.h>
-
-#include <correa_bindings.h> 
+#include <correa_bindings.h>
 
 namespace nb = nanobind;
 

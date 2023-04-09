@@ -1,13 +1,14 @@
-/* ===============================================================================================
-   Clustering.h
+/*
+ 	2DShape.h
 
-   Author:  Yossi Bokor
-   Date:    February 2, 2022
-   Version: 1
-   =============================================================================================== */
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	ate: April 2023
+	Version: 1
+*/
 
-#ifndef _CLUSTERING_H_
-#define _CLUSTERING_H_
+#ifndef _2DSHAPE_H_
+#define _2DSHAPE_H_
 
 /* ===============================================================================================
    System includes
@@ -26,10 +27,7 @@
 #include <cstdlib>
 #include <limits>
 #include <assert.h>
-#include "InOut.h"
-#include "kMeans.h"
 
-INOUT InOut;
 /*================================================================================================
  Definitions for multi-threading
 ================================================================================================== */
@@ -43,16 +41,33 @@ pthread_t threads[NUM_THREADS];
    Local includes
    =============================================================================================== */
 
-//#include "InOut.h"
-#include "kMeans.h"
+#include "InOut.h"
+#include "PolygonBuilder.h"
+#include "Polygon.h"
+#include "Ellipse.h"
+#include "OT1.h"
 
-//INOUT inout;
+OT1 ot1;
+
+#include "PH0.h"
+#include "PersistenceDiagram.h"
+#include "Curvature.h"
+#include "Component.h"
+
+
+INOUT inout;
+Polygon poly;
+PolygonBuilder pbuilder;
+Ellipse ellipse;
+Curvature curv;
+PersistenceDiagram PD;
+
 
 /* ===============================================================================================
    Prototypes
    =============================================================================================== */
 
 static void usage(char** argv);
-bool parse_args(int argc, char **argv, std::string *infile, int *nobj, int *nclus);
+bool parse_args(int argc, char **argv, std::string *INFILE);
 
 #endif

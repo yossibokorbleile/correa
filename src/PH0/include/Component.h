@@ -1,13 +1,11 @@
 /*
- Components.hpp
+ 	Component.h
 
- Create a filtration of a polygon
-
- Author: Yossi Bokor
- Date: January 28, 2022
- Version 1
- */
-
+ 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
 
 
 #ifndef _COMPONENT_H
@@ -17,6 +15,7 @@
 #include <iostream>
 #include <tuple>
 
+namespace correa {
 /* Comp class */
 class Comp{
 
@@ -92,5 +91,5 @@ int Comp::AddNode(std::pair<int, double> x){
 		return 0;
 	};
 };
-
+} //end namespace corra
 #endif

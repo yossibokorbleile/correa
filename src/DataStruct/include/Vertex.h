@@ -1,3 +1,13 @@
+/*
+ 	Vertex.h
+
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
+
+
 /*********************************************************************************
  *	The Vertex class
  *********************************************************************************/
@@ -10,7 +20,7 @@
 /*********************************************************************************
   Vertex class
  *********************************************************************************/
-
+namespace correa {
   class Vertex {
 	public:
 
@@ -86,4 +96,6 @@
 double Vertex::height(){
 	return sqrt(pow(position[0],2) + pow(position[1], 2));
 };
+
+} //end namespace correa
 #endif

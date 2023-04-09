@@ -1,25 +1,20 @@
-/* ====ELLIPSE_H =================================================================================
- *
- * Author: Patrice Koehl (in collaboration with Yossi Bokor, U. of Sydney), October 2021 
- * Department of Computer Science
- * University of California, Davis
- *
- * In this file, the two curves are compared using the difference in their aspect ratios,
- * where aspect ratio is the ratio of the long axis vs the short axis for either the
- * largest ellipse enclosed by the curve, or the smallest ellipse that contains the curve
- *
- * 
- * LGPL licensing
- =============================================================================================== */
+/*
+ 	Ellipse.h
+
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Date: April 2023
+	Version: 1
+*/
 
 #ifndef _ELLIPSE_H_
 #define _ELLIPSE_H_
 
-  #include <cmath>
-  #include <algorithm>
-  #include <functional>
-  #include "Convex.h"
-
+#include <cmath>
+#include <algorithm>
+#include <functional>
+#include "Convex.h"
+namespace correa {
 Convex convexhull;
 
 /* ===============================================================================================
@@ -895,5 +890,5 @@ Convex convexhull;
 	return dist;
 
   }
-
+} //end namespace correa
 #endif
