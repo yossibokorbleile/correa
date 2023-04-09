@@ -45,13 +45,20 @@ pthread_t threads[NUM_THREADS];
 #include "PolygonBuilder.h"
 #include "Polygon.h"
 #include "PH0.h"
-#include "PersistenceDiagram.h"
+#include "Frechet.h"
+#include "Ellipse.h"
+#include "OT1.h"
+#include "Curvature.h"
+#include "hera/wasserstein.h"
 
 
 
 INOUT inout;
 Polygon poly;
 PolygonBuilder pbuilder;
+Frechet frechet;
+Ellipse ellipse;
+Curvature curv;
 
 //PDInOut PDIO;
 /* ===============================================================================================
@@ -59,7 +66,7 @@ PolygonBuilder pbuilder;
    =============================================================================================== */
 
 static void usage(char** argv);
-bool parse_args(int argc, char **argv, std::string *cell1, std::string *focal1, std::string *cell2, std::string *focal2);
+bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, std::string *focal1, std::string *focal2, int *disttype);
 
 #endif
 
