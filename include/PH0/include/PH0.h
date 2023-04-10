@@ -17,8 +17,8 @@
 #include "Vertex.h"
 #include "Polygon.h"
 #include "Component.h"
-//#include "PersistenceDiagram.h"
 #include "hera/common/diagram_point.h"
+#include "hera/wasserstein.h"
 #include <utility>
 using namespace std;
 

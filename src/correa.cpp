@@ -12,7 +12,7 @@
 #include <nanobind/stl/vector.h>
 #include <nanobind/stl/string.h>
 #include <nanobind/stl/array.h>
-#include <correa_bindings.h>
+#include "correa_bindings.h"
 
 namespace nb = nanobind;
 
