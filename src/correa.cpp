@@ -17,7 +17,7 @@
 namespace nb = nanobind;
 
 
-NB_MODULE(_correa, m) {
+NB_MODULE(correa, m) {
     nb::class_<correa::PyPolygon>(m, "PyPolygon")
         .def(nb::init<const std::string &>())
         //.def("extractVertices", &correa::PyPolygon::extractVertices)
@@ -32,6 +32,5 @@ NB_MODULE(_correa, m) {
     m.def("load_polygon", &correa::load_polygon);
     m.def("print_polygon", &correa::print_polygon);
 
-        
 }
 
