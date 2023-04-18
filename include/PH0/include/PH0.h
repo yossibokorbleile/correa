@@ -43,6 +43,11 @@ class PH0{
 		PersistenceDiagram persistence_diagram() {
 			return pd;
 		};
+		void printPD() {
+			for (int i = 0; i < pd.size(); i++) {
+				std::cout << "(" << get<0>(pd[i]) << ", " << get<1>(pd[i]) << ")" << std::endl;
+			}
+		}
 
 };
 

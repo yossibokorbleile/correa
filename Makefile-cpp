@@ -1,11 +1,11 @@
 # ================= Libraries and Includes ====================================
 
-DATASTRUCT_INCLUDE_DIR = ./src/DataStruct/include
-INOUT_INCLUDE_DIR = ./src/InOut/include
-METRIC_INCLUDE_DIR = ./src/Metrics/include
-CURV_INCLUDE_DIR = ./src/Curvature/include
-OT1_INCLUDE_DIR = ./src/OT1/include
-PH0_INCLUDE_DIR = ./src/PH0/include
+DATASTRUCT_INCLUDE_DIR = ./include/DataStruct/include
+INOUT_INCLUDE_DIR = ./include/InOut/include
+METRIC_INCLUDE_DIR = ./include/Metrics/include
+CURV_INCLUDE_DIR = ./include/Curvature/include
+OT1_INCLUDE_DIR = ./include/OT1/include
+PH0_INCLUDE_DIR = ./include/PH0/include
 NANOGUI_INCLUDE_DIR = ./nanogui/include
 HERA_INCLUDE_DIR = ./ext/hera/include
 BOOST_INCLUDE_DIR = /opt/homebrew/Cellar/boost/1.81.0_1/include
@@ -23,7 +23,7 @@ BIN_DIR = ./bin
 # ================= Project Name ===========================================
 
 EXT=
-NAME1=Comp2D
+NAME1=Comp2DShapes
 NAMEOBJ1=$(OBJ_DIR)/$(NAME1).o
 NAMEBIN1=$(BIN_DIR)/$(NAME1)$(EXT)
 NAME2=2DShape

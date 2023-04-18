@@ -11,7 +11,7 @@
    Includes
    =============================================================================================== */
 
-#include "Comp2D.h"
+#include "Comp2DShapes.h"
 
 
 /* ===============================================================================================
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 	Compute distances
 	========================================================================================== */
 
-	double dFrechet, dE_M, dE_m, dE_l, dW, dcOT1, pdWasserstein;
+	double dFrechet, dE_M, dE_m, dE_l, dW, dcOT1;
 	double a1_M, b1_M, r1_M, a2_M, b2_M, r2_M;
 	double a1_m, b1_m, r1_m, a2_m, b2_m, r2_m;
 	double a1_l, b1_l, r1_l, a2_l, b2_l, r2_l;
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     	params.max_num_phases = 800;
 		params.wasserstein_power = 2;
 		params.internal_p = 2;
-		auto res = hera::wasserstein_cost_detailed(f1.persistence_diagram(), f2.persistence_diagram(), params);
+		//auto res = hera::wasserstein_cost_detailed(f1.persistence_diagram(), f2.persistence_diagram(), params);
 		//pdWasserstein = WassersteinDistance(f1.persistence_diagram(), f2.persistence_diagram());
 	} else {
 		dFrechet = frechet.dFD(polygon1, polygon2);
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
     	params.max_num_phases = 800;
 		params.wasserstein_power = 2;
 		params.internal_p = 2;
-		auto res = hera::wasserstein_cost_detailed(f1.persistence_diagram(), f2.persistence_diagram(), params);
+		//auto res = hera::wasserstein_cost_detailed(f1.persistence_diagram(), f2.persistence_diagram(), params);
 		//pdWasserstein = WassersteinDistance(f1.persistence_diagram(), f2.persistence_diagram());
 	}
 
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
 		std::cout << "Willmore energy of polygon        : " << willmore1 << std::endl;
 	}
 	if(disttype==3 || disttype==4) {
-		std::cout << "Persistence diagram of polygon    : ";
+		std::cout << "Persistence diagram of polygon 1  : ";
 		std::cout<< "There are " << f1.persistence_diagram().size() << " points in the persistence diagram." << std::endl;
 		for (int i = 0; i < f1.persistence_diagram().size(); i++){
 			std::cout << "(" << get<0>(f1.persistence_diagram()[i]) << ", " << get<1>(f1.persistence_diagram()[i]) << ")" << std::endl;
@@ -208,7 +208,7 @@ int main(int argc, char **argv)
 		std::cout << "Willmore energy of polygon        : " << willmore2 << std::endl;
 	}
 	if(disttype==3 || disttype==4) {
-		std::cout << "Persistence diagram of polygon    : ";
+		std::cout << "Persistence diagram of polygon 2  : ";
 		std::cout<< "There are " << f2.persistence_diagram().size() << " points in the persistence diagram." << std::endl;
 		for (int i = 0; i < f2.persistence_diagram().size(); i++){
 			std::cout << "(" << get<1>(f2.persistence_diagram()[i]) << ", " << get<1>(f2.persistence_diagram()[i]) << ")" << std::endl;

@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 	Store as a polygon
 	========================================================================================== */
 
-	Polygon polygon;
+	correa::Polygon polygon;
 	pbuilder.clean_points(&npoint, X);
 	pbuilder.buildPolygon(npoint, X, polygon);
 
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 	ellipse.EllipseLSQ(polygon, &a_l, &b_l);
 	r_l = a_l/b_l;
 	willmore = curv.Willmore(polygon);
-	PH0 f(polygon.vertices);
+	correa::PH0 f(polygon.vertices);
 	f.Persistence();
 	
 /*	==========================================================================================
@@ -106,14 +106,9 @@ int main(int argc, char **argv)
 	std::cout << "Minimum volume inscribing ellipse 			: a : " << std::setw(7) << std::fixed << std::setprecision(3) << a_m << " b : " << b_m << " Aspect ratio: " << r_m << std::endl;
 	std::cout << "Least square ellipse              			: a : " << std::setw(7) << std::fixed << std::setprecision(3) << a_l << " b : " << b_l << " Aspect ratio: " << r_l << std::endl;
 	std::cout << "Willmore energy of polygon        			: " << willmore << std::endl;
-	std::cout << "Number of points in the persistence diagram 	: " << f.pd.np ;
-	f.pd.printPD();
+	std::cout << "Number of points in the persistence diagram 	: " << f.persistence_diagram().size() ;
+	f.printPD();
 	std::cout << " " << std::endl;
-	for (int i = 0; i < f.pd.np; i++){
-		vector<double> pt;
-		pt = f.pd.points[i];
-		cout << "point " << i+1 << " out of " << f.pd.np << " is (" << pt[0] << ", " << pt[1] << ")" << endl;
-	};
 
 	return 0;
 

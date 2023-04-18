@@ -50,17 +50,14 @@ pthread_t threads[NUM_THREADS];
 OT1 ot1;
 
 #include "PH0.h"
-#include "PersistenceDiagram.h"
 #include "Curvature.h"
 #include "Component.h"
 
+correa::INOUT inout;
+correa::PolygonBuilder pbuilder;
+correa::Ellipse ellipse;
+correa::Curvature curv;
 
-INOUT inout;
-Polygon poly;
-PolygonBuilder pbuilder;
-Ellipse ellipse;
-Curvature curv;
-PersistenceDiagram PD;
 
 
 /* ===============================================================================================

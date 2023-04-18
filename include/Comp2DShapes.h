@@ -53,11 +53,9 @@ pthread_t threads[NUM_THREADS];
 
 #include "Curvature.h"
 #include "PH0.h"
-#include "PersistenceDiagram.h"
-#include "PDInOut.h"
 #include "Curvature.h"
 
-using namespace correa
+using namespace correa;
 OT1 ot1;
 INOUT inout;
 Polygon poly;
@@ -65,12 +63,12 @@ PolygonBuilder pbuilder;
 Frechet frechet;
 Ellipse ellipse;
 Curvature curv;
-//PDInOut PDIO;
+
 /* ===============================================================================================
    Prototypes
    =============================================================================================== */
 
 static void usage(char** argv);
-bool parse_args(int argc, char **argv, std::string *FILE1, std::string *FILE2, int *disttype);
+bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, std::string *focal1, std::string *focal2, int *disttype);
 
 #endif
