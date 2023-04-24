@@ -126,12 +126,14 @@ int main(int argc, char **argv)
 	} else if(disttype == 3){
 		f1.Persistence();
 		f2.Persistence();
-		hera::AuctionParams<double> params;
-    	params.max_num_phases = 800;
-		params.wasserstein_power = 2;
-		params.internal_p = 2;
-		//auto res = hera::wasserstein_cost_detailed(f1.persistence_diagram(), f2.persistence_diagram(), params);
-		//pdWasserstein = WassersteinDistance(f1.persistence_diagram(), f2.persistence_diagram());
+		hera::AuctionParams<double> hera_params;
+    	hera_params.max_num_phases = 800;
+		hera_params.wasserstein_power = 2;
+		hera_params.internal_p = 2;
+		const std::vector<std::pair<double,double>> pd1 = f1.persistence_diagram();
+		const std::vector<std::pair<double,double>> pd2 = f2.persistence_diagram();
+		const hera::AuctionParams<double> params = hera_params;
+		double w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
 	} else {
 		dFrechet = frechet.dFD(polygon1, polygon2);
 		dE_m = ellipse.dEllipseMin(polygon1, polygon2, &a1_m, &b1_m, &a2_m, &b2_m);
@@ -147,12 +149,11 @@ int main(int argc, char **argv)
 		f1.Persistence();
 		f2.Persistence();
 		double pdWasserstein;
-		hera::AuctionParams<double> params;
-    	params.max_num_phases = 800;
-		params.wasserstein_power = 2;
-		params.internal_p = 2;
-		//auto res = hera::wasserstein_cost_detailed(f1.persistence_diagram(), f2.persistence_diagram(), params);
-		//pdWasserstein = WassersteinDistance(f1.persistence_diagram(), f2.persistence_diagram());
+		hera::AuctionParams<double> hera_params;
+    	hera_params.max_num_phases = 800;
+		hera_params.wasserstein_power = 2;
+		hera_params.internal_p = 2;
+		double w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(f1.persistence_diagram(), f2.persistence_diagram(), hera_params);
 	}
 
 /*	==========================================================================================

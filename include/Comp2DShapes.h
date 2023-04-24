@@ -41,7 +41,7 @@ pthread_t threads[NUM_THREADS];
    Local includes
    =============================================================================================== */
 
-
+#include "hera/wasserstein.h"
 #include "InOut.h"
 #include "PolygonBuilder.h"
 #include "Polygon.h"
@@ -56,6 +56,8 @@ pthread_t threads[NUM_THREADS];
 #include "Curvature.h"
 
 using namespace correa;
+using PersistenceDiagram = std::vector<std::pair<double,double>>;
+
 OT1 ot1;
 INOUT inout;
 Polygon poly;

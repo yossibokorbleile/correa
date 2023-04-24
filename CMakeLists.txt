@@ -1,26 +1,27 @@
 cmake_minimum_required(VERSION 3.18)
 project(correa VERSION 0.1.0 LANGUAGES CXX)
 find_package(Python 3.8 COMPONENTS Interpreter Development.Module REQUIRED)
-#set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # C++ 17 required
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-#set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_EXTENSIONS ON)
 
-#set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-#set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-#set(CMAKE_CXX_FLAGS "-c")
-#include(CPack)
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+set(CMAKE_CXX_FLAGS "-c")
+include(CPack)
 
 #option(CORREA_BUILD_PYTHON_BINDINGS OFF)
 #option(CORREA_BUILD_EXECUTABLES ON)
 
 # Default to Release
-#if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-#  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
-#  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
-#endif()
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/nanobind)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/hera)
@@ -39,15 +40,15 @@ message("Boost dir is ${Boost_INCLUDE_DIR}")
 include_directories(${Boost_INCLUDE_DIR})
 
 #if(CORREA_BUILD_PYTHON_BINDINGS)
-	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bindings)
-	nanobind_add_module(_correa src/correa.cpp)
-	target_link_libraries(_correa PRIVATE hera)
+	#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bindings)
+	#nanobind_add_module(_correa src/correa.cpp)
+	#target_link_libraries(_correa PRIVATE hera)
 #endif()
 
 
 #if(CORREA_BUILD_EXECUTABLES)
-#	add_executable(2DShape src/2DShape.cpp)
-#	add_executable(Comp2DShape src/Comp2DShapes.cpp)
+	add_executable(2DShape src/2DShape.cpp)
+	add_executable(Comp2DShape src/Comp2DShapes.cpp)
 
-#    target_link_libraries(Comp2DShape PUBLIC ${libraries})
+    target_link_libraries(Comp2DShape PUBLIC ${libraries})
 #endif()

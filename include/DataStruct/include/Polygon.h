@@ -17,8 +17,8 @@
 #ifndef _POLYGON_H
 #define _POLYGON_H
 
-  #include "Types.h"
-  #include "Vertex.h"
+#include "Types.h"
+#include "Vertex.h"
 
 /* ===========================================================================================
  * Class for polygon
@@ -36,6 +36,7 @@ namespace correa {
 		std::vector<Vertex> vertices;
 		std::vector<double > bdLength0;
 		std::vector<double > bdLength;
+		double distorsion_; 
 
 		std::vector<std::pair<int, int> > edges;
 
@@ -51,7 +52,7 @@ namespace correa {
 		void boundaryLength0();
 		void boundaryLength();
 
-		double distorsion();
+		void distorsion();
 
 		void shift(Vector2D center) {
 			for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
@@ -150,7 +151,7 @@ namespace correa {
  * Distorsion in edge lengths
  ==============================================================================================*/
 
-  double Polygon::distorsion()
+  void Polygon::distorsion()
   {
 	int n = vertices.size();
 	double err=0;
@@ -160,7 +161,7 @@ namespace correa {
 		err += 100*std::abs(val);
 	}
 	err = err/n;
-	return err;
+	distorsion_ = err;
   }
 
  /* ===========================================================================================
@@ -195,7 +196,7 @@ namespace correa {
 		void boundaryLength0();
 		void boundaryLength();
 
-		double distorsion();
+		void distorsion();
 
   };
 
