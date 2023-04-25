@@ -47,7 +47,7 @@ pthread_t threads[NUM_THREADS];
 #include "PH0.h"
 #include "Frechet.h"
 #include "Ellipse.h"
-#include "OT1.h"
+//#include "OT1.h"
 #include "Curvature.h"
 #include "hera/wasserstein.h"
 

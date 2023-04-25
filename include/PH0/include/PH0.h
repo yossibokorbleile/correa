@@ -17,18 +17,18 @@
 #include "Vertex.h"
 #include "Polygon.h"
 #include "Component.h"
-#include "hera/common/diagram_point.h"
-#include "hera/wasserstein.h"
+//#include "hera/common/diagram_point.h"
+//.#include "hera/wasserstein.h"
 #include <utility>
 using namespace std;
 
 /* Lets do the the persistent homology in dimension 0 now */
 namespace correa {
 class PH0{
-	using PersistenceDiagram = std::vector<std::pair<double,double>>;
+	using PersistenceDiagram = std::vector<std::pair<double,double> >;
 
 	private:
-		vector<tuple<int, double, int>> unsorted_nodes;
+		vector<std::tuple<int, double, int> > unsorted_nodes;
 		vector<Comp> comps;
 		PersistenceDiagram pd;
 
@@ -36,7 +36,7 @@ class PH0{
 
 		int n_pts;
 
-		PH0(vector<pair<int, double>> x);
+		PH0(vector<pair<int, double> > x);
 		PH0(vector<Vertex> points);
 		void AddNode(pair<int, double>& y);
 		void Persistence();
@@ -52,7 +52,7 @@ class PH0{
 };
 
 /* Constructor from a vector of nodes */
-PH0::PH0(vector<pair<int, double>> x){
+PH0::PH0(vector<pair<int, double> > x){
 	n_pts = x.size();
 	for (int i = 0; i < n_pts; i++){
 		tuple<int, double, int> pt;
@@ -92,7 +92,7 @@ bool HeightComparison(tuple<int, double>& x, tuple<int, double>& y){
 
 /* Obtain the components and their birth/death times */
 void PH0::Persistence(){
-	vector<tuple<int, double>> sorted_nodes;
+	vector<tuple<int, double> > sorted_nodes;
 	for (int i = 0; i < n_pts; i++){
 		tuple<int, double> x;
 		get<0>(x) = get<0>(unsorted_nodes[i]);

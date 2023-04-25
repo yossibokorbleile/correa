@@ -14,6 +14,7 @@
   #include <cmath>
   #include <algorithm>
   #include <functional>
+  #include "Vector2D.h"
 namespace correa {
 /* ===============================================================================================
    The ConvexHull class
@@ -62,10 +63,10 @@ namespace correa {
 
 	for(int i = 0; i < n; i++) copy.push_back(Points[i]);
 
-	std::sort(copy.begin(), copy.end(), [](Vector2D& a, Vector2D& b){
-		if (a[0] < b[0] ) return true;
-		return false;
-	});
+	//std::sort(copy.begin(), copy.end(), [&](Vector2D a, Vector2D b){
+	//	if (a[0] < b[0] ) return true;
+	//	return false;
+	//});
  
 	CH.clear();
  

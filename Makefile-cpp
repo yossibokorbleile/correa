@@ -19,15 +19,16 @@ INC_DIR = ./include
 SRC_DIR = ./src
 OBJ_DIR = ./src
 BIN_DIR = ./bin
+EXEC_DIR = ./exec
 
 # ================= Project Name ===========================================
 
 EXT=
-NAME1=Comp2DShapes
-NAMEOBJ1=$(OBJ_DIR)/$(NAME1).o
+NAME1=test
+NAMEOBJ1=$(EXEC_DIR)/$(NAME1).cpp
 NAMEBIN1=$(BIN_DIR)/$(NAME1)$(EXT)
 NAME2=2DShape
-NAMEOBJ2=$(OBJ_DIR)/$(NAME2).o
+NAMEOBJ2=$(EXEC_DIR)/$(NAME2).cpp
 NAMEBIN2=$(BIN_DIR)/$(NAME2)$(EXT)
 
 
@@ -36,7 +37,7 @@ NAMEBIN2=$(BIN_DIR)/$(NAME2)$(EXT)
 CC 		:= gcc
 CFLAGS		:= -c -O3 -ansi -Wall -Werror -pedantic
 CPP		:= g++
-CPPFLAGS	:= -c -std=c++17 -O3 -Wdeprecated-declarations -Wuninitialized -ansi -Wall -std=c++0x
+CPPFLAGS	:= -std=c++17 -Wall -v#-std=c++17 -O3 -Wdeprecated-declarations -Wuninitialized -ansi -Wall -std=c++0x
 
 INCLUDE_DIRS = -I$(INC_DIR) -I$(DATASTRUCT_INCLUDE_DIR) -I$(INOUT_INCLUDE_DIR)\
 		-I$(METRIC_INCLUDE_DIR) -I$(CURV_INCLUDE_DIR) -I$(OT1_INCLUDE_DIR) -I$(PH0_INCLUDE_DIR) -I$(NANOGUI_INCLUDE_DIR) -I$(HERA_INCLUDE_DIR) -I$(BOOST_INCLUDE_DIR)
@@ -80,11 +81,16 @@ $(NAMEBIN2) : $(OBJECTS2)
 
 
 all: $(OBJECTS1) $(OBJECTS2)
-	$(CPP) -o $(NAMEBIN1) $(LD_FLAGS) $(OBJECTS1) $(LIB_DIRS) $(LIBS) $(LOAD_LIB_PATH)
-	$(CPP) -o $(NAMEBIN2) $(LD_FLAGS) $(OBJECTS2) $(LIB_DIRS) $(LIBS) $(LOAD_LIB_PATH)
+	$(CPP) $(CPPFLAGS) -o $(NAMEBIN1) $(LD_FLAGS) $(OBJECTS1) $(LIB_DIRS) $(LIBS) $(LOAD_LIB_PATH)
+	$(CPP) $(CPPFLAGS) -o $(NAMEBIN2) $(LD_FLAGS) $(OBJECTS2) $(LIB_DIRS) $(LIBS) $(LOAD_LIB_PATH)
 
 clean:
 	touch $(OBJ_DIR)/junk.o; rm -f $(OBJ_DIR)/*.o $(NAMEBIN1) $(NAMEBIN2) $(NAMEBIN3)
+
+2DShape: 
+	$(CPP) $(CPPFLAGS) -o $(NAMEBIN2) $(LD_FLAGS) $(OBJECTS2) $(LIB_DIRS) $(LIBS) $(LOAD_LIB_PATH) $(INCLUDE_DIRS)
+test: 
+	$(CPP) $(CPPFLAGS) -o $(NAMEBIN1) $(LD_FLAGS) $(OBJECTS1) $(LIB_DIRS) $(LIBS) $(LOAD_LIB_PATH) $(INCLUDE_DIRS)
 
 $(OBJECTS1):
 $(OBJECTS2):

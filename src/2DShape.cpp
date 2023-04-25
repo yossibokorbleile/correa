@@ -9,6 +9,17 @@
 
 
 #include "2DShape.h"
+#include "InOut.h"
+#include "PolygonBuilder.h"
+#include "Polygon.h"
+#include "Ellipse.h"
+//#include "OT1.h"
+
+//OT1 ot1;
+
+#include "PH0.h"
+#include "Curvature.h"
+#include "Component.h"
 
 
 /* ===============================================================================================
@@ -17,6 +28,10 @@
 
 int main(int argc, char **argv)
 {
+	correa::INOUT inout;
+	correa::PolygonBuilder pbuilder;
+	correa::Ellipse ellipse;
+	correa::Curvature curv;
 
 /*	==========================================================================================
 	Show usage if needed
@@ -57,6 +72,7 @@ int main(int argc, char **argv)
 /*	==========================================================================================
 	Store as a polygon
 	========================================================================================== */
+
 
 	correa::Polygon polygon;
 	pbuilder.clean_points(&npoint, X);

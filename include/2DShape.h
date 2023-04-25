@@ -45,19 +45,13 @@ pthread_t threads[NUM_THREADS];
 #include "PolygonBuilder.h"
 #include "Polygon.h"
 #include "Ellipse.h"
-#include "OT1.h"
+//#include "OT1.h"
 
-OT1 ot1;
+//OT1 ot1;
 
 #include "PH0.h"
 #include "Curvature.h"
 #include "Component.h"
-
-correa::INOUT inout;
-correa::PolygonBuilder pbuilder;
-correa::Ellipse ellipse;
-correa::Curvature curv;
-
 
 
 /* ===============================================================================================

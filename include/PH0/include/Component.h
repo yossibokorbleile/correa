@@ -57,7 +57,7 @@ Comp::Comp(std::pair<int, double> x, int n_points){
 	death = x.second;
 	num_points = n_points;
 	Alive =true;
-};
+}
 
 //Constructor from an integer and a double
 Comp::Comp(int i, double height, int n_points){
@@ -67,12 +67,12 @@ Comp::Comp(int i, double height, int n_points){
 	end = i;
 	num_points = n_points;
 	Alive = true;
-};
+}
 
 /* Find the parent */
 int Comp::Parent(){
 	return parent;
-};
+}
 
 /* Add a node to a component */
 int Comp::AddNode(std::pair<int, double> x){
@@ -90,6 +90,6 @@ int Comp::AddNode(std::pair<int, double> x){
 	} else {
 		return 0;
 	};
-};
+}
 } //end namespace corra
 #endif

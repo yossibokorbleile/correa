@@ -48,7 +48,7 @@ pthread_t threads[NUM_THREADS];
 #include "Frechet.h"
 #include "Ellipse.h"
 
-#include "OT1.h"
+//#include "OT1.h"
 
 
 #include "Curvature.h"
@@ -58,7 +58,7 @@ pthread_t threads[NUM_THREADS];
 using namespace correa;
 using PersistenceDiagram = std::vector<std::pair<double,double>>;
 
-OT1 ot1;
+//OT1 ot1;
 INOUT inout;
 Polygon poly;
 PolygonBuilder pbuilder;
