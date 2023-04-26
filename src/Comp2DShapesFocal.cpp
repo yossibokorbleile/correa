@@ -1,5 +1,5 @@
 /*
- 	Comp2DShapes.cpp
+ 	Comp2DShapesFocal.cpp
 
  	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
 				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
@@ -11,7 +11,7 @@
    Includes
    =============================================================================================== */
 
-#include "Comp2DShapes.h"
+#include "Comp2DShapesFocal.h"
 
 
 /* ===============================================================================================
@@ -44,9 +44,11 @@ int main(int argc, char **argv)
 
 	std::string INfile1;
 	std::string INfile2;
+	std::string INfocal1;
+	std::string INfocal2;
 	int disttype = 0;
 
-        if (!parse_args(argc, argv, &INfile1, &INfile2, &disttype)) return 1;
+        if (!parse_args(argc, argv, &INfile1, &INfocal1, &INfile2, &INfocal2, &disttype)) return 1;
 
 /*	==========================================================================================
 	Read in the polygon1 from input file1
@@ -261,11 +263,13 @@ static void usage(char** argv)
     std::cout << "     " << "=                                  Comp2DShapes                                                ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     Usage is:                                                                                ="<<std::endl;
-    std::cout << "     " << "=          Comp2DShapes -i1 FILE1 -i2 FILE2 -d disttype                                        ="<<std::endl;
+    std::cout << "     " << "=          Comp2DShapes -i1 FILE1 -f1 FOCAL1 -i2 FILE2 -f2 FILE2 -d disttype                   ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     where:                                                                                   ="<<std::endl;
     std::cout << "     " << "=               -c1 FILE1     --> Input file (Curve; ascii or csv file with 1 point / line)    ="<<std::endl;
+    std::cout << "     " << "=               -f1 FILE2     --> Input file (Point; ascii or csv file with 1 point, 1 line)   ="<<std::endl;
 	std::cout << "     " << "=               -c2 FILE3     --> Input file (Curve; ascii or csv file with 1 point / line)    ="<<std::endl;
+	std::cout << "     " << "=               -f2 FILE4     --> Input file (Point; ascii or csv file with 1 point, 1 line)   ="<<std::endl;
     std::cout << "     " << "=               -d disttype   --> Flag:                                                        ="<<std::endl;
     std::cout << "     " << "=                                   (0) Frechet distance                                       ="<<std::endl;
     std::cout << "     " << "=                                   (1) Aspect ratio distances (based on ellipses)             ="<<std::endl;
@@ -282,7 +286,7 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
-bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, int *disttype)
+bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype)
 {
 //
 // Make sure we have at least two parameters....
@@ -306,6 +310,12 @@ bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, i
 			}
 			if (param == "-d") {
 				*disttype = std::atoi(argv[i + 1]);
+			}
+			if (param == "-f1") {
+				*focal1 = argv[i + 1];
+			}
+			if (param == "-f2") {
+				*focal2 = argv[i + 1];
 			}
 		}
   	}

@@ -7,8 +7,8 @@
 	Version: 1
 */
 
-#ifndef _COMP2DSHAPES_H_
-#define _COMP2DSHAPES_H_
+#ifndef _COMP2DSHAPESFOCAL_H_
+#define _COMP2DSHAPESFOCAL_H_
 
 /* ===============================================================================================
    System includes
@@ -66,6 +66,6 @@ Curvature curv;
    =============================================================================================== */
 
 static void usage(char** argv);
-bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, int *disttype);
+bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype);
 
 #endif
