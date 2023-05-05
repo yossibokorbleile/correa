@@ -10,9 +10,14 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-option(CORREA_BUILD_EXECUTABLES OFF)
-option(CORREA_BUILD_PYTHON_BINDINGS OFF)
+option(CORREA_BUILD_EXECUTABLES "build executables "OFF)
 
+option(CORREA_BUILD_PYTHON_BINDINGS "build python bindings" ON)
+# Boost
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+
+message("CORREA_BUILD_PYTHON_BINDINGS is ${CORREA_BUILD_PYTHON_BINDINGS}")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Clustering/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/Curvature/include)
@@ -24,6 +29,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/PH0/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/hera)
 
+
 add_library(correa INTERFACE)
 if (CORREA_BUILD_EXECUTABLES)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -33,5 +39,5 @@ if(CORREA_BUILD_PYTHON_BINDINGS)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/nanobind)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bindings)
 	nanobind_add_module(_correa src/correa.cpp)
-	target_link_libraries(_correa PRIVATE hera)
+	target_link_libraries(_correa PRIVATE ${libraries} ${lapackblas_libraries} hera)
 endif()
