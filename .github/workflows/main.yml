@@ -33,11 +33,11 @@ jobs:
         
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.1.0
-          with:
-            # Path to Doxyfile
-            doxyfile-path: "./Doxyfile" # default is ./Doxyfile
+        with:
+          # Path to Doxyfile
+          doxyfile-path: "./Doxyfile" # default is ./Doxyfile
             # Working directory
-            working-directory: "." # default is .
+          working-directory: "." # default is .
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
