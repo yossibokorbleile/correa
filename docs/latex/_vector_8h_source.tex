@@ -1,0 +1,208 @@
+\hypertarget{_vector_8h_source}{}\doxysection{Vector.\+h}
+\label{_vector_8h_source}\index{Vector.h@{Vector.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ \ \ Vector.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ Authors:\ \ \ \ Patrice\ Koehl,\ Department\ of\ Computer\ Science,\ University\ of\ California,\ Davis}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Yossi\ Bokor\ Bleile,\ Department\ of\ Mathematical\ Sciences,\ University\ of\ Aalborg,\ Aalborg}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Date:\ April\ 2023}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ \ \ Version:\ 1}}
+\DoxyCodeLine{00008\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}math.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }correa\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{comment}{//\ initializes\ all\ components\ to\ zero}}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}();}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{comment}{//\ initializes\ with\ specified\ components}}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z\ =\ 0.0);}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{comment}{//\ copy\ constructor}}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ access}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{double}\&\ operator[](\textcolor{keywordtype}{int}\ index);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ operator[](\textcolor{keywordtype}{int}\ index)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ math}}
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ operator*(\textcolor{keywordtype}{double}\ s)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ operator/(\textcolor{keywordtype}{double}\ s)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ operator+(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ operator-\/(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ operator-\/()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{double}\ operator*(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ operator*=(\textcolor{keywordtype}{double}\ s);}
+\DoxyCodeLine{00038\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ operator/=(\textcolor{keywordtype}{double}\ s);}
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ operator+=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v);}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ operator-\/=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ operator\string^(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ returns\ Euclidean\ length}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{double}\ norm()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ returns\ Euclidean\ length\ squared}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{double}\ norm2()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ normalizes\ vector}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ normalize();}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ returns\ unit\ vector\ in\ the\ direction\ of\ this\ vector}}
+\DoxyCodeLine{00055\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ unit()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ members}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{double}\ x,\ y,\ z;}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ operator*(\textcolor{keywordtype}{double}\ s,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v);}
+\DoxyCodeLine{00062\ \textcolor{keywordtype}{double}\ dot(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ u,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v);}
+\DoxyCodeLine{00063\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\ cross(\textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ u,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classcorrea_1_1_vector}{Vector}}\&\ v);}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{keyword}{inline}\ Vector::Vector():}
+\DoxyCodeLine{00066\ x(0.0),}
+\DoxyCodeLine{00067\ y(0.0),}
+\DoxyCodeLine{00068\ z(0.0)}
+\DoxyCodeLine{00069\ \{}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{inline}\ Vector::Vector(\textcolor{keywordtype}{double}\ x\_,\ \textcolor{keywordtype}{double}\ y\_,\ \textcolor{keywordtype}{double}\ z\_):}
+\DoxyCodeLine{00074\ x(x\_),}
+\DoxyCodeLine{00075\ y(y\_),}
+\DoxyCodeLine{00076\ z(z\_)}
+\DoxyCodeLine{00077\ \{}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{inline}\ Vector::Vector(\textcolor{keyword}{const}\ Vector\&\ v):}
+\DoxyCodeLine{00082\ x(v.x),}
+\DoxyCodeLine{00083\ y(v.y),}
+\DoxyCodeLine{00084\ z(v.z)}
+\DoxyCodeLine{00085\ \{}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\&\ Vector::operator[](\textcolor{keywordtype}{int}\ index)}
+\DoxyCodeLine{00090\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ (\&x)[index];}
+\DoxyCodeLine{00092\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ Vector::operator[](\textcolor{keywordtype}{int}\ index)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00095\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{return}\ (\&x)[index];}
+\DoxyCodeLine{00097\ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{keyword}{inline}\ Vector\ Vector::operator*(\textcolor{keywordtype}{double}\ s)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00100\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}\ Vector(x*s,\ y*s,\ z*s);}
+\DoxyCodeLine{00102\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{inline}\ Vector\ Vector::operator/(\textcolor{keywordtype}{double}\ s)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00105\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this})*(1.0/s);}
+\DoxyCodeLine{00107\ \}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{keyword}{inline}\ Vector\ Vector::operator+(\textcolor{keyword}{const}\ Vector\&\ v)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00110\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{return}\ Vector(x\ +\ v.x,\ y\ +\ v.y,\ z\ +\ v.z);}
+\DoxyCodeLine{00112\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ Vector::operator*(\textcolor{keyword}{const}\ Vector\&\ v)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00115\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ x*v.x\ +\ y*v.y\ +\ z*v.z;}
+\DoxyCodeLine{00117\ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{keyword}{inline}\ Vector\ Vector::operator\string^(\textcolor{keyword}{const}\ Vector\&\ v)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00120\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ Vector(y*v.z\ -\/\ z*v.y,\ z*v.x\ -\/\ x*v.z,\ x*v.y\ -\/\ y*v.x);}
+\DoxyCodeLine{00122\ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{keyword}{inline}\ Vector\ Vector::operator-\/(\textcolor{keyword}{const}\ Vector\&\ v)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00125\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ Vector(x\ -\/\ v.x,\ y\ -\/\ v.y,\ z\ -\/\ v.z);}
+\DoxyCodeLine{00127\ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{keyword}{inline}\ Vector\ Vector::operator-\/()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00130\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ Vector(-\/x,\ -\/y,\ -\/z);}
+\DoxyCodeLine{00132\ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \textcolor{keyword}{inline}\ Vector\&\ Vector::operator*=(\textcolor{keywordtype}{double}\ s)}
+\DoxyCodeLine{00135\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ x\ *=\ s;}
+\DoxyCodeLine{00137\ \ \ \ \ y\ *=\ s;}
+\DoxyCodeLine{00138\ \ \ \ \ z\ *=\ s;}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00141\ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{keyword}{inline}\ Vector\&\ Vector::operator/=(\textcolor{keywordtype}{double}\ s)}
+\DoxyCodeLine{00144\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ (*this)\ *=\ (1.0/s);}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00148\ \}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{keyword}{inline}\ Vector\&\ Vector::operator+=(\textcolor{keyword}{const}\ Vector\&\ v)}
+\DoxyCodeLine{00151\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ x\ +=\ v.x;}
+\DoxyCodeLine{00153\ \ \ \ \ y\ +=\ v.y;}
+\DoxyCodeLine{00154\ \ \ \ \ z\ +=\ v.z;}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00157\ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \textcolor{keyword}{inline}\ Vector\&\ Vector::operator-\/=(\textcolor{keyword}{const}\ Vector\&\ v)}
+\DoxyCodeLine{00160\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ x\ -\/=\ v.x;}
+\DoxyCodeLine{00162\ \ \ \ \ y\ -\/=\ v.y;}
+\DoxyCodeLine{00163\ \ \ \ \ z\ -\/=\ v.z;}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00166\ \}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ Vector::norm()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00169\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{return}\ sqrt(norm2());}
+\DoxyCodeLine{00171\ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ Vector::norm2()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00174\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{return}\ dot(*\textcolor{keyword}{this},\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00176\ \}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Vector::normalize()}
+\DoxyCodeLine{00179\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ (*this)\ /=\ norm();}
+\DoxyCodeLine{00181\ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \textcolor{keyword}{inline}\ Vector\ Vector::unit()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00184\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00185\ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this})\ /\ norm();}
+\DoxyCodeLine{00186\ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{keyword}{inline}\ Vector\ operator*(\textcolor{keywordtype}{double}\ s,\ \textcolor{keyword}{const}\ Vector\&\ v)}
+\DoxyCodeLine{00189\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordflow}{return}\ v*s;}
+\DoxyCodeLine{00191\ \}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ dot(\textcolor{keyword}{const}\ Vector\&\ u,\ \textcolor{keyword}{const}\ Vector\&\ v)}
+\DoxyCodeLine{00194\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{return}\ u.x*v.x\ +\ u.y*v.y\ +\ u.z*v.z;}
+\DoxyCodeLine{00196\ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \textcolor{keyword}{inline}\ Vector\ cross(\textcolor{keyword}{const}\ Vector\&\ u,\ \textcolor{keyword}{const}\ Vector\&\ v)}
+\DoxyCodeLine{00199\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{return}\ Vector(u.y*v.z\ -\/\ u.z*v.y,\ u.z*v.x\ -\/\ u.x*v.z,\ u.x*v.y\ -\/\ u.y*v.x);}
+\DoxyCodeLine{00201\ \}}
+\DoxyCodeLine{00202\ \}\ \textcolor{comment}{//\ end\ namespace\ correa}}
+
+\end{DoxyCode}

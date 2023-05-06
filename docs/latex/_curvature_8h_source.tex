@@ -1,0 +1,266 @@
+\hypertarget{_curvature_8h_source}{}\doxysection{Curvature.\+h}
+\label{_curvature_8h_source}\index{Curvature.h@{Curvature.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ \ \ Curvature.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ Author:\ Patrice\ Koehl,\ Department\ of\ Computer\ Science,\ University\ of\ California,\ Davis}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Date:\ October\ 2021}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Version:\ 1}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ \ \ \ This\ file\ looks\ at\ option\ to\ compare\ two\ curves\ based\ on\ the\ curvatures\ of\ their\ vertices}}
+\DoxyCodeLine{00010\ \textcolor{comment}{}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ \ \ It\ is\ based\ on\ the\ paper:}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ \ \ \ \ \ \ K.\ Crane,\ U.\ Pinkall,\ and\ P.\ Schroeder,\ "{}Robust\ fairing\ via\ conformal\ curvature\ flow"{}}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ \ \ \ \ \ \ ACM\ Transactions\ on\ Graphics,\ Vol.\ 32,\ No.\ 4\ (2013).}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ \ \ and\ on\ the\ code\ SpinXform\_OpenGL\ from\ Keenan\ Crane\ (available\ at:}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ \ \ \ \ \ \ https://www.cs.cmu.edu/\string~kmcrane/index.html\#code}}
+\DoxyCodeLine{00016\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#ifndef\ \_CURVATURE\_H}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ \_CURVATURE\_H}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{comment}{/*\ =====\ INCLUDES\ AND\ TYPEDEFS\ =================================================================}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ \ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <OT1.h>}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{namespace\ }correa\ \{}
+\DoxyCodeLine{00032\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ \ Prototypes\ for\ BLAS\ and\ LAPACK}}
+\DoxyCodeLine{00034\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{/*\ =====\ The\ Curvature\ class\ \ \ \ =================================================================}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ \ \ *}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcorrea_1_1_curvature}{Curvature}}}
+\DoxyCodeLine{00041\ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Computes\ Willmore\ energy\ for\ a\ polygon}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ Willmore(\mbox{\hyperlink{classcorrea_1_1_polygon}{Polygon}}\&\ polygon);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Computes\ Wasserstein\ distance\ between\ two\ curves,\ using\ the\ curvatures\ at}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ each\ vertex\ to\ compute\ a\ cost\ matrix}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ curvOT(\mbox{\hyperlink{classcorrea_1_1_polygon}{Polygon}}\&\ curve1,\ \mbox{\hyperlink{classcorrea_1_1_polygon}{Polygon}}\&\ curve2);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Build\ histogram\ of\ "{}curvature"{}\ (only\ external\ angle)\ for\ a\ polygon}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ curvHist(\mbox{\hyperlink{classcorrea_1_1_polygon}{Polygon}}\&\ polygon,\ \textcolor{keywordtype}{int}\ *nhist1,\ \textcolor{keywordtype}{double}\ *x1,\ \textcolor{keywordtype}{double}\ *hist1);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Computes\ Wasserstein\ distance\ between\ two\ histograms\ of\ curvatures}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ histOT(\mbox{\hyperlink{classcorrea_1_1_polygon}{Polygon}}\&\ curve1,\ \mbox{\hyperlink{classcorrea_1_1_polygon}{Polygon}}\&\ curve2);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_o_t1}{OT1}}\ ot1;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{/*\ =============================================================================================}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ \ \ Computes\ Willmore\ energy\ for\ a\ polygon}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{double}\ Curvature::Willmore(\mbox{\hyperlink{classcorrea_1_1_polygon}{Polygon}}\&\ polygon)}
+\DoxyCodeLine{00069\ \ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_vector2_d}{Vector2D}}\ a,\ b,\ c;}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{double}\ l,\ l\_prev,\ curv;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{double}\ E\ =\ 0;}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{for}\ (VertexIter\ v\ =\ polygon.vertices.begin();\ v\ !=\ polygon.vertices.end();\ v++)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ a\ =\ v-\/>position;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ b\ =\ v-\/>prev-\/>position;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ c\ =\ v-\/>next-\/>position;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ l\_prev\ =\ (a-\/b).norm();}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ l\ \ \ \ \ \ =\ (a-\/c).norm();}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ curv\ =\ v-\/>exteriorAngle()/(0.5*(l+l\_prev));}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ E\ +=\ curv*curv*(0.5*(l+l\_prev));}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ E\ /=\ polygon.length();}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{return}\ E;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{/*\ =============================================================================================}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ \ Computes\ Wasserstein\ distance\ between\ two\ curves,\ using\ the\ curvatures\ at}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ \ each\ vertex\ to\ compute\ a\ cost\ matrix}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \textcolor{keywordtype}{double}\ Curvature::curvOT(Polygon\&\ curve1,\ Polygon\&\ curve2)}
+\DoxyCodeLine{00094\ \ \ \ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{int}\ n1\ =\ curve1.vertices.size();}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{int}\ n2\ =\ curve2.vertices.size();}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{double}\ *curv1\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n1];}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{double}\ *curv2\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n2];}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//\ Compute\ curvatures\ of\ all\ vertices\ in\ polygon\ 1}}
+\DoxyCodeLine{00102\ \ \ \ \ Vector2D\ a,\ b,\ c;}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{double}\ l,\ l\_prev\ ;}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{for}\ (VertexIter\ v\ =\ curve1.vertices.begin();\ v\ !=\ curve1.vertices.end();\ v++)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ a\ =\ v-\/>position;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ b\ =\ v-\/>prev-\/>position;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ c\ =\ v-\/>next-\/>position;}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ l\_prev\ =\ (a-\/b).norm();}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ l\ \ \ \ \ \ =\ (a-\/c).norm();}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ curv1[v-\/>index]\ =\ v-\/>exteriorAngle()/(0.5*(l+l\_prev));}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{comment}{//\ Compute\ curvatures\ of\ all\ vertices\ in\ polygon\ 2}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{for}\ (VertexIter\ v\ =\ curve2.vertices.begin();\ v\ !=\ curve2.vertices.end();\ v++)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ a\ =\ v-\/>position;}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ b\ =\ v-\/>prev-\/>position;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ c\ =\ v-\/>next-\/>position;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ l\_prev\ =\ (a-\/b).norm();}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ l\ \ \ \ \ \ =\ (a-\/c).norm();}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ curv2[v-\/>index]\ =\ v-\/>exteriorAngle()/(0.5*(l+l\_prev));}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ Assign\ sizes\ of\ all\ arrays\ needed\ for\ OT1}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{int}\ nmax\ =\ std::max(n1,n2);}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{int}\ wsize\ =\ 2*nmax*nmax\ +\ 10*nmax;}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{double}\ *Cost\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n1*n2];}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{double}\ *G\ \ \ \ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n1*n2];}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{double}\ *Work\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[wsize];}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{double}\ *m1\ \ \ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n1];}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{double}\ *m2\ \ \ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n2];}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{double}\ *ones\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[nmax];}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{comment}{//\ Initialize\ arrays}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ m1[i]\ =\ 1./n1;}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n2;\ i++)\ m2[i]\ =\ 1./n2;}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nmax;\ i++)\ ones[i]\ =\ 1.;}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n2;\ j++)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ Cost[i+j*n1]\ =\ std::abs(curv1[i]-\/curv2[j]);}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{//\ Perform\ OT}}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordtype}{double}\ beta1\ =\ 1.e3;}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordtype}{double}\ beta2\ =\ 1.e10;}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordtype}{int}\ iprint\ =\ 0;}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordtype}{int}\ nthreads\ =\ sysconf(\ \_SC\_NPROCESSORS\_ONLN\ );}
+\DoxyCodeLine{00150\ \ \ \ \ nthreads\ =\ std::min(\ nthreads,\ NUM\_THREADS);}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{if}(nthreads==0)\ nthreads\ =\ 1;}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordtype}{double}\ d\_OT\ =\ ot1.ot1(n1,\ m1,\ n2,\ m2,\ Cost,\ G,\ ones,\ Work,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ beta1,\ beta2,\ iprint,\ nthreads);}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//\ Clean\ up}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{delete}\ []\ curv1;\ \textcolor{keyword}{delete}\ []\ curv2;}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{delete}\ []\ Cost;\ \textcolor{keyword}{delete}\ []\ G;\ \textcolor{keyword}{delete}\ []\ m1;\ \textcolor{keyword}{delete}\ []\ m2;}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keyword}{delete}\ []\ Work;\ \textcolor{keyword}{delete}\ []\ ones;}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{return}\ d\_OT;}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \textcolor{comment}{/*\ =============================================================================================}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ \ \ \ \ Computes\ histogram\ of\ exterior\ angles\ for\ all\ vertices\ in\ a\ polygon}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \textcolor{keywordtype}{void}\ Curvature::curvHist(Polygon\&\ polygon,\ \textcolor{keywordtype}{int}\ *nhist,\ \textcolor{keywordtype}{double}\ *x,\ \textcolor{keywordtype}{double}\ *hist)}
+\DoxyCodeLine{00170\ \ \ \ \{}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordtype}{int}\ nvert\ =\ polygon.vertices.size();}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{comment}{//\ angles\ are\ in\ [0,\ 180],\ which\ we\ divide\ in\ 180\ intervals\ of\ 1\ degree...}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordtype}{int}\ nval\ =\ 180.0;}
+\DoxyCodeLine{00176\ \ \ \ \ *nhist\ =\ 180;}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordtype}{double}\ step\ =\ 1.0;}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nval;\ i++)\ x[i]\ =\ step/2\ +\ i*step;}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \ \ memset(hist,\ 0,\ nval*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordtype}{double}\ ang;}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordtype}{int}\ n;}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{for}\ (VertexIter\ v\ =\ polygon.vertices.begin();\ v\ !=\ polygon.vertices.end();\ v++)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ ang\ =\ v-\/>exteriorAngle()\ /M\_PI;}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ n\ =\ std::floor(ang);}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ang\ =\ "{}}\ <<\ ang*180\ <<\ \textcolor{stringliteral}{"{}\ n\ =\ "{}}\ <<\ n\ <<\ std::endl;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ hist[n]\ +=1;}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \ \ exit(1);}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nval;\ i++)\ hist[i]\ /=\ nvert;}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{/*\ =============================================================================================}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ \ \ Computes\ Wasserstein\ distance\ between\ the\ histograms\ of\ the\ exterior\ angles\ of\ two\ curves}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \ \textcolor{keywordtype}{double}\ Curvature::histOT(Polygon\&\ curve1,\ Polygon\&\ curve2)}
+\DoxyCodeLine{00200\ \ \ \ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordtype}{int}\ n1,\ n2;}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordtype}{int}\ nval\ =\ 180;}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordtype}{double}\ *x1\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[nval];\ \textcolor{keywordtype}{double}\ *x2\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[nval];}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordtype}{double}\ *hist1\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[nval];\ \textcolor{keywordtype}{double}\ *hist2\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[nval];}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ curvHist(curve1,\ \&n1,\ x1,\ hist1);}
+\DoxyCodeLine{00207\ \ \ \ \ curvHist(curve2,\ \&n2,\ x2,\ hist2);}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{comment}{//\ Assign\ sizes\ of\ all\ arrays\ needed\ for\ OT1}}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordtype}{int}\ nmax\ =\ std::max(n1,\ n2);}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordtype}{int}\ wsize\ =\ 2*nmax*nmax\ +\ 10*nmax;}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordtype}{double}\ *Cost\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n1*n2];}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordtype}{double}\ *G\ \ \ \ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n1*n2];}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordtype}{double}\ *Work\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[wsize];}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordtype}{double}\ *m1\ \ \ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n1];}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordtype}{double}\ *m2\ \ \ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[n2];}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordtype}{double}\ *ones\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[nmax];}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{comment}{//\ Initialize\ arrays}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ m1[i]\ =\ hist1[i];}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n2;\ i++)\ m2[i]\ =\ hist2[i];}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nmax;\ i++)\ ones[i]\ =\ 1.;}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordtype}{double}\ s1\ =\ 0,\ s2=0;}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ s1\ +=m1[i];}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n2;\ i++)\ s2\ +=m2[i];}
+\DoxyCodeLine{00228\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}s1\ =\ "{}}\ <<\ s1\ <<\ std::endl;}
+\DoxyCodeLine{00229\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}s2\ =\ "{}}\ <<\ s2\ <<\ std::endl;}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordtype}{double}\ Cmax\ =\ 0.0;}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n2;\ j++)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ Cost[i+j*n1]\ =\ std::abs(x1[i]-\/x2[j]);}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ Cmax\ =\ std::max(Cmax,\ Cost[i+j*n1]);}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1*n2;\ i++)\ Cost[i]\ =\ Cost[i]/Cmax;}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{comment}{//\ Perform\ OT}}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordtype}{double}\ beta1\ =\ 0.01;}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordtype}{double}\ beta2\ =\ 1.e6;}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordtype}{int}\ iprint\ =\ 1;}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordtype}{int}\ nthreads\ =\ sysconf(\ \_SC\_NPROCESSORS\_ONLN\ );}
+\DoxyCodeLine{00245\ \ \ \ \ nthreads\ =\ std::min(\ nthreads,\ NUM\_THREADS);}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{if}(nthreads==0)\ nthreads\ =\ 1;}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{double}\ d\_OT\ =\ ot1.ot1(n1,\ m1,\ n2,\ m2,\ Cost,\ G,\ ones,\ Work,}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ beta1,\ beta2,\ iprint,\ nthreads);}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{comment}{//\ Clean\ up}}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keyword}{delete}\ []\ Cost;\ \textcolor{keyword}{delete}\ []\ G;\ \textcolor{keyword}{delete}\ []\ m1;\ \textcolor{keyword}{delete}\ []\ m2;}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keyword}{delete}\ []\ Work;\ \textcolor{keyword}{delete}\ []\ ones;}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{return}\ d\_OT;}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \ \}}
+\DoxyCodeLine{00258\ \}\textcolor{comment}{//end\ namespace\ correa}}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00260\ }
+
+\end{DoxyCode}

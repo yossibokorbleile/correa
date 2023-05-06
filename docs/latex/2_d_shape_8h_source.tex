@@ -1,0 +1,70 @@
+\hypertarget{2_d_shape_8h_source}{}\doxysection{2DShape.\+h}
+\label{2_d_shape_8h_source}\index{2DShape.h@{2DShape.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ \ \ 2DShape.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ Authors:\ \ \ \ Patrice\ Koehl,\ Department\ of\ Computer\ Science,\ University\ of\ California,\ Davis}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Yossi\ Bokor\ Bleile,\ Department\ of\ Mathematical\ Sciences,\ University\ of\ Aalborg,\ Aalborg}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ ate:\ April\ 2023}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ \ \ Version:\ 1}}
+\DoxyCodeLine{00008\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_2DSHAPE\_H\_}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_2DSHAPE\_H\_}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ \ System\ includes}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <iomanip>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <ctime>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <assert.h>}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ Definitions\ for\ multi-\/threading}}
+\DoxyCodeLine{00033\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ NUM\_THREADS\ 32}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keywordtype}{int}\ threadids[NUM\_THREADS];}
+\DoxyCodeLine{00038\ pthread\_t\ threads[NUM\_THREADS];}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ \ Local\ includes}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#include\ "{}InOut.h"{}}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ "{}PolygonBuilder.h"{}}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#include\ "{}Polygon.h"{}}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#include\ "{}Ellipse.h"{}}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\#include\ "{}OT1.h"{}}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{comment}{//OT1\ ot1;}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#include\ "{}PH0.h"{}}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#include\ "{}Curvature.h"{}}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ "{}Component.h"{}}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ \ \ Prototypes}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ usage(\textcolor{keywordtype}{char}**\ argv);}
+\DoxyCodeLine{00062\ \textcolor{keywordtype}{bool}\ parse\_args(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv,\ std::string\ *INFILE);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

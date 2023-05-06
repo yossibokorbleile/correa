@@ -1,0 +1,52 @@
+\hypertarget{_mat_in_out_8h_source}{}\doxysection{Mat\+In\+Out.\+h}
+\label{_mat_in_out_8h_source}\index{MatInOut.h@{MatInOut.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ \ MatInOut.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ Authors:\ Patrice\ Koehl,\ Department\ of\ Computer\ Science,\ University\ of\ California,\ Davis}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Yossi\ Bokor\ Bleile,\ Department\ of\ Mathematical\ Sciences,\ University\ of\ Aalborg,\ Aalborg}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Date:\ April\ 2023}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ \ \ Version:\ 1}}
+\DoxyCodeLine{00008\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ \_MATINOUT\_H\_}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ \_MATINOUT\_H\_}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <sys/stat.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }correa\ \{}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcorrea_1_1_m_a_t_i_n_o_u_t}{MATINOUT}}\ \{}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ vector<vector<double>\ >\ read(\textcolor{keywordtype}{string}\ infile);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ vector<vector<double>\ >\ read(\textcolor{keywordtype}{string}\ infile)\ \{}
+\DoxyCodeLine{00030\ \ \ \ vector<vector<double>\ >\ X;}
+\DoxyCodeLine{00031\ \ \ \ ifstream\ in(infile);}
+\DoxyCodeLine{00032\ \ \ \ \textcolor{keywordtype}{string}\ line;}
+\DoxyCodeLine{00033\ \ \ \ \textcolor{keywordtype}{double}\ val;}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \textcolor{keywordflow}{while}\ (getline(in,\ line))\{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ istringstream\ iss(line);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ vector<double>\ x\_i;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (iss\ >>\ val)\{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ x\_i.push\_back(val);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ X.push\_back(x\_i);}
+\DoxyCodeLine{00042\ \ \ \ \};}
+\DoxyCodeLine{00043\ \ \ \ \textcolor{keywordflow}{return}\ X;}
+\DoxyCodeLine{00044\ \};}
+\DoxyCodeLine{00045\ \}\ \textcolor{comment}{//end\ namespace\ correa}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

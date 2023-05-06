@@ -1,0 +1,163 @@
+\hypertarget{_convex_8h_source}{}\doxysection{Convex.\+h}
+\label{_convex_8h_source}\index{Convex.h@{Convex.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ \ \ Convex.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ Authors:\ \ \ \ Patrice\ Koehl,\ Department\ of\ Computer\ Science,\ University\ of\ California,\ Davis}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Yossi\ Bokor\ Bleile,\ Department\ of\ Mathematical\ Sciences,\ University\ of\ Aalborg,\ Aalborg}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Date:\ April\ 2023}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ \ \ Version:\ 1}}
+\DoxyCodeLine{00008\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ \_CONVEX\_H\_}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ \_CONVEX\_H\_}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\ \ \#include\ <cmath>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \#include\ <algorithm>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \#include\ <functional>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#include\ "{}Vector2D.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }correa\ \{}
+\DoxyCodeLine{00019\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ \ \ The\ ConvexHull\ class}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcorrea_1_1_convex}{Convex}}\ \{}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//\ Compute\ convex\ hull\ of\ a\ set\ of\ points}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ ConvexPoint(std::vector<Vector2D>\&\ Points,\ std::vector<Vector2D>\&\ CH);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{comment}{//\ Compute\ convex\ hull\ of\ a\ polygon}}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ ConvexPoly(std::vector<Vector2D>\&\ Points,\ std::vector<Vector2D>\&\ CH);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ Check\ orientation\ of\ 3\ points}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{bool}\ ccw(\mbox{\hyperlink{classcorrea_1_1_vector2_d}{Vector2D}}\&\ a,\ \mbox{\hyperlink{classcorrea_1_1_vector2_d}{Vector2D}}\&\ b,\ \mbox{\hyperlink{classcorrea_1_1_vector2_d}{Vector2D}}\&\ c);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{/*\ ==============================================================================================}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ \ Checks\ if\ three\ points\ make\ a\ counter-\/clockwise\ turn}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \textcolor{keywordtype}{bool}\ Convex::ccw(\mbox{\hyperlink{classcorrea_1_1_vector2_d}{Vector2D}}\&\ a,\ \mbox{\hyperlink{classcorrea_1_1_vector2_d}{Vector2D}}\&\ b,\ \mbox{\hyperlink{classcorrea_1_1_vector2_d}{Vector2D}}\&\ c)}
+\DoxyCodeLine{00045\ \ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{double}\ val1\ =\ (b[0]\ -\/\ a[0])\ *\ (c[1]\ -\/\ a[1]);}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{double}\ val2\ =\ (b[1]\ -\/\ a[1])\ *\ (c[0]\ -\/\ a[0]);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ val1\ >\ val2;}
+\DoxyCodeLine{00050\ \ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{comment}{/*\ ==============================================================================================}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ \ \ Generate\ convex\ hull\ of\ a\ set\ of\ points\ using\ Graham\ scans}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \textcolor{keywordtype}{void}\ Convex::ConvexPoint(std::vector<Vector2D>\&\ Points,\ std::vector<Vector2D>\&\ CH)}
+\DoxyCodeLine{00058\ \ \ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{int}\ n\ =\ Points.size();}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (n\ ==\ 0)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ std::vector<Vector2D>\ copy;}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n;\ i++)\ copy.push\_back(Points[i]);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{//std::sort(copy.begin(),\ copy.end(),\ [\&](Vector2D\ a,\ Vector2D\ b)\{}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{comment}{//\ \ if\ (a[0]\ <\ b[0]\ )\ return\ true;}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{comment}{//\ \ return\ false;}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\});}}
+\DoxyCodeLine{00070\ \ }
+\DoxyCodeLine{00071\ \ \ \ \ CH.clear();}
+\DoxyCodeLine{00072\ \ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//\ lower\ hull}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ pt\ :\ copy)\ \{}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (CH.size()\ >=\ 2\ \&\&\ !ccw(CH.at(CH.size()\ -\/\ 2),\ CH.at(CH.size()\ -\/\ 1),\ pt))\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ CH.pop\_back();}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ CH.push\_back(pt);}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{comment}{//\ upper\ hull}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{auto}\ t\ =\ CH.size()\ +\ 1;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ copy.crbegin();\ it\ !=\ copy.crend();\ it\ =\ std::next(it))\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ pt\ =\ *it;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (CH.size()\ >=\ t\ \&\&\ !ccw(CH.at(CH.size()\ -\/\ 2),\ CH.at(CH.size()\ -\/\ 1),\ pt))\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ CH.pop\_back();}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ CH.push\_back(pt);}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ }
+\DoxyCodeLine{00092\ \ \ \ \ CH.pop\_back();}
+\DoxyCodeLine{00093\ \ \ \ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{comment}{/*\ ==============================================================================================}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ \ Generate\ convex\ hull\ of\ a\ polyline\ using\ Melkman's\ algorithm}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \textcolor{keywordtype}{void}\ Convex::ConvexPoly(std::vector<Vector2D>\&\ Points,\ std::vector<Vector2D>\&\ CH)}
+\DoxyCodeLine{00100\ \ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{int}\ n\ =\ Points.size();}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (n\ ==\ 0)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ std::vector<Vector2D>\ Dqueue;}
+\DoxyCodeLine{00105\ \ \ \ \ Dqueue.reserve(2*n+1);}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{//\ initialize\ Dqueue\ from\ bottom\ to\ top\ so\ that\ the}}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{comment}{//\ 1st\ three\ vertices\ of\ Pointd[]\ are\ a\ ccw\ triangle}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{int}\ bot\ =\ n-\/2,\ top\ =\ bot+3;\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ initial\ bottom\ and\ top\ deque\ indices}}
+\DoxyCodeLine{00111\ \ \ \ \ Dqueue[bot]\ =\ Dqueue[top]\ =\ Points[2];\ \ \textcolor{comment}{//\ 3rd\ vertex\ is\ at\ both\ bot\ and\ top}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{if}\ (ccw(Points[0],\ Points[1],\ Points[2]))\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ Dqueue[bot+1]\ =\ Points[0];}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ Dqueue[bot+2]\ =\ Points[1];\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ccw\ vertices\ are:\ 2,0,1,2}}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ Dqueue[bot+1]\ =\ Points[1];}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ Dqueue[bot+2]\ =\ Points[0];\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ccw\ vertices\ are:\ 2,1,0,2}}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//\ compute\ the\ hull\ on\ the\ deque\ Dqueue}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=3;\ i\ <\ n;\ i++)\ \{\ \ \ \textcolor{comment}{//\ process\ the\ rest\ of\ vertices}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ test\ if\ next\ vertex\ is\ inside\ the\ deque\ hull}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((ccw(Dqueue[bot],\ Dqueue[bot+1],\ Points[i]))\ \&\&}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ (ccw(Dqueue[top-\/1],\ Dqueue[top],\ Points[i]))\ )}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ an\ interior\ vertex}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ incrementally\ add\ an\ exterior\ vertex\ to\ the\ deque\ hull}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ get\ the\ rightmost\ tangent\ at\ the\ deque\ bot}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!ccw(Dqueue[bot],\ Dqueue[bot+1],\ Points[i]))\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ ++bot;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ remove\ bot\ of\ deque}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ Dqueue[-\/-\/bot]\ =\ Points[i];\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ insert\ P[i]\ at\ bot\ of\ deque}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ get\ the\ leftmost\ tangent\ at\ the\ deque\ top}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!ccw(Dqueue[top-\/1],\ Dqueue[top],\ Points[i]))}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/top;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ pop\ top\ of\ deque}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ Dqueue[++top]\ =\ Points[i];\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ push\ P[i]\ onto\ top\ of\ deque}}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{comment}{//\ transcribe\ deque\ Dqueue\ to\ the\ output\ hull\ CH}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ h=0;\ h\ <=\ (top-\/bot);\ h++)}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ CH.push\_back(Dqueue[bot\ +\ h]);}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \ \ Dqueue.clear();}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \}}
+\DoxyCodeLine{00154\ \}\ \textcolor{comment}{//end\ namespace\ correa}}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ }
+
+\end{DoxyCode}
