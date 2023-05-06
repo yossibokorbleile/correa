@@ -1,0 +1,26 @@
+\hypertarget{_x22-_benchmarks_in_cumulative_reporter_8cpp}{}\doxysection{X22-\/\+Benchmarks\+In\+Cumulative\+Reporter.cpp File Reference}
+\label{_x22-_benchmarks_in_cumulative_reporter_8cpp}\index{X22-\/BenchmarksInCumulativeReporter.cpp@{X22-\/BenchmarksInCumulativeReporter.cpp}}
+{\ttfamily \#include $<$catch2/catch\+\_\+test\+\_\+macros.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/benchmark/catch\+\_\+benchmark.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+cumulative\+\_\+base.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+registrars.\+hpp$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_cumulative_benchmark_reporter}{Cumulative\+Benchmark\+Reporter}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_x22-_benchmarks_in_cumulative_reporter_8cpp_a9e6eb9b2a51145de07a405539be0a178}\label{_x22-_benchmarks_in_cumulative_reporter_8cpp_a9e6eb9b2a51145de07a405539be0a178} 
+{\bfseries TEST\+\_\+\+CASE} (\char`\"{}Some assertions and benchmarks\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_test}{Test} that the cumulative reporter base stores both assertions and benchmarks, and stores them in the right order.
+
+This is done through a custom reporter that writes out the assertions and benchmarks and checking that the output is in right order. 

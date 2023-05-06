@@ -1,0 +1,514 @@
+\label{index_top}%
+\Hypertarget{index_top}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md54}{}\doxysection{Command line}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md54}
+{\bfseries{Contents}}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_specifying-which-tests-to-run}{Specifying which tests to run}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_choosing-a-reporter-to-use}{Choosing a reporter to use}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_breaking-into-the-debugger}{Breaking into the debugger}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_showing-results-for-successful-tests}{Showing results for successful tests}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_aborting-after-a-certain-number-of-failures}{Aborting after a certain number of failures}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_listing-available-tests-tags-or-reporters}{Listing available tests, tags or reporters}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_sending-output-to-a-file}{Sending output to a file}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_naming-a-test-run}{Naming a test run}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_eliding-assertions-expected-to-throw}{Eliding assertions expected to throw}~\newline
+ Make whitespace visible~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_warnings}{Warnings}~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_reporting-timings}{Reporting timings}~\newline
+ Load test names to run from a file~\newline
+ Specify the order test cases are run~\newline
+ Specify a seed for the Random Number Generator~\newline
+ Identify framework and version according to the lib\+Identify standard~\newline
+ Wait for key before continuing~\newline
+ Specify the number of benchmark samples to collect~\newline
+ Specify the number of resamples for bootstrapping~\newline
+ Specify the confidence-\/interval for bootstrapping~\newline
+ Disable statistical analysis of collected benchmark samples~\newline
+ Specify the amount of time in milliseconds spent on warming up each test~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_usage}{Usage}~\newline
+ Specify the section to run~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_filenames-as-tags}{Filenames as tags}~\newline
+ Override output colouring~\newline
+ \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_test-sharding}{Test Sharding}~\newline
+ Allow running the binary without tests~\newline
+ Output verbosity~\newline
+
+
+Catch works quite nicely without any command line options at all -\/ but for those times when you want greater control the following options are available. Click one of the following links to take you straight to that option -\/ or scroll on to browse the available options.
+
+\href{\#specifying-which-tests-to-run}{\texttt{ {\ttfamily \texorpdfstring{$<$}{<}test-\/spec\texorpdfstring{$>$}{>} ...}}}~\newline
+ \href{\#usage}{\texttt{ {\ttfamily -\/h, -\/?, -\/-\/help}}}~\newline
+ \href{\#showing-results-for-successful-tests}{\texttt{ {\ttfamily -\/s, -\/-\/success}}}~\newline
+ \href{\#breaking-into-the-debugger}{\texttt{ {\ttfamily -\/b, -\/-\/break}}}~\newline
+ \href{\#eliding-assertions-expected-to-throw}{\texttt{ {\ttfamily -\/e, -\/-\/nothrow}}}~\newline
+ \href{\#invisibles}{\texttt{ {\ttfamily -\/i, -\/-\/invisibles}}}~\newline
+ \href{\#sending-output-to-a-file}{\texttt{ {\ttfamily -\/o, -\/-\/out}}}~\newline
+ \href{\#choosing-a-reporter-to-use}{\texttt{ {\ttfamily -\/r, -\/-\/reporter}}}~\newline
+ \href{\#naming-a-test-run}{\texttt{ {\ttfamily -\/n, -\/-\/name}}}~\newline
+ \href{\#aborting-after-a-certain-number-of-failures}{\texttt{ {\ttfamily -\/a, -\/-\/abort}}}~\newline
+ \href{\#aborting-after-a-certain-number-of-failures}{\texttt{ {\ttfamily -\/x, -\/-\/abortx}}}~\newline
+ \href{\#warnings}{\texttt{ {\ttfamily -\/w, -\/-\/warn}}}~\newline
+ \href{\#reporting-timings}{\texttt{ {\ttfamily -\/d, -\/-\/durations}}}~\newline
+ \href{\#input-file}{\texttt{ {\ttfamily -\/f, -\/-\/input-\/file}}}~\newline
+ \href{\#run-section}{\texttt{ {\ttfamily -\/c, -\/-\/section}}}~\newline
+ \href{\#filenames-as-tags}{\texttt{ {\ttfamily -\/\#, -\/-\/filenames-\/as-\/tags}}}~\newline
+
+
+\href{\#listing-available-tests-tags-or-reporters}{\texttt{ {\ttfamily -\/-\/list-\/tests}}}~\newline
+ \href{\#listing-available-tests-tags-or-reporters}{\texttt{ {\ttfamily -\/-\/list-\/tags}}}~\newline
+ \href{\#listing-available-tests-tags-or-reporters}{\texttt{ {\ttfamily -\/-\/list-\/reporters}}}~\newline
+ \href{\#order}{\texttt{ {\ttfamily -\/-\/order}}}~\newline
+ \href{\#rng-seed}{\texttt{ {\ttfamily -\/-\/rng-\/seed}}}~\newline
+ \href{\#libidentify}{\texttt{ {\ttfamily -\/-\/libidentify}}}~\newline
+ \href{\#wait-for-keypress}{\texttt{ {\ttfamily -\/-\/wait-\/for-\/keypress}}}~\newline
+ \href{\#benchmark-samples}{\texttt{ {\ttfamily -\/-\/benchmark-\/samples}}}~\newline
+ \href{\#benchmark-resamples}{\texttt{ {\ttfamily -\/-\/benchmark-\/resamples}}}~\newline
+ \href{\#benchmark-confidence-interval}{\texttt{ {\ttfamily -\/-\/benchmark-\/confidence-\/interval}}}~\newline
+ \href{\#benchmark-no-analysis}{\texttt{ {\ttfamily -\/-\/benchmark-\/no-\/analysis}}}~\newline
+ \href{\#benchmark-warmup-time}{\texttt{ {\ttfamily -\/-\/benchmark-\/warmup-\/time}}}~\newline
+ \href{\#use-colour}{\texttt{ {\ttfamily -\/-\/use-\/colour}}}~\newline
+ \href{\#test-sharding}{\texttt{ {\ttfamily -\/-\/shard-\/count}}}~\newline
+ \href{\#test-sharding}{\texttt{ {\ttfamily -\/-\/shard-\/index}}}~\newline
+ \href{\#no-tests-override}{\texttt{ {\ttfamily -\/-\/allow-\/running-\/no-\/tests}}}~\newline
+ \href{\#output-verbosity}{\texttt{ {\ttfamily -\/-\/verbosity}}}~\newline
+
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_specifying-which-tests-to-run}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_specifying-which-tests-to-run}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md55}{}\doxysubsection{Specifying which tests to run}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md55}
+
+\begin{DoxyPre}<test-\/spec> ...\end{DoxyPre}
+
+
+\doxylink{class_test}{Test} cases, wildcarded test cases, tags and tag expressions are all passed directly as arguments. Tags are distinguished by being enclosed in square brackets.
+
+If no test specs are supplied then all test cases, except \char`\"{}hidden\char`\"{} tests, are run. \doxylink{struct_a}{A} test is hidden by giving it any tag starting with (or just) a period ({\ttfamily .}) -\/ or, in the deprecated case, tagged {\ttfamily \mbox{[}hide\mbox{]}} or given name starting with `'./\textquotesingle{}{\ttfamily . To specify hidden tests from the command line}{\ttfamily \mbox{[}.\mbox{]}}{\ttfamily or}{\ttfamily \mbox{[}hide\mbox{]}}\`{} can be used {\itshape regardless of how they were declared}.
+
+Specs must be enclosed in quotes if they contain spaces. If they do not contain spaces the quotes are optional.
+
+Wildcards consist of the {\ttfamily $\ast$} character at the beginning and/or end of test case names and can substitute for any number of any characters (including none).
+
+\doxylink{class_test}{Test} specs are case insensitive.
+
+If a spec is prefixed with {\ttfamily exclude\+:} or the {\ttfamily $\sim$} character then the pattern matches an exclusion. This means that tests matching the pattern are excluded from the set -\/ even if a prior inclusion spec included them. Subsequent inclusion specs will take precedence, however. Inclusions and exclusions are evaluated in left-\/to-\/right order.
+
+\doxylink{class_test}{Test} case examples\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{thisTestOnly\ \ \ \ \ \ \ \ \ \ \ \ Matches\ the\ test\ case\ called,\ 'thisTestOnly'}
+\DoxyCodeLine{"{}this\ test\ only"{}\ \ \ \ \ \ \ \ Matches\ the\ test\ case\ called,\ 'this\ test\ only'}
+\DoxyCodeLine{these*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Matches\ all\ cases\ starting\ with\ 'these'}
+\DoxyCodeLine{exclude:notThis\ \ \ \ \ \ \ \ \ Matches\ all\ tests\ except,\ 'notThis'}
+\DoxyCodeLine{\string~notThis\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Matches\ all\ tests\ except,\ 'notThis'}
+\DoxyCodeLine{\string~*private*\ \ \ \ \ \ \ \ \ \ \ \ \ \ Matches\ all\ tests\ except\ those\ that\ contain\ 'private'}
+\DoxyCodeLine{a*\ \string~ab*\ abc\ \ \ \ \ \ \ \ \ \ \ \ \ Matches\ all\ tests\ that\ start\ with\ 'a',\ except\ those\ that}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ start\ with\ 'ab',\ except\ 'abc',\ which\ is\ included}
+\DoxyCodeLine{\string~[tag1]\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Matches\ all\ tests\ except\ those\ tagged\ with\ '[tag1]'}
+\DoxyCodeLine{-\/\#\ [\#somefile]\ \ \ \ \ \ \ \ \ \ Matches\ all\ tests\ from\ the\ file\ 'somefile.cpp'}
+
+\end{DoxyCode}
+
+
+Names within square brackets are interpreted as tags. \doxylink{struct_a}{A} series of tags form an AND expression whereas a comma-\/separated sequence forms an OR expression. e.\+g.\+:
+
+
+\begin{DoxyPre}[one][two],[three]\end{DoxyPre}
+ This matches all tests tagged {\ttfamily \mbox{[}one\mbox{]}} and {\ttfamily \mbox{[}two\mbox{]}}, as well as all tests tagged {\ttfamily \mbox{[}three\mbox{]}}
+
+\doxylink{class_test}{Test} names containing special characters, such as {\ttfamily ,} or {\ttfamily \mbox{[}} can specify them on the command line using {\ttfamily \textbackslash{}}. {\ttfamily \textbackslash{}} also escapes itself.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_choosing-a-reporter-to-use}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_choosing-a-reporter-to-use}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md56}{}\doxysubsection{Choosing a reporter to use}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md56}
+
+\begin{DoxyPre}-\/r, -\/-\/reporter <reporter[::output-\/file]>\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} Support for providing output-\/file through the {\ttfamily -\/r}, {\ttfamily -\/-\/reporter} flag was \href{https://github.com/catchorg/Catch2/pull/2183}{\texttt{ introduced}} in Catch2 X.\+Y.\+Z
+
+Reporters are how the output from Catch2 (results of assertions, tests, benchmarks and so on) is formatted and written out. The default reporter is called the \char`\"{}\+Console\char`\"{} reporter and is intended to provide relatively verbose and human-\/friendly output.
+
+There are multiple built-\/in reporters, you can see what they do by using the \href{command-line.md\#listing-available-tests-tags-or-reporters}{\texttt{ {\ttfamily -\/-\/list-\/reporter}}} flag. If you need a reporter providing custom format outside of the already provided ones, look at the \href{reporters.md\#writing-your-own-reporter}{\texttt{ "{}write your own reporter"{} part of the reporter documentation}}.
+
+This option may be passed multiple times to use multiple (different) reporters at the same time. See the \href{reporters.md\#multiple-reporters}{\texttt{ reporter documentation}} for details on what the resulting behaviour is. Also note that at most one reporter can be provided without the output-\/file part of reporter spec. This reporter will use the \char`\"{}default\char`\"{} output destination, based on the \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_sending-output-to-a-file}{\`{}-\/o\`{}, \`{}-\/-\/out\`{}} option.
+
+\begin{quote}
+Support for using multiple different reporters at the same time was \href{https://github.com/catchorg/Catch2/pull/2183}{\texttt{ introduced}} in Catch2 X.\+Y.\+Z \end{quote}
+As with the {\ttfamily -\/-\/out} option, using {\ttfamily -\/} for the output file name sends the output to stdout.
+
+{\itshape Note\+: There is currently no way to escape {\ttfamily \+::} in the reporter spec, and thus reporter/file names with {\ttfamily \+::} in them will not work properly. As {\ttfamily \+::} in paths is relatively obscure (unlike {\ttfamily \+:}), we do not consider this an issue.}
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_breaking-into-the-debugger}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_breaking-into-the-debugger}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md57}{}\doxysubsection{Breaking into the debugger}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md57}
+
+\begin{DoxyPre}-\/b, -\/-\/break\end{DoxyPre}
+
+
+Under most debuggers Catch2 is capable of automatically breaking on a test failure. This allows the user to see the current state of the test during failure.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_showing-results-for-successful-tests}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_showing-results-for-successful-tests}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md58}{}\doxysubsection{Showing results for successful tests}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md58}
+
+\begin{DoxyPre}-\/s, -\/-\/success\end{DoxyPre}
+
+
+Usually you only want to see reporting for failed tests. Sometimes it\textquotesingle{}s useful to see {\itshape all} the output (especially when you don\textquotesingle{}t trust that that test you just added worked first time!). To see successful, as well as failing, test results just pass this option. Note that each reporter may treat this option differently. The Junit reporter, for example, logs all results regardless.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_aborting-after-a-certain-number-of-failures}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_aborting-after-a-certain-number-of-failures}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md59}{}\doxysubsection{Aborting after a certain number of failures}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md59}
+
+\begin{DoxyPre}-\/a, -\/-\/abort
+-\/x, -\/-\/abortx [<failure threshold>]
+\end{DoxyPre}
+
+
+If a {\ttfamily REQUIRE} assertion fails the test case aborts, but subsequent test cases are still run. If a {\ttfamily CHECK} assertion fails even the current test case is not aborted.
+
+Sometimes this results in a flood of failure messages and you\textquotesingle{}d rather just see the first few. Specifying {\ttfamily -\/a} or {\ttfamily -\/-\/abort} on its own will abort the whole test run on the first failed assertion of any kind. Use {\ttfamily -\/x} or {\ttfamily -\/-\/abortx} followed by a number to abort after that number of assertion failures.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_listing-available-tests-tags-or-reporters}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_listing-available-tests-tags-or-reporters}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md60}{}\doxysubsection{Listing available tests, tags or reporters}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md60}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/list-\/tests}
+\DoxyCodeLine{-\/-\/list-\/tags}
+\DoxyCodeLine{-\/-\/list-\/reporters}
+
+\end{DoxyCode}
+
+
+\begin{quote}
+The {\ttfamily -\/-\/list$\ast$} options became customizable through reporters in Catch2 X.\+Y.\+Z \end{quote}
+{\ttfamily -\/-\/list-\/tests} lists all registered tests matching specified test spec. Usually this listing also includes tags, and potentially also other information, like source location, based on verbosity and reporter\textquotesingle{}s design.
+
+{\ttfamily -\/-\/list-\/tags} lists all tags from registered tests matching specified test spec. Usually this also includes number of tests cases they match and similar information.
+
+{\ttfamily -\/-\/list-\/reporters} lists all available reporters and their descriptions.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_sending-output-to-a-file}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_sending-output-to-a-file}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md61}{}\doxysubsection{Sending output to a file}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md61}
+
+\begin{DoxyPre}-\/o, -\/-\/out <filename>
+\end{DoxyPre}
+
+
+Use this option to send all output to a file. By default output is sent to stdout (note that uses of stdout and stderr {\itshape from within test cases} are redirected and included in the report -\/ so even stderr will effectively end up on stdout).
+
+Using {\ttfamily -\/} as the filename sends the output to stdout.
+
+\begin{quote}
+Support for {\ttfamily -\/} as the filename was introduced in Catch2 X.\+Y.\+Z \end{quote}
+
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_naming-a-test-run}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_naming-a-test-run}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md62}{}\doxysubsection{Naming a test run}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md62}
+
+\begin{DoxyPre}-\/n, -\/-\/name <name for test run>\end{DoxyPre}
+
+
+If a name is supplied it will be used by the reporter to provide an overall name for the test run. This can be useful if you are sending to a file, for example, and need to distinguish different test runs -\/ either from different Catch executables or runs of the same executable with different options. If not supplied the name is defaulted to the name of the executable.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_eliding-assertions-expected-to-throw}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_eliding-assertions-expected-to-throw}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md63}{}\doxysubsection{Eliding assertions expected to throw}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md63}
+
+\begin{DoxyPre}-\/e, -\/-\/nothrow\end{DoxyPre}
+
+
+Skips all assertions that test that an exception is thrown, e.\+g. {\ttfamily REQUIRE\+\_\+\+THROWS}.
+
+These can be a nuisance in certain debugging environments that may break when exceptions are thrown (while this is usually optional for handled exceptions, it can be useful to have enabled if you are trying to track down something unexpected).
+
+Sometimes exceptions are expected outside of one of the assertions that tests for them (perhaps thrown and caught within the code-\/under-\/test). The whole test case can be skipped when using {\ttfamily -\/e} by marking it with the {\ttfamily \mbox{[}!throws\mbox{]}} tag.
+
+When running with this option any throw checking assertions are skipped so as not to contribute additional noise. Be careful if this affects the behaviour of subsequent tests.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_invisibles}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_invisibles}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md64}{}\doxysubsection{Make whitespace visible}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md64}
+
+\begin{DoxyPre}-\/i, -\/-\/invisibles\end{DoxyPre}
+
+
+If a string comparison fails due to differences in whitespace -\/ especially leading or trailing whitespace -\/ it can be hard to see what\textquotesingle{}s going on. This option transforms tabs and newline characters into {\ttfamily \textbackslash{}t} and {\ttfamily \textbackslash{}n} respectively when printing.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_warnings}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_warnings}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md65}{}\doxysubsection{Warnings}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md65}
+
+\begin{DoxyPre}-\/w, -\/-\/warn <warning name>\end{DoxyPre}
+
+
+You can think of Catch2\textquotesingle{}s warnings as the equivalent of {\ttfamily -\/Werror} ({\ttfamily /\+WX}) flag for C++ compilers. It turns some suspicious occurences, like a section without assertions, into errors. Because these might be intended, warnings are not enabled by default, but user can opt in.
+
+You can enable multiple warnings at the same time.
+
+There are currently two warnings implemented\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{NoAssertions\ \ \ \ \ \ \ \ //\ Fail\ test\ case\ /\ leaf\ section\ if\ no\ assertions}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ (e.g.\ \`{}REQUIRE`)\ is\ encountered.}
+\DoxyCodeLine{UnmatchedTestSpec\ \ \ //\ Fail\ test\ run\ if\ any\ of\ the\ CLI\ test\ specs\ did}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ not\ match\ any\ tests.}
+
+\end{DoxyCode}
+
+
+\begin{quote}
+{\ttfamily Unmatched\+Test\+Spec} was introduced in Catch2 X.\+Y.\+Z. \end{quote}
+
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_reporting-timings}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_reporting-timings}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md66}{}\doxysubsection{Reporting timings}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md66}
+
+\begin{DoxyPre}-\/d, -\/-\/durations <yes/no>\end{DoxyPre}
+
+
+When set to {\ttfamily yes} Catch will report the duration of each test case, in milliseconds. Note that it does this regardless of whether a test case passes or fails. Note, also, the certain reporters (e.\+g. Junit) always report test case durations regardless of this option being set or not.
+
+
+\begin{DoxyPre}-\/D, -\/-\/min-\/duration <value>\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} {\ttfamily -\/-\/min-\/duration} was \href{https://github.com/catchorg/Catch2/pull/1910}{\texttt{ introduced}} in Catch2 2.\+13.\+0
+
+When set, Catch will report the duration of each test case that took more than \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} seconds, in milliseconds. This option is overriden by both {\ttfamily -\/d yes} and {\ttfamily -\/d no}, so that either all durations are reported, or none are.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_input-file}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_input-file}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md67}{}\doxysubsection{Load test names to run from a file}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md67}
+
+\begin{DoxyPre}-\/f, -\/-\/input-\/file <filename>\end{DoxyPre}
+
+
+Provide the name of a file that contains a list of test case names, one per line. Blank lines are skipped.
+
+\doxylink{struct_a}{A} useful way to generate an initial instance of this file is to combine the \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_listing-available-tests-tags-or-reporters}{\`{}-\/-\/list-\/tests\`{}} flag with the \`{}-\/-\/verbosity quiet\`{} option. You can also use test specs to filter this list down to what you want first.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_order}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_order}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md68}{}\doxysubsection{Specify the order test cases are run}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md68}
+
+\begin{DoxyPre}-\/-\/order <decl|lex|rand>\end{DoxyPre}
+
+
+\doxylink{class_test}{Test} cases are ordered one of three ways\+:\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md69}{}\doxysubsubsection{decl}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md69}
+Declaration order (this is the default order if no --order argument is provided). Tests in the same TU are sorted using their declaration orders, different TUs are in an implementation (linking) dependent order.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md70}{}\doxysubsubsection{lex}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md70}
+Lexicographic order. Tests are sorted by their name, their tags are ignored.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md71}{}\doxysubsubsection{rand}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md71}
+Randomly sorted. The order is dependent on Catch2\textquotesingle{}s random seed (see \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2command-line_rng-seed}{\`{}-\/-\/rng-\/seed\`{}}), and is subset invariant. What this means is that as long as the random seed is fixed, running only some tests (e.\+g. via tag) does not change their relative order.
+
+\begin{quote}
+The subset stability was introduced in Catch2 v2.\+12.\+0 \end{quote}
+
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_rng-seed}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_rng-seed}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md72}{}\doxysubsection{Specify a seed for the Random Number Generator}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md72}
+
+\begin{DoxyPre}-\/-\/rng-\/seed <'time'|'random-\/device'|number>\end{DoxyPre}
+
+
+Sets the seed for random number generators used by Catch2. These are used e.\+g. to shuffle tests when user asks for tests to be in random order.
+
+Using {\ttfamily time} as the argument asks Catch2 generate the seed through call to {\ttfamily std\+::time(nullptr)}. This provides very weak randomness and multiple runs of the binary can generate the same seed if they are started close to each other.
+
+Using {\ttfamily random-\/device} asks for {\ttfamily std\+::random\+\_\+device} to be used instead. If your implementation provides working {\ttfamily std\+::random\+\_\+device}, it should be preferred to using {\ttfamily time}. Catch2 uses {\ttfamily std\+::random\+\_\+device} by default.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_libidentify}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_libidentify}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md73}{}\doxysubsection{Identify framework and version according to the lib\+Identify standard}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md73}
+
+\begin{DoxyPre}-\/-\/libidentify\end{DoxyPre}
+
+
+See \href{https://github.com/janwilmans/LibIdentify}{\texttt{ The Lib\+Identify repo for more information and examples}}.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_wait-for-keypress}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_wait-for-keypress}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md74}{}\doxysubsection{Wait for key before continuing}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md74}
+
+\begin{DoxyPre}-\/-\/wait-\/for-\/keypress <never|start|exit|both>\end{DoxyPre}
+
+
+Will cause the executable to print a message and wait until the return/ enter key is pressed before continuing -\/ either before running any tests, after running all tests -\/ or both, depending on the argument.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-samples}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-samples}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md75}{}\doxysubsection{Specify the number of benchmark samples to collect}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md75}
+
+\begin{DoxyPre}-\/-\/benchmark-\/samples <\# of samples>\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} \href{https://github.com/catchorg/Catch2/issues/1616}{\texttt{ Introduced}} in Catch2 2.\+9.\+0.
+
+When running benchmarks a number of \char`\"{}samples\char`\"{} is collected. This is the base data for later statistical analysis. Per sample a clock resolution dependent number of iterations of the user code is run, which is independent of the number of samples. Defaults to 100.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-resamples}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-resamples}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md76}{}\doxysubsection{Specify the number of resamples for bootstrapping}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md76}
+
+\begin{DoxyPre}-\/-\/benchmark-\/resamples <\# of resamples>\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} \href{https://github.com/catchorg/Catch2/issues/1616}{\texttt{ Introduced}} in Catch2 2.\+9.\+0.
+
+After the measurements are performed, statistical \href{http://en.wikipedia.org/wiki/Bootstrapping_\%28statistics\%29}{\texttt{ bootstrapping}} is performed on the samples. The number of resamples for that bootstrapping is configurable but defaults to 100000. Due to the bootstrapping it is possible to give estimates for the mean and standard deviation. The estimates come with a lower bound and an upper bound, and the confidence interval (which is configurable but defaults to 95\%).
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-confidence-interval}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-confidence-interval}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md77}{}\doxysubsection{Specify the confidence-\/interval for bootstrapping}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md77}
+
+\begin{DoxyPre}-\/-\/benchmark-\/confidence-\/interval <confidence-\/interval>\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} \href{https://github.com/catchorg/Catch2/issues/1616}{\texttt{ Introduced}} in Catch2 2.\+9.\+0.
+
+The confidence-\/interval is used for statistical bootstrapping on the samples to calculate the upper and lower bounds of mean and standard deviation. Must be between 0 and 1 and defaults to 0.\+95.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-no-analysis}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-no-analysis}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md78}{}\doxysubsection{Disable statistical analysis of collected benchmark samples}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md78}
+
+\begin{DoxyPre}-\/-\/benchmark-\/no-\/analysis\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} \href{https://github.com/catchorg/Catch2/issues/1616}{\texttt{ Introduced}} in Catch2 2.\+9.\+0.
+
+When this flag is specified no bootstrapping or any other statistical analysis is performed. Instead the user code is only measured and the plain mean from the samples is reported.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-warmup-time}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_benchmark-warmup-time}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md79}{}\doxysubsection{Specify the amount of time in milliseconds spent on warming up each test}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md79}
+
+\begin{DoxyPre}-\/-\/benchmark-\/warmup-\/time\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} \href{https://github.com/catchorg/Catch2/pull/1844}{\texttt{ Introduced}} in Catch2 2.\+11.\+2.
+
+Configure the amount of time spent warming up each test.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_usage}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_usage}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md80}{}\doxysubsection{Usage}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md80}
+
+\begin{DoxyPre}-\/h, -\/?, -\/-\/help\end{DoxyPre}
+
+
+Prints the command line arguments to stdout
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_run-section}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_run-section}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md81}{}\doxysubsection{Specify the section to run}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md81}
+
+\begin{DoxyPre}-\/c, -\/-\/section <section name>\end{DoxyPre}
+
+
+To limit execution to a specific section within a test case, use this option one or more times. To narrow to sub-\/sections use multiple instances, where each subsequent instance specifies a deeper nesting level.
+
+E.\+g. if you have\+:
+
+
+\begin{DoxyPre}
+TEST\_CASE( "{}Test"{} ) \{
+  SECTION( "{}sa"{} ) \{
+    SECTION( "{}sb"{} ) \{
+      /*...*/
+    \}
+    SECTION( "{}sc"{} ) \{
+      /*...*/
+    \}
+  \}
+  SECTION( "{}sd"{} ) \{
+    /*...*/
+  \}
+\}
+\end{DoxyPre}
+
+
+Then you can run {\ttfamily sb} with\+: 
+\begin{DoxyPre}./MyExe \doxylink{class_test}{Test} -\/c sa -\/c sb\end{DoxyPre}
+
+
+Or run just {\ttfamily sd} with\+: 
+\begin{DoxyPre}./MyExe \doxylink{class_test}{Test} -\/c sd\end{DoxyPre}
+
+
+To run all of {\ttfamily sa}, including {\ttfamily sb} and {\ttfamily sc} use\+: 
+\begin{DoxyPre}./MyExe \doxylink{class_test}{Test} -\/c sa\end{DoxyPre}
+
+
+There are some limitations of this feature to be aware of\+:
+\begin{DoxyItemize}
+\item Code outside of sections being skipped will still be executed -\/ e.\+g. any set-\/up code in the TEST\+\_\+\+CASE before the start of the first section.
+\item At time of writing, wildcards are not supported in section names.
+\item If you specify a section without narrowing to a test case first then all test cases will be executed (but only matching sections within them).
+\end{DoxyItemize}
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_filenames-as-tags}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_filenames-as-tags}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md82}{}\doxysubsection{Filenames as tags}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md82}
+
+\begin{DoxyPre}-\/\#, -\/-\/filenames-\/as-\/tags\end{DoxyPre}
+
+
+When this option is used then every test is given an additional tag which is formed of the unqualified filename it is found in, with any extension stripped, prefixed with the {\ttfamily \#} character.
+
+So, for example, tests within the file {\ttfamily $\sim$\textbackslash{}Dev\textbackslash{}My\+Project\textbackslash{}Ferrets.\+cpp} would be tagged {\ttfamily \mbox{[}\#Ferrets\mbox{]}}.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_use-colour}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_use-colour}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md83}{}\doxysubsection{Override output colouring}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md83}
+
+\begin{DoxyPre}-\/-\/use-\/colour <yes|no|auto>\end{DoxyPre}
+
+
+Catch colours output for terminals, but omits colouring when it detects that output is being sent to a pipe. This is done to avoid interfering with automated processing of output.
+
+{\ttfamily -\/-\/use-\/colour yes} forces coloured output, {\ttfamily -\/-\/use-\/colour no} disables coloured output. The default behaviour is {\ttfamily -\/-\/use-\/colour auto}.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_test-sharding}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_test-sharding}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md84}{}\doxysubsection{Test Sharding}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md84}
+
+\begin{DoxyPre}-\/-\/shard-\/count <\#number of shards>, -\/-\/shard-\/index <\#shard index to run>\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} \href{https://github.com/catchorg/Catch2/pull/2257}{\texttt{ Introduced}} in Catch2 X.\+Y.\+Z.
+
+When {\ttfamily -\/-\/shard-\/count \texorpdfstring{$<$}{<}\#number of shards\texorpdfstring{$>$}{>}} is used, the tests to execute will be split evenly in to the given number of sets, identified by indicies starting at 0. The tests in the set given by {\ttfamily -\/-\/shard-\/index \texorpdfstring{$<$}{<}\#shard index to run\texorpdfstring{$>$}{>}} will be executed. The default shard count is {\ttfamily 1}, and the default index to run is {\ttfamily 0}. It is an error to specify a shard index greater than the number of shards.
+
+This is useful when you want to split test execution across multiple processes, as is done with \href{https://docs.bazel.build/versions/main/test-encyclopedia.html\#test-sharding}{\texttt{ Bazel test sharding}}.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_no-tests-override}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_no-tests-override}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md85}{}\doxysubsection{Allow running the binary without tests}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md85}
+
+\begin{DoxyPre}-\/-\/allow-\/running-\/no-\/tests\end{DoxyPre}
+
+
+\texorpdfstring{$>$}{>} Introduced in Catch2 X.\+Y.\+Z.
+
+By default, Catch2 test binaries return non-\/0 exit code if no tests were run, e.\+g. if the binary was compiled with no tests, or the provided test spec matched no tests. This flag overrides that, so a test run with no tests still returns 0.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md86}{}\doxysubsection{Output verbosity}\label{md_ext_2hera_2extern_2_catch2_2docs_2command-line_autotoc_md86}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/v,\ -\/-\/verbosity\ <quiet|normal|high>}
+
+\end{DoxyCode}
+
+
+Changing verbosity might change how much details Catch2\textquotesingle{}s reporters output. However, you should consider changing the verbosity level as a {\itshape suggestion}. Not all reporters support all verbosity levels, e.\+g. because the reporter\textquotesingle{}s format cannot meaningfully change. In that case, the verbosity level is ignored.
+
+Verbosity defaults to {\itshape normal}.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

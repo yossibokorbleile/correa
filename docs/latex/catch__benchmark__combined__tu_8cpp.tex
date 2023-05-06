@@ -1,0 +1,26 @@
+\hypertarget{catch__benchmark__combined__tu_8cpp}{}\doxysection{catch\+\_\+benchmark\+\_\+combined\+\_\+tu.\+cpp File Reference}
+\label{catch__benchmark__combined__tu_8cpp}\index{catch\_benchmark\_combined\_tu.cpp@{catch\_benchmark\_combined\_tu.cpp}}
+{\ttfamily \#include $<$catch2/benchmark/catch\+\_\+chronometer.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/benchmark/detail/catch\+\_\+benchmark\+\_\+function.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/benchmark/detail/catch\+\_\+run\+\_\+for\+\_\+at\+\_\+least.\+hpp$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+{\ttfamily \#include $<$catch2/internal/catch\+\_\+enforce.\+hpp$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_catch_1_1_benchmark_1_1_detail_1_1optimized__away__error}{Catch\+::\+Benchmark\+::\+Detail\+::optimized\+\_\+away\+\_\+error}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{catch__amalgamated_8cpp_accb97601fac7308aa9c11dcdb439ddb8}\label{catch__amalgamated_8cpp_accb97601fac7308aa9c11dcdb439ddb8} 
+void {\bfseries Catch\+::\+Benchmark\+::\+Detail\+::throw\+\_\+optimized\+\_\+away\+\_\+error} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is a special TU that combines what would otherwise be a very small benchmarking-\/related TUs into one bigger TU.
+
+The reason for this is compilation performance improvements by avoiding reparsing headers for many small TUs, instead having this one TU include bit more, but having it all parsed only once.
+
+To avoid heavy-\/tail problem with compilation times, each \char`\"{}subpart\char`\"{} of Catch2 has its own combined TU like this. 

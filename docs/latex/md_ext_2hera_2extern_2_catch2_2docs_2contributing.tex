@@ -1,0 +1,162 @@
+\label{index_top}%
+\Hypertarget{index_top}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md107}{}\doxysection{Contributing to Catch2}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md107}
+{\bfseries{Contents}}~\newline
+ Using Git(Hub)~\newline
+ Testing your changes~\newline
+ Writing documentation~\newline
+ Writing code~\newline
+ CoC~\newline
+
+
+So you want to contribute something to Catch2? That\textquotesingle{}s great! Whether it\textquotesingle{}s a bug fix, a new feature, support for additional compilers -\/ or just a fix to the documentation -\/ all contributions are very welcome and very much appreciated. Of course so are bug reports, other comments, and questions, but generally it is a better idea to ask questions in our \href{https://discord.gg/4CWS9zD}{\texttt{ Discord}}, than in the issue tracker.
+
+This page covers some guidelines and helpful tips for contributing to the codebase itself.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md108}{}\doxysubsection{Using Git(\+Hub)}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md108}
+Ongoing development happens in the {\ttfamily devel} branch for Catch2 v3, and in {\ttfamily v2.\+x} for maintenance updates to the v2 versions.
+
+Commits should be small and atomic. \doxylink{struct_a}{A} commit is atomic when, after it is applied, the codebase, tests and all, still works as expected. Small commits are also preferred, as they make later operations with git history, whether it is bisecting, reverting, or something else, easier.
+
+{\itshape When submitting a pull request please do not include changes to the amalgamated distribution files. This means do not include them in your git commits!}
+
+When addressing review comments in a MR, please do not rebase/squash the commits immediately. Doing so makes it harder to review the new changes, slowing down the process of merging a MR. Instead, when addressing review comments, you should append new commits to the branch and only squash them into other commits when the MR is ready to be merged. We recommend creating new commits with {\ttfamily git commit -\/-\/fixup} (or {\ttfamily -\/-\/squash}) and then later squashing them with {\ttfamily git rebase -\/-\/autosquash} to make things easier.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md109}{}\doxysubsection{Testing your changes}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md109}
+{\itshape Note\+: Running Catch2\textquotesingle{}s tests requires Python3}
+
+Catch2 has multiple layers of tests that are then run as part of our CI. The most obvious one are the unit tests compiled into the {\ttfamily Self\+Test} binary. These are then used in \char`\"{}\+Approval tests\char`\"{}, which run (almost) all tests from {\ttfamily Self\+Test} through a specific reporter and then compare the generated output with a known good output (\char`\"{}\+Baseline\char`\"{}). By default, new tests should be placed here.
+
+However, not all tests can be written as plain unit tests. For example, checking that Catch2 orders tests randomly when asked to, and that this random ordering is subset-\/invariant, is better done as an integration test using an external check script. Catch2 integration tests are written using CTest, either as a direct command invocation + pass/fail regex, or by delegating the check to a Python script.
+
+Catch2 is slowly gaining more and more types of tests, currently Catch2 project also has buildable examples, \char`\"{}\+Extra\+Tests\char`\"{}, and CMake config tests. Examples present a small and self-\/contained snippets of code that use Catch2\textquotesingle{}s facilities for specific purpose. Currently they are assumed passing if they compile.
+
+Extra\+Tests then are expensive tests, that we do not want to run all the time. This can be either because they take a long time to run, or because they take a long time to compile, e.\+g. because they test compile time configuration and require separate compilation.
+
+Finally, CMake config tests test that you set Catch2\textquotesingle{}s compile-\/time configuration options through CMake, using CMake options of the same name.
+
+None of these tests are enabled by default. To enable them, add {\ttfamily -\/DCATCH\+\_\+\+BUILD\+\_\+\+EXAMPLES=ON}, {\ttfamily -\/DCATCH\+\_\+\+BUILD\+\_\+\+EXTRA\+\_\+\+TESTS=ON}, and {\ttfamily -\/DCATCH\+\_\+\+ENABLE\+\_\+\+CONFIGURE\+\_\+\+TESTS=ON} when configuration the CMake build.
+
+Bringing this all together, the steps below should configure, build, and run all tests in the {\ttfamily Debug} compilation.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_snippet-catch2-build-and-test}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_snippet-catch2-build-and-test}%
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\#\ 1.\ Regenerate\ the\ amalgamated\ distribution}
+\DoxyCodeLine{./tools/scripts/generateAmalgamatedFiles.py}
+\DoxyCodeLine{}
+\DoxyCodeLine{\#\ 2.\ Configure\ the\ full\ test\ build}
+\DoxyCodeLine{cmake\ -\/Bdebug-\/build\ -\/H.\ -\/DCMAKE\_BUILD\_TYPE=Debug\ -\/DCATCH\_DEVELOPMENT\_BUILD=ON\ -\/DCATCH\_BUILD\_EXAMPLES=ON\ -\/DCATCH\_BUILD\_EXTRA\_TESTS=ON}
+\DoxyCodeLine{}
+\DoxyCodeLine{\#\ 3.\ Run\ the\ actual\ build}
+\DoxyCodeLine{cmake\ -\/-\/build\ debug-\/build}
+\DoxyCodeLine{}
+\DoxyCodeLine{\#\ 4.\ Run\ the\ tests\ using\ CTest}
+\DoxyCodeLine{cd\ debug-\/build}
+\DoxyCodeLine{ctest\ -\/j\ 4\ -\/-\/output-\/on-\/failure\ -\/C\ Debug}
+
+\end{DoxyCode}
+ \textsuperscript{\href{/tools/scripts/buildAndTest.sh\#L6-L19}{\texttt{ snippet source}} $\vert$ \href{\#snippet-catch2-build-and-test}{\texttt{ anchor}}}
+
+For convenience, the above commands are in the script {\ttfamily tools/scripts/build\+And\+Test.\+sh}, and can be run like this\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ Catch2}
+\DoxyCodeLine{./tools/scripts/buildAndTest.sh}
+
+\end{DoxyCode}
+
+
+\doxylink{struct_a}{A} Windows version of the script is available at {\ttfamily tools\textbackslash{}scripts\textbackslash{}build\+And\+Test.\+cmd}.
+
+If you added new tests, you will likely see {\ttfamily Approval\+Tests} failure. After you check that the output difference is expected, you should run {\ttfamily tools/scripts/approve.\+py} to confirm them, and include these changes in your commit.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md110}{}\doxysubsection{Writing documentation}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md110}
+If you have added new feature to Catch2, it needs documentation, so that other people can use it as well. This section collects some technical information that you will need for updating Catch2\textquotesingle{}s documentation, and possibly some generic advise as well.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md111}{}\doxysubsubsection{Technicalities}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md111}
+First, the technicalities\+:
+
+
+\begin{DoxyItemize}
+\item If you have introduced a new document, there is a simple template you should use. It provides you with the top anchor mentioned to link to (more below), and also with a backlink to the top of the documentation\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<a\ id="{}top"{}></a>}
+\DoxyCodeLine{\#\ Cool\ feature}
+\DoxyCodeLine{}
+\DoxyCodeLine{Text\ that\ explains\ how\ to\ use\ the\ cool\ feature.}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{-\/-\/-\/}
+\DoxyCodeLine{}
+\DoxyCodeLine{[Home](Readme.md\#top)}
+
+\end{DoxyCode}
+
+\item Crosslinks to different pages should target the {\ttfamily top} anchor, like this {\ttfamily \mbox{[}link to contributing\mbox{]}(contributing.\+md\#top)}.
+\item We introduced version tags to the documentation, which show users in which version a specific feature was introduced. This means that newly written documentation should be tagged with a placeholder, that will be replaced with the actual version upon release. There are 2 styles of placeholders used through the documentation, you should pick one that fits your text better (if in doubt, take a look at the existing version tags for other features).
+\begin{DoxyItemize}
+\item {\ttfamily \texorpdfstring{$>$}{>} \mbox{[}Introduced\mbox{]}(link-\/to-\/issue-\/or-\/\+PR) in Catch2 X.\+Y.\+Z} -\/ this placeholder is usually used after a section heading
+\item {\ttfamily \texorpdfstring{$>$}{>} X (Y and Z) was \mbox{[}introduced\mbox{]}(link-\/to-\/issue-\/or-\/\+PR) in Catch2 X.\+Y.\+Z}
+\item this placeholder is used when you need to tag a subpart of something, e.\+g. a list
+\end{DoxyItemize}
+\item For pages with more than 4 subheadings, we provide a table of contents (ToC) at the top of the page. Because Git\+Hub markdown does not support automatic generation of ToC, it has to be handled semi-\/manually. Thus, if you\textquotesingle{}ve added a new subheading to some page, you should add it to the ToC. This can be done either manually, or by running the {\ttfamily update\+Document\+To\+C.\+py} script in the {\ttfamily scripts/} folder.
+\end{DoxyItemize}\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md112}{}\doxysubsubsection{Contents}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md112}
+Now, for some content tips\+:
+
+
+\begin{DoxyItemize}
+\item Usage examples are good. However, having large code snippets inline can make the documentation less readable, and so the inline snippets should be kept reasonably short. To provide more complex compilable examples, consider adding new .cpp file to {\ttfamily examples/}.
+\item Don\textquotesingle{}t be afraid to introduce new pages. The current documentation tends towards long pages, but a lot of that is caused by legacy, and we know that some of the pages are overly big and unfocused.
+\item When adding information to an existing page, please try to keep your formatting, style and changes consistent with the rest of the page.
+\item Any documentation has multiple different audiences, that desire different information from the text. The 3 basic user-\/types to try and cover are\+:
+\begin{DoxyItemize}
+\item \doxylink{struct_a}{A} beginner to Catch2, who requires closer guidance for the usage of Catch2.
+\item Advanced user of Catch2, who want to customize their usage.
+\item Experts, looking for full reference of Catch2\textquotesingle{}s capabilities.
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md113}{}\doxysubsection{Writing code}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md113}
+If want to contribute code, this section contains some simple rules and tips on things like code formatting, code constructions to avoid, and so on.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md114}{}\doxysubsubsection{C++ standard version}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md114}
+Catch2 currently targets C++14 as the minimum supported C++ version. Features from higher language versions should be used only sparingly, when the benefits from using them outweight the maintenance overhead.
+
+\doxylink{struct_example}{Example} of good use of polyfilling features is our use of {\ttfamily conjunction}, where if available we use {\ttfamily std\+::conjunction} and otherwise provide our own implementation. The reason it is good is that the surface area for maintenance is quite small, and {\ttfamily std\+::conjunction} can directly use compiler built-\/ins, thus providing significant compilation benefits.
+
+\doxylink{struct_example}{Example} of bad use of polyfilling features would be to keep around two sets of metaprogramming in the stringification implementation, once using C++14 compliant TMP and once using C++17\textquotesingle{}s {\ttfamily if constexpr}. While the C++17 would provide significant compilation speedups, the maintenance cost would be too high.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md115}{}\doxysubsubsection{Formatting}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md115}
+To make code formatting simpler for the contributors, Catch2 provides its own config for {\ttfamily clang-\/format}. However, because it is currently impossible to replicate existing Catch2\textquotesingle{}s formatting in clang-\/format, using it to reformat a whole file would cause massive diffs. To keep the size of your diffs reasonable, you should only use clang-\/format on the newly changed code.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md116}{}\doxysubsubsection{Code constructs to watch out for}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md116}
+This section is a (sadly incomplete) listing of various constructs that are problematic and are not always caught by our CI infrastructure.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md117}{}\doxyparagraph{Naked exceptions and exceptions-\/related function}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md117}
+If you are throwing an exception, it should be done via {\ttfamily CATCH\+\_\+\+ERROR} or {\ttfamily CATCH\+\_\+\+RUNTIME\+\_\+\+ERROR} in {\ttfamily internal/catch\+\_\+enforce.\+hpp}. These macros will handle the differences between compilation with or without exceptions for you. However, some platforms (IAR) also have problems with exceptions-\/related functions, such as {\ttfamily std\+::current\+\_\+exceptions}. We do not have IAR in our CI, but luckily there should not be too many reasons to use these. However, if you do, they should be kept behind a {\ttfamily CATCH\+\_\+\+CONFIG\+\_\+\+DISABLE\+\_\+\+EXCEPTIONS} macro.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md118}{}\doxyparagraph{Avoid $<$tt$>$std\+::move$<$/tt$>$ and $<$tt$>$std\+::forward$<$/tt$>$}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md118}
+{\ttfamily std\+::move} and {\ttfamily std\+::forward} provide nice semantic name for a specific {\ttfamily static\+\_\+cast}. However, being function templates they have surprisingly high cost during compilation, and can also have a negative performance impact for low-\/optimization builds.
+
+You should be using {\ttfamily CATCH\+\_\+\+MOVE} and {\ttfamily CATCH\+\_\+\+FORWARD} macros from {\ttfamily internal/catch\+\_\+move\+\_\+and\+\_\+forward.\+hpp} instead. They expand into the proper {\ttfamily static\+\_\+cast}, and avoid the overhead of {\ttfamily std\+::move} and {\ttfamily std\+::forward}.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md119}{}\doxyparagraph{Unqualified usage of functions from C\textquotesingle{}s stdlib}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md119}
+If you are using a function from C\textquotesingle{}s stdlib, please include the header as {\ttfamily \texorpdfstring{$<$}{<}cfoo\texorpdfstring{$>$}{>}} and call the function qualified. The common knowledge that there is no difference is wrong, QNX and Vx\+Works won\textquotesingle{}t compile if you include the header as {\ttfamily \texorpdfstring{$<$}{<}cfoo\texorpdfstring{$>$}{>}} and call the function unqualified.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md120}{}\doxyparagraph{User-\/\+Defined Literals (\+UDL) for Catch2\textquotesingle{} types}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md120}
+Due to messy standardese and ... not great ... implementation of {\ttfamily -\/Wreserved-\/identifier} in Clang, avoid declaring UDLs as 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{catch__amalgamated_8hpp_a9f3b477eb84f043a6f954e26f511e8ab}{Approx}}\ \textcolor{keyword}{operator}\ \textcolor{stringliteral}{"{}"{}}\ \_a(\textcolor{keywordtype}{long}\ \textcolor{keywordtype}{double});}
+
+\end{DoxyCode}
+ and instead declare them as 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{catch__amalgamated_8hpp_a9f3b477eb84f043a6f954e26f511e8ab}{Approx}}\ \textcolor{keyword}{operator}\ \textcolor{stringliteral}{"{}"{}}\_a(\textcolor{keywordtype}{long}\ \textcolor{keywordtype}{double});}
+
+\end{DoxyCode}
+
+
+Notice that the second version does not have a space between the {\ttfamily \char`\"{}\char`\"{}} and the literal suffix.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md121}{}\doxysubsubsection{New source file template}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md121}
+If you are adding new source file, there is a template you should use. Specifically, every source file should start with the licence header\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ Copyright\ Catch2\ Authors}}
+\DoxyCodeLine{\textcolor{comment}{//\ Distributed\ under\ the\ Boost\ Software\ License,\ Version\ 1.0.}}
+\DoxyCodeLine{\textcolor{comment}{//\ \ \ (See\ accompanying\ file\ LICENSE\_1\_0.txt\ or\ copy\ at}}
+\DoxyCodeLine{\textcolor{comment}{//\ \ \ \ \ \ \ \ https://www.boost.org/LICENSE\_1\_0.txt)}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{//\ SPDX-\/License-\/Identifier:\ BSL-\/1.0}}
+
+\end{DoxyCode}
+
+
+The include guards for header files should follow the pattern {\ttfamily \{FILENAME\}\+\_\+\+INCLUDED}. This means that for file {\ttfamily catch\+\_\+matchers\+\_\+foo}, the include guard should be {\ttfamily CATCH\+\_\+\+MATCHERS\+\_\+\+FOO\+\_\+\+INCLUDED}, for {\ttfamily catch\+\_\+generators\+\_\+bar}, the include guard should be {\ttfamily CATCH\+\_\+\+GENERATORS\+\_\+\+BAR\+\_\+\+INCLUDED}, and so on.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md122}{}\doxysubsection{CoC}\label{md_ext_2hera_2extern_2_catch2_2docs_2contributing_autotoc_md122}
+This project has a \doxysectlink{md_ext_2hera_2extern_2_catch2_2_c_o_d_e___o_f___c_o_n_d_u_c_t}{CoC}{0}. Please adhere to it while contributing to Catch2.
+
+\DoxyHorRuler{0}
+
+
+{\itshape This documentation will always be in-\/progress as new information comes up, but we are trying to keep it as up to date as possible.}
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

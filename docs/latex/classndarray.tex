@@ -1,0 +1,70 @@
+\hypertarget{classndarray}{}\doxysection{ndarray\texorpdfstring{$<$}{<} Args \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classndarray}\index{ndarray$<$ Args $>$@{ndarray$<$ Args $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classndarray_a1c9f21189584f643ad715e1eeb61c669}\label{classndarray_a1c9f21189584f643ad715e1eeb61c669} 
+using {\bfseries Info} = detail\+::ndarray\+\_\+info$<$ Args... $>$
+\item 
+\Hypertarget{classndarray_a8adc7383225b431df2d5e3694f39943e}\label{classndarray_a8adc7383225b431df2d5e3694f39943e} 
+using {\bfseries Scalar} = typename Info\+::scalar\+\_\+type
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classndarray_a5434a0acf4f8989a5061c4817c668f7d}\label{classndarray_a5434a0acf4f8989a5061c4817c668f7d} 
+{\bfseries ndarray} (detail\+::ndarray\+\_\+handle $\ast$\mbox{\hyperlink{classhandle}{handle}})
+\item 
+\Hypertarget{classndarray_a98b41bd447f90ce2bdd593a3f0b02d60}\label{classndarray_a98b41bd447f90ce2bdd593a3f0b02d60} 
+{\bfseries ndarray} (void $\ast$value, size\+\_\+t ndim, const size\+\_\+t $\ast$\mbox{\hyperlink{structshape}{shape}}, \mbox{\hyperlink{classhandle}{handle}} owner=nanobind\+::handle(), const int64\+\_\+t $\ast$strides=nullptr, dlpack\+::dtype \mbox{\hyperlink{classdtype}{dtype}}=nanobind\+::dtype$<$ Scalar $>$(), int32\+\_\+t device\+\_\+type=device\+::cpu\+::value, int32\+\_\+t device\+\_\+id=0)
+\item 
+\Hypertarget{classndarray_aad1ca5fd4b4b0700c6230e5f4b51ce22}\label{classndarray_aad1ca5fd4b4b0700c6230e5f4b51ce22} 
+{\bfseries ndarray} (const \mbox{\hyperlink{classndarray}{ndarray}} \&t)
+\item 
+\Hypertarget{classndarray_a4317f65e42664b221f724e49deff23c9}\label{classndarray_a4317f65e42664b221f724e49deff23c9} 
+{\bfseries ndarray} (\mbox{\hyperlink{classndarray}{ndarray}} \&\&t) noexcept
+\item 
+\Hypertarget{classndarray_adb59138570a05ed91c60e27e36e5f0a9}\label{classndarray_adb59138570a05ed91c60e27e36e5f0a9} 
+\mbox{\hyperlink{classndarray}{ndarray}} \& {\bfseries operator=} (\mbox{\hyperlink{classndarray}{ndarray}} \&\&t) noexcept
+\item 
+\Hypertarget{classndarray_a8d6812903eabec2cb6b6bac99aa52808}\label{classndarray_a8d6812903eabec2cb6b6bac99aa52808} 
+\mbox{\hyperlink{classndarray}{ndarray}} \& {\bfseries operator=} (const \mbox{\hyperlink{classndarray}{ndarray}} \&t)
+\item 
+\Hypertarget{classndarray_aec91ba8fb6b8d3062a2c22504bcf9f6a}\label{classndarray_aec91ba8fb6b8d3062a2c22504bcf9f6a} 
+dlpack\+::dtype {\bfseries dtype} () const
+\item 
+\Hypertarget{classndarray_a2b921b3ecf9796750d6c7433f70bb95b}\label{classndarray_a2b921b3ecf9796750d6c7433f70bb95b} 
+size\+\_\+t {\bfseries ndim} () const
+\item 
+\Hypertarget{classndarray_a7dbbeb427eda8e6e0472bb79953e1e1e}\label{classndarray_a7dbbeb427eda8e6e0472bb79953e1e1e} 
+size\+\_\+t {\bfseries shape} (size\+\_\+t i) const
+\item 
+\Hypertarget{classndarray_a0595b0447c9cc771ed769f113be48a4d}\label{classndarray_a0595b0447c9cc771ed769f113be48a4d} 
+int64\+\_\+t {\bfseries stride} (size\+\_\+t i) const
+\item 
+\Hypertarget{classndarray_a90c0f800305ad78e992b0d246940a4b4}\label{classndarray_a90c0f800305ad78e992b0d246940a4b4} 
+bool {\bfseries is\+\_\+valid} () const
+\item 
+\Hypertarget{classndarray_a33a8dfadf714294c3986b6469acc9dbd}\label{classndarray_a33a8dfadf714294c3986b6469acc9dbd} 
+int32\+\_\+t {\bfseries device\+\_\+type} () const
+\item 
+\Hypertarget{classndarray_a5a0fa4c89b4c3f09149eaaba3a935ee1}\label{classndarray_a5a0fa4c89b4c3f09149eaaba3a935ee1} 
+int32\+\_\+t {\bfseries device\+\_\+id} () const
+\item 
+\Hypertarget{classndarray_a8b1fde2ecfef6f2187f389eb1d455f2d}\label{classndarray_a8b1fde2ecfef6f2187f389eb1d455f2d} 
+detail\+::ndarray\+\_\+handle $\ast$ {\bfseries handle} () const
+\item 
+\Hypertarget{classndarray_a4fda7bff70c63e3e3dcfe956c6700bef}\label{classndarray_a4fda7bff70c63e3e3dcfe956c6700bef} 
+const Scalar $\ast$ {\bfseries data} () const
+\item 
+\Hypertarget{classndarray_a035d84a374fd64a29a7909db99163aa8}\label{classndarray_a035d84a374fd64a29a7909db99163aa8} 
+Scalar $\ast$ {\bfseries data} ()
+\item 
+\Hypertarget{classndarray_a3a019627f605265e76efdbaad8d92fef}\label{classndarray_a3a019627f605265e76efdbaad8d92fef} 
+{\footnotesize template$<$typename... Ts$>$ }\\NB\+\_\+\+INLINE auto \& {\bfseries operator()} (Ts... indices)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ndarray.\+h\end{DoxyCompactItemize}

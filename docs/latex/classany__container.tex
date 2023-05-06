@@ -1,0 +1,37 @@
+\hypertarget{classany__container}{}\doxysection{any\+\_\+container\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classany__container}\index{any\_container$<$ T $>$@{any\_container$<$ T $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classany__container_a16c36f2f2714692d2112d66cf539f882}\label{classany__container_a16c36f2f2714692d2112d66cf539f882} 
+{\footnotesize template$<$typename It , typename  = enable\+\_\+if\+\_\+t$<$is\+\_\+input\+\_\+iterator$<$\+It$>$\+::value$>$$>$ }\\{\bfseries any\+\_\+container} (It first, It last)
+\item 
+\Hypertarget{classany__container_a27ee39fdc807df0db3dce64b265864aa}\label{classany__container_a27ee39fdc807df0db3dce64b265864aa} 
+{\footnotesize template$<$typename Container $>$ }\\{\bfseries any\+\_\+container} (const Container \&c)
+\item 
+\Hypertarget{classany__container_a7bc3471a016f7dafe3878fa66497ad26}\label{classany__container_a7bc3471a016f7dafe3878fa66497ad26} 
+{\footnotesize template$<$typename TIn , typename  = enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+convertible$<$\+TIn, T$>$\+::value$>$$>$ }\\{\bfseries any\+\_\+container} (const std\+::initializer\+\_\+list$<$ TIn $>$ \&c)
+\item 
+\Hypertarget{classany__container_a6a530db0c5ae047d9d7fcea35426b278}\label{classany__container_a6a530db0c5ae047d9d7fcea35426b278} 
+{\bfseries any\+\_\+container} (std\+::vector$<$ T $>$ \&\&v)
+\item 
+\Hypertarget{classany__container_a6abf0ebecceb128a254dbab6d6fef9c8}\label{classany__container_a6abf0ebecceb128a254dbab6d6fef9c8} 
+{\bfseries operator std\+::vector \&\&} () \&\&
+\item 
+\Hypertarget{classany__container_a4442018fbb55a33523a14abd6f7273d2}\label{classany__container_a4442018fbb55a33523a14abd6f7273d2} 
+std\+::vector$<$ T $>$ \& {\bfseries operator$\ast$} ()
+\item 
+\Hypertarget{classany__container_aaac48cabec45f1b212d56c74658e1637}\label{classany__container_aaac48cabec45f1b212d56c74658e1637} 
+const std\+::vector$<$ T $>$ \& {\bfseries operator$\ast$} () const
+\item 
+\Hypertarget{classany__container_a1fdee859908331be0efe098aa438be8c}\label{classany__container_a1fdee859908331be0efe098aa438be8c} 
+std\+::vector$<$ T $>$ $\ast$ {\bfseries operator-\/$>$} ()
+\item 
+\Hypertarget{classany__container_aaf31d823682a859e81c9d21ec2f78f1d}\label{classany__container_aaf31d823682a859e81c9d21ec2f78f1d} 
+const std\+::vector$<$ T $>$ $\ast$ {\bfseries operator-\/$>$} () const
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+bindings/python/pybind11/include/pybind11/detail/common.\+h\end{DoxyCompactItemize}

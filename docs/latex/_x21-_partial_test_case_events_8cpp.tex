@@ -1,0 +1,28 @@
+\hypertarget{_x21-_partial_test_case_events_8cpp}{}\doxysection{X21-\/\+Partial\+Test\+Case\+Events.cpp File Reference}
+\label{_x21-_partial_test_case_events_8cpp}\index{X21-\/PartialTestCaseEvents.cpp@{X21-\/PartialTestCaseEvents.cpp}}
+{\ttfamily \#include $<$catch2/catch\+\_\+test\+\_\+macros.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+streaming\+\_\+base.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/catch\+\_\+test\+\_\+case\+\_\+info.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+registrars.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/generators/catch\+\_\+generators.\+hpp$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_partial_reporter}{Partial\+Reporter}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_x21-_partial_test_case_events_8cpp_ae187878e90649a0426fe99389cbb9969}\label{_x21-_partial_test_case_events_8cpp_ae187878e90649a0426fe99389cbb9969} 
+{\bfseries TEST\+\_\+\+CASE} (\char`\"{}section\char`\"{})
+\item 
+\Hypertarget{_x21-_partial_test_case_events_8cpp_a836152b1b0918aa3d0e33065a6087355}\label{_x21-_partial_test_case_events_8cpp_a836152b1b0918aa3d0e33065a6087355} 
+{\bfseries TEST\+\_\+\+CASE} (\char`\"{}generator\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Registers custom reporter that reports test\+Case$\ast$ events
+
+The resulting executable can then be used by an external Python script to verify that test\+Case\{Starting,Ended\} and test\+Case\+Partial\{Starting,Ended\} events are properly nested. 

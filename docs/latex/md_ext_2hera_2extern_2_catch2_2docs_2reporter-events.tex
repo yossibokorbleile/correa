@@ -1,0 +1,138 @@
+\label{index_top}%
+\Hypertarget{index_top}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md461}{}\doxysection{Reporter events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md461}
+{\bfseries{Contents}}~\newline
+ Test running events~\newline
+ Benchmarking events~\newline
+ Listings events~\newline
+ Miscellaneous events~\newline
+
+
+Reporter events are one of the customization points for user code. They are used by \href{reporters.md\#top}{\texttt{ reporters}} to customize Catch2\textquotesingle{}s output, and by \href{event-listeners.md\#top}{\texttt{ event listeners}} to perform in-\/process actions under some conditions.
+
+There are currently 21 reporter events in Catch2, split between 4 distinct event groups\+:
+\begin{DoxyItemize}
+\item test running events (10 events)
+\item benchmarking (4 events)
+\item listings (3 events)
+\item miscellaneous (4 events)
+\end{DoxyItemize}\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md462}{}\doxysubsection{Test running events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md462}
+\doxylink{class_test}{Test} running events are always paired so that for each {\ttfamily foo\+Starting} event, there is a {\ttfamily foo\+Ended} event. This means that the 10 test running events consist of 5 pairs of events\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily test\+Run\+Starting} and {\ttfamily test\+Run\+Ended},
+\item {\ttfamily test\+Case\+Starting} and {\ttfamily test\+Case\+Ended},
+\item {\ttfamily test\+Case\+Partial\+Starting} and {\ttfamily test\+Case\+Partial\+Ended},
+\item {\ttfamily section\+Starting} and {\ttfamily section\+Ended},
+\item {\ttfamily assertion\+Starting} and {\ttfamily assertion\+Ended}
+\end{DoxyItemize}\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md463}{}\doxysubsubsection{$<$tt$>$test\+Run$<$/tt$>$ events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md463}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ testRunStarting(\ TestRunInfo\ \textcolor{keyword}{const}\&\ testRunInfo\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ testRunEnded(\ TestRunStats\ \textcolor{keyword}{const}\&\ testRunStats\ );}
+
+\end{DoxyCode}
+
+
+The {\ttfamily test\+Run} events bookend the entire test run. {\ttfamily test\+Run\+Starting} is emitted before the first test case is executed, and {\ttfamily test\+Run\+Ended} is emitted after all the test cases have been executed.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md464}{}\doxysubsubsection{$<$tt$>$test\+Case$<$/tt$>$ events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md464}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ testCaseStarting(\ TestCaseInfo\ \textcolor{keyword}{const}\&\ testInfo\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ testCaseEnded(\ TestCaseStats\ \textcolor{keyword}{const}\&\ testCaseStats\ );}
+
+\end{DoxyCode}
+
+
+The {\ttfamily test\+Case} events bookend one {\itshape full} run of a specific test case. Individual runs through a test case, e.\+g. due to {\ttfamily SECTION}s or {\ttfamily GENERATE}s, are handled by a different event.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md465}{}\doxysubsubsection{$<$tt$>$test\+Case\+Partial$<$/tt$>$ events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md465}
+\begin{quote}
+Introduced in Catch2 X.\+Y.\+Z \end{quote}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ testCasePartialStarting(\ TestCaseInfo\ \textcolor{keyword}{const}\&\ testInfo,\ uint64\_t\ partNumber\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ testCasePartialEnded(TestCaseStats\ \textcolor{keyword}{const}\&\ testCaseStats,\ uint64\_t\ partNumber\ );}
+
+\end{DoxyCode}
+
+
+{\ttfamily test\+Case\+Partial} events bookend one {\itshape partial} run of a specific test case. This means that for any given test case, these events can be emitted multiple times, e.\+g. due to multiple leaf sections.
+
+In regards to nesting with {\ttfamily test\+Case} events, {\ttfamily test\+Case\+Partial\+Starting} will never be emitted before the corresponding {\ttfamily test\+Case\+Starting}, and {\ttfamily test\+Case\+Partial\+Ended} will always be emitted before the corresponding {\ttfamily test\+Case\+Ended}.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md466}{}\doxysubsubsection{$<$tt$>$section$<$/tt$>$ events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md466}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ sectionStarting(\ SectionInfo\ \textcolor{keyword}{const}\&\ sectionInfo\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ sectionEnded(\ SectionStats\ \textcolor{keyword}{const}\&\ sectionStats\ );}
+
+\end{DoxyCode}
+
+
+{\ttfamily section} events are emitted only for active {\ttfamily SECTION}s, that is, sections that are entered. Sections that are skipped in this test case run-\/through do not cause events to be emitted.
+
+{\itshape Note that test cases always contain one implicit section. The event for this section is emitted after the corresponding {\ttfamily test\+Case\+Partial\+Starting} event.}\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md467}{}\doxysubsubsection{$<$tt$>$assertion$<$/tt$>$ events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md467}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ assertionStarting(\ AssertionInfo\ \textcolor{keyword}{const}\&\ assertionInfo\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ assertionEnded(\ AssertionStats\ \textcolor{keyword}{const}\&\ assertionStats\ );}
+
+\end{DoxyCode}
+
+
+{\ttfamily assertion\+Starting} is called after the expression is captured, but before the assertion expression is evaluated. This might seem like a minor distinction, but what it means is that if you have assertion like {\ttfamily REQUIRE( a + b == c + d )}, then what happens is that {\ttfamily a + b} and {\ttfamily c + d} are evaluated before {\ttfamily assertion\+Starting} is emitted, while the {\ttfamily ==} is evaluated after the event.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md468}{}\doxysubsection{Benchmarking events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md468}
+\begin{quote}
+\href{https://github.com/catchorg/Catch2/issues/1616}{\texttt{ Introduced}} in Catch2 2.\+9.\+0. \end{quote}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ benchmarkPreparing(\ StringRef\ \mbox{\hyperlink{structname}{name}}\ )\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ benchmarkStarting(\ BenchmarkInfo\ \textcolor{keyword}{const}\&\ benchmarkInfo\ )\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ benchmarkEnded(\ \mbox{\hyperlink{struct_catch_1_1_benchmark_stats}{BenchmarkStats<>}}\ \textcolor{keyword}{const}\&\ benchmarkStats\ )\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ benchmarkFailed(\ StringRef\ error\ )\ \textcolor{keyword}{override};}
+
+\end{DoxyCode}
+
+
+Due to the benchmark lifecycle being bit more complicated, the benchmarking events have their own category, even though they could be seen as parallel to the {\ttfamily assertion$\ast$} events. You should expect running a benchmark to generate at least 2 of the events above.
+
+To understand the explanation below, you should read the \href{benchmarks.md\#top}{\texttt{ benchmarking documentation}} first.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily benchmark\+Preparing} event is sent after the environmental probe finishes, but before the user code is first estimated.
+\item {\ttfamily benchmark\+Starting} event is sent after the user code is estimated, but has not been benchmarked yet.
+\item {\ttfamily benchmark\+Ended} event is sent after the user code has been benchmarked, and contains the benchmarking results.
+\item {\ttfamily benchmark\+Failed} event is sent if either the estimation or the benchmarking itself fails.
+\end{DoxyItemize}\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md469}{}\doxysubsection{Listings events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md469}
+\begin{quote}
+Introduced in Catch2 X.\+Y.\+Z. \end{quote}
+Listings events are events that correspond to the test binary being invoked with {\ttfamily -\/-\/list-\/foo} flag.
+
+There are currently 3 listing events, one for reporters, one for tests, and one for tags. Note that they are not exclusive to each other.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ listReporters(\ std::vector<ReporterDescription>\ \textcolor{keyword}{const}\&\ descriptions\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ listTests(\ std::vector<TestCaseHandle>\ \textcolor{keyword}{const}\&\ tests\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ listTags(\ std::vector<TagInfo>\ \textcolor{keyword}{const}\&\ tagInfos\ );}
+
+\end{DoxyCode}
+\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md470}{}\doxysubsection{Miscellaneous events}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporter-events_autotoc_md470}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ reportInvalidTestSpec(\ StringRef\ unmatchedSpec\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ fatalErrorEncountered(\ StringRef\ error\ );}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ noMatchingTestCases(\ StringRef\ unmatchedSpec\ );}
+
+\end{DoxyCode}
+
+
+These are one-\/off events that do not neatly fit into other categories.
+
+{\ttfamily report\+Invalid\+Test\+Spec} is sent for each \href{command-line.md\#specifying-which-tests-to-run}{\texttt{ test specification command line argument}} that wasn\textquotesingle{}t parsed into a valid spec.
+
+{\ttfamily fatal\+Error\+Encountered} is sent when Catch2\textquotesingle{}s POSIX signal handling or Windows SE handler is called into with a fatal signal/exception.
+
+{\ttfamily no\+Matching\+Test\+Cases} is sent for each user provided test specification that did not match any registered tests.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

@@ -1,0 +1,26 @@
+\hypertarget{classiterator__key__access}{}\doxysection{iterator\+\_\+key\+\_\+access\texorpdfstring{$<$}{<} Iterator, SFINAE \texorpdfstring{$>$}{>} Struct Template Reference}
+\label{classiterator__key__access}\index{iterator\_key\_access$<$ Iterator, SFINAE $>$@{iterator\_key\_access$<$ Iterator, SFINAE $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classiterator__key__access_ad568b80ddf301d4fd39e06182b5e2bb9}\label{classiterator__key__access_ad568b80ddf301d4fd39e06182b5e2bb9} 
+using {\bfseries result\+\_\+type} = conditional\+\_\+t$<$ std\+::is\+\_\+reference$<$ decltype($\ast$std\+::declval$<$ Iterator \& $>$())$>$\+::value, decltype((($\ast$std\+::declval$<$ Iterator \& $>$()).first)), decltype(std\+::declval$<$ pair\+\_\+type $>$().first)$>$
+\item 
+\Hypertarget{classiterator__key__access_ab607694ec868eeb3148d824027228abb}\label{classiterator__key__access_ab607694ec868eeb3148d824027228abb} 
+using {\bfseries result\+\_\+type} = const decltype(($\ast$std\+::declval$<$ Iterator \& $>$()).first) \&
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classiterator__key__access_a85cbd67a326d972c29a5de51dc096a9d}\label{classiterator__key__access_a85cbd67a326d972c29a5de51dc096a9d} 
+result\+\_\+type {\bfseries operator()} (Iterator \&it) const
+\item 
+\Hypertarget{classiterator__key__access_a85cbd67a326d972c29a5de51dc096a9d}\label{classiterator__key__access_a85cbd67a326d972c29a5de51dc096a9d} 
+result\+\_\+type {\bfseries operator()} (Iterator \&it) const
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+pybind11.\+h\item 
+make\+\_\+iterator.\+h\end{DoxyCompactItemize}

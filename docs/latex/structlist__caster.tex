@@ -1,0 +1,44 @@
+\hypertarget{structlist__caster}{}\doxysection{list\+\_\+caster\texorpdfstring{$<$}{<} Type, Value \texorpdfstring{$>$}{>} Struct Template Reference}
+\label{structlist__caster}\index{list\_caster$<$ Type, Value $>$@{list\_caster$<$ Type, Value $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structlist__caster_ac967cd6db186bb9053a3309967afd769}\label{structlist__caster_ac967cd6db186bb9053a3309967afd769} 
+using {\bfseries value\+\_\+conv} = \mbox{\hyperlink{classtype__caster}{make\+\_\+caster}}$<$ Value $>$
+\item 
+\Hypertarget{structlist__caster_a6f4478f0fce7a6b0e5a8093ceaba08d4}\label{structlist__caster_a6f4478f0fce7a6b0e5a8093ceaba08d4} 
+using {\bfseries Caster} = \mbox{\hyperlink{classtype__caster}{make\+\_\+caster}}$<$ Entry $>$
+\item 
+\Hypertarget{structlist__caster_a5b433b1d2ad98fd52a48f73cc5814df1}\label{structlist__caster_a5b433b1d2ad98fd52a48f73cc5814df1} 
+{\footnotesize template$<$typename T $>$ }\\using {\bfseries has\+\_\+reserve} = decltype(std\+::declval$<$ T $>$().reserve(0))
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structlist__caster_a6f4b4e4679fc465e40ef9f45480c3467}\label{structlist__caster_a6f4b4e4679fc465e40ef9f45480c3467} 
+bool {\bfseries load} (\mbox{\hyperlink{classhandle}{handle}} src, bool convert)
+\item 
+\Hypertarget{structlist__caster_af5e1719e42277705d6a80fb59b7934af}\label{structlist__caster_af5e1719e42277705d6a80fb59b7934af} 
+{\bfseries PYBIND11\+\_\+\+TYPE\+\_\+\+CASTER} (Type, const\+\_\+name(\char`\"{}List\mbox{[}\char`\"{})+value\+\_\+conv\+::name+const\+\_\+name(\char`\"{}\mbox{]}\char`\"{}))
+\item 
+\Hypertarget{structlist__caster_ac9c269b174ee50b86e66d2fedca98f40}\label{structlist__caster_ac9c269b174ee50b86e66d2fedca98f40} 
+{\bfseries NB\+\_\+\+TYPE\+\_\+\+CASTER} (Value\+\_\+, const\+\_\+name(NB\+\_\+\+TYPING\+\_\+\+LIST \char`\"{}\mbox{[}\char`\"{})+\mbox{\hyperlink{classtype__caster}{make\+\_\+caster}}$<$ Entry $>$\+::\+Name+const\+\_\+name(\char`\"{}\mbox{]}\char`\"{}))
+\item 
+\Hypertarget{structlist__caster_a9a9c73439cafcdb9622a75465223ea1d}\label{structlist__caster_a9a9c73439cafcdb9622a75465223ea1d} 
+bool {\bfseries from\+\_\+python} (\mbox{\hyperlink{classhandle}{handle}} src, uint8\+\_\+t flags, \mbox{\hyperlink{structcleanup__list}{cleanup\+\_\+list}} $\ast$cleanup) noexcept
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structlist__caster_add7c216960ed11015507b9c4356d088d}\label{structlist__caster_add7c216960ed11015507b9c4356d088d} 
+{\footnotesize template$<$typename T $>$ }\\static \mbox{\hyperlink{classhandle}{handle}} {\bfseries cast} (T \&\&src, return\+\_\+value\+\_\+policy policy, \mbox{\hyperlink{classhandle}{handle}} parent)
+\item 
+\Hypertarget{structlist__caster_abb151d2ff7eae0c061e2b6d4df190250}\label{structlist__caster_abb151d2ff7eae0c061e2b6d4df190250} 
+{\footnotesize template$<$typename T $>$ }\\static \mbox{\hyperlink{classhandle}{handle}} {\bfseries from\+\_\+cpp} (T \&\&src, rv\+\_\+policy policy, \mbox{\hyperlink{structcleanup__list}{cleanup\+\_\+list}} $\ast$cleanup)
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+stl.\+h\item 
+nb\+\_\+list.\+h\end{DoxyCompactItemize}

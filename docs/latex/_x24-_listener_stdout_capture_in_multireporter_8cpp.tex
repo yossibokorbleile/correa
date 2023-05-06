@@ -1,0 +1,18 @@
+\hypertarget{_x24-_listener_stdout_capture_in_multireporter_8cpp}{}\doxysection{X24-\/\+Listener\+Stdout\+Capture\+In\+Multireporter.cpp File Reference}
+\label{_x24-_listener_stdout_capture_in_multireporter_8cpp}\index{X24-\/ListenerStdoutCaptureInMultireporter.cpp@{X24-\/ListenerStdoutCaptureInMultireporter.cpp}}
+{\ttfamily \#include $<$catch2/catch\+\_\+test\+\_\+macros.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+event\+\_\+listener.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+registrars.\+hpp$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_x24-_listener_stdout_capture_in_multireporter_8cpp_af8a8d2e95d78c2307ac17ec61a1b8d94}\label{_x24-_listener_stdout_capture_in_multireporter_8cpp_af8a8d2e95d78c2307ac17ec61a1b8d94} 
+{\bfseries TEST\+\_\+\+CASE} (\char`\"{}Writes to stdout\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Registers custom listener that does not ask for captured stdout/err
+
+Running the binary with this listener, and asking for multiple {\itshape capturing} reporters (one would be sufficient, but that would also mean depending on implementation details inside Catch2\textquotesingle{}s handling of listeners), we check that nothing is written to stdout, because listeners should not be considered in whether the stdout should be passed-\/through or not. 

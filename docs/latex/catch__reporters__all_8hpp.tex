@@ -1,0 +1,24 @@
+\hypertarget{catch__reporters__all_8hpp}{}\doxysection{catch\+\_\+reporters\+\_\+all.\+hpp File Reference}
+\label{catch__reporters__all_8hpp}\index{catch\_reporters\_all.hpp@{catch\_reporters\_all.hpp}}
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+automake.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+compact.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+console.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+cumulative\+\_\+base.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+event\+\_\+listener.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+helpers.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+junit.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+multi.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+registrars.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+sonarqube.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+streaming\+\_\+base.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+tap.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+teamcity.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+xml.\+hpp$>$}\newline
+
+
+\doxysubsection{Detailed Description}
+This is a convenience header for Catch2\textquotesingle{}s Reporter support. It includes {\bfseries{all}} of Catch2 headers related to reporters, including all reporters.
+
+Generally the Catch2 users should use specific includes they need, but this header can be used instead for ease-\/of-\/experimentation, or just plain convenience, at the cost of (significantly) increased compilation times.
+
+When a new header (reporter) is added to either the {\ttfamily reporter} folder, or to the corresponding internal subfolder, it should be added here. 

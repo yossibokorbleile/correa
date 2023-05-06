@@ -1,0 +1,57 @@
+\hypertarget{structcleanup__list}{}\doxysection{cleanup\+\_\+list Struct Reference}
+\label{structcleanup__list}\index{cleanup\_list@{cleanup\_list}}
+
+
+{\ttfamily \#include $<$nb\+\_\+lib.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structcleanup__list_ae0a549713f64b43a8be955e2810bed07}\label{structcleanup__list_ae0a549713f64b43a8be955e2810bed07} 
+{\bfseries cleanup\+\_\+list} (Py\+Object $\ast$self)
+\item 
+\Hypertarget{structcleanup__list_a0173e89ffa6db7f1e3f428bac3719c3b}\label{structcleanup__list_a0173e89ffa6db7f1e3f428bac3719c3b} 
+NB\+\_\+\+INLINE void {\bfseries append} (Py\+Object $\ast$value) noexcept
+\begin{DoxyCompactList}\small\item\em Append a single Py\+Object to the cleanup stack. \end{DoxyCompactList}\item 
+\Hypertarget{structcleanup__list_ac2dce617dfa51ab1f7c73c4f0b8d72b2}\label{structcleanup__list_ac2dce617dfa51ab1f7c73c4f0b8d72b2} 
+NB\+\_\+\+INLINE Py\+Object $\ast$ {\bfseries self} () const
+\item 
+\Hypertarget{structcleanup__list_a3030fdd0f19c18c36818ef4acfaf7721}\label{structcleanup__list_a3030fdd0f19c18c36818ef4acfaf7721} 
+void {\bfseries release} () noexcept
+\begin{DoxyCompactList}\small\item\em Decrease the reference count of all appended objects. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structcleanup__list_ab54657c9bedeacd6a0f5c3d68dc70b48}\label{structcleanup__list_ab54657c9bedeacd6a0f5c3d68dc70b48} 
+static constexpr uint32\+\_\+t {\bfseries Small} = 6
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structcleanup__list_acd37d686382aac0dadcf151420016817}\label{structcleanup__list_acd37d686382aac0dadcf151420016817} 
+void {\bfseries expand} () noexcept
+\begin{DoxyCompactList}\small\item\em Out of memory, expand.. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structcleanup__list_ace8506ddb0dbd202c2582ad3f1b8fc52}\label{structcleanup__list_ace8506ddb0dbd202c2582ad3f1b8fc52} 
+uint32\+\_\+t {\bfseries m\+\_\+size}
+\item 
+\Hypertarget{structcleanup__list_af6027a317c68f1c4273158a58e73cf81}\label{structcleanup__list_af6027a317c68f1c4273158a58e73cf81} 
+uint32\+\_\+t {\bfseries m\+\_\+capacity}
+\item 
+\Hypertarget{structcleanup__list_a67b0ff1ce67fdf4fa5e04b142a3992b3}\label{structcleanup__list_a67b0ff1ce67fdf4fa5e04b142a3992b3} 
+Py\+Object $\ast$$\ast$ {\bfseries m\+\_\+data}
+\item 
+\Hypertarget{structcleanup__list_a45a900ff6c401eaac999cf2f64ba92a7}\label{structcleanup__list_a45a900ff6c401eaac999cf2f64ba92a7} 
+Py\+Object $\ast$ {\bfseries m\+\_\+local} \mbox{[}Small\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Helper class to clean temporaries created by function dispatch. The first element serves a special role\+: it stores the \textquotesingle{}self\textquotesingle{} object of method calls (for rv\+\_\+policy\+::reference\+\_\+internal). 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+nb\+\_\+lib.\+h\item 
+common.\+cpp\end{DoxyCompactItemize}

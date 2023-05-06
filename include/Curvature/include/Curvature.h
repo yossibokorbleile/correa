@@ -16,7 +16,6 @@
 */
 
 
-
 #ifndef _CURVATURE_H
 #define _CURVATURE_H
 
@@ -37,10 +36,17 @@ namespace correa {
    *
    =============================================================================================== */
 
-class Curvature
- {
+/*!
+* Curvature class.
+* Used to calculate various curvature related properties.
+*/
+class Curvature {
+
 	public:
 		// Computes Willmore energy for a polygon
+		/*!
+		* Calculate the Willmore energy of a polygon.
+		*/
 		double Willmore(Polygon& polygon);
 
 		// Computes Wasserstein distance between two curves, using the curvatures at

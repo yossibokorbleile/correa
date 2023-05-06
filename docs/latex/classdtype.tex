@@ -1,0 +1,269 @@
+\hypertarget{classdtype}{}\doxysection{dtype Struct Reference}
+\label{classdtype}\index{dtype@{dtype}}
+Inheritance diagram for dtype\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classdtype}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classdtype_a44f6cf870b6db329778cd4f14704ec82}\label{classdtype_a44f6cf870b6db329778cd4f14704ec82} 
+{\bfseries PYBIND11\+\_\+\+OBJECT\+\_\+\+DEFAULT} (\mbox{\hyperlink{classdtype}{dtype}}, \mbox{\hyperlink{classobject}{object}}, detail\+::npy\+\_\+api\+::get().Py\+Array\+Descr\+\_\+\+Check\+\_\+)
+\item 
+\Hypertarget{classdtype_a1c32bf51931d64aaa4ee0fbf5b50a3be}\label{classdtype_a1c32bf51931d64aaa4ee0fbf5b50a3be} 
+{\bfseries dtype} (const \mbox{\hyperlink{structbuffer__info}{buffer\+\_\+info}} \&info)
+\item 
+\Hypertarget{classdtype_ad4931d5421fdfd2c360b45ff6a575593}\label{classdtype_ad4931d5421fdfd2c360b45ff6a575593} 
+{\bfseries dtype} (const pybind11\+::str \&format)
+\item 
+\Hypertarget{classdtype_ac63228c0339fa560c343d1e55db89271}\label{classdtype_ac63228c0339fa560c343d1e55db89271} 
+{\bfseries dtype} (const std\+::string \&format)
+\item 
+\Hypertarget{classdtype_ab5fdb5c230d184d644ee2a8a8b31d021}\label{classdtype_ab5fdb5c230d184d644ee2a8a8b31d021} 
+{\bfseries dtype} (const char $\ast$format)
+\item 
+\Hypertarget{classdtype_a8ea3b55fbfef63c1b94da63e74b979c0}\label{classdtype_a8ea3b55fbfef63c1b94da63e74b979c0} 
+{\bfseries dtype} (\mbox{\hyperlink{classlist}{list}} names, \mbox{\hyperlink{classlist}{list}} formats, \mbox{\hyperlink{classlist}{list}} offsets, ssize\+\_\+t \mbox{\hyperlink{classdtype_a7560e2e9cd37d8dd697755e58442e4cb}{itemsize}})
+\item 
+\Hypertarget{classdtype_aabd0f3f32151fda3631835465d34813a}\label{classdtype_aabd0f3f32151fda3631835465d34813a} 
+{\bfseries dtype} (int typenum)
+\item 
+\Hypertarget{classdtype_a7560e2e9cd37d8dd697755e58442e4cb}\label{classdtype_a7560e2e9cd37d8dd697755e58442e4cb} 
+ssize\+\_\+t {\bfseries itemsize} () const
+\begin{DoxyCompactList}\small\item\em Size of the data type in bytes. \end{DoxyCompactList}\item 
+\Hypertarget{classdtype_ac5eef3474b98106df8be32c6aaa3106b}\label{classdtype_ac5eef3474b98106df8be32c6aaa3106b} 
+bool {\bfseries has\+\_\+fields} () const
+\begin{DoxyCompactList}\small\item\em Returns true for structured data types. \end{DoxyCompactList}\item 
+char \mbox{\hyperlink{classdtype_a18ed8c10011953681620744776e2c984}{kind}} () const
+\item 
+char \mbox{\hyperlink{classdtype_ac3a3aeed0b289bd6d8e3a0b10ead75ed}{char\+\_\+}} () const
+\item 
+\Hypertarget{classdtype_abe23e50dca1ad1da16203afddcd1d2b3}\label{classdtype_abe23e50dca1ad1da16203afddcd1d2b3} 
+ssize\+\_\+t {\bfseries num} () const
+\begin{DoxyCompactList}\small\item\em type number of dtype. \end{DoxyCompactList}\item 
+\Hypertarget{classdtype_a2b31f9c57bbccb4ebc60291fe38e5fc4}\label{classdtype_a2b31f9c57bbccb4ebc60291fe38e5fc4} 
+char {\bfseries byteorder} () const
+\begin{DoxyCompactList}\small\item\em Single character for byteorder. \end{DoxyCompactList}\item 
+\Hypertarget{classdtype_abdb860e897eb5d4a3f76c86303e07fde}\label{classdtype_abdb860e897eb5d4a3f76c86303e07fde} 
+int {\bfseries alignment} () const
+\begin{DoxyCompactList}\small\item\em Alignment of the data type. \end{DoxyCompactList}\item 
+\Hypertarget{classdtype_a1856005be8b8ffd46df1cc74ab1000f4}\label{classdtype_a1856005be8b8ffd46df1cc74ab1000f4} 
+char {\bfseries flags} () const
+\begin{DoxyCompactList}\small\item\em Flags for the array descriptor. \end{DoxyCompactList}\item 
+\Hypertarget{classdtype_ad64fba2390ef2bc7ed252a373a91e65d}\label{classdtype_ad64fba2390ef2bc7ed252a373a91e65d} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classdtype}{dtype}} \&o) const
+\item 
+\Hypertarget{classdtype_a2d4affc53754b84922bf96dd48774eba}\label{classdtype_a2d4affc53754b84922bf96dd48774eba} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classdtype}{dtype}} \&o) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classobject}{object}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classobject_af2b49798a85dc52371995578108d84e1}\label{classobject_af2b49798a85dc52371995578108d84e1} 
+{\bfseries PYBIND11\+\_\+\+DEPRECATED} (\char`\"{}Use reinterpret\+\_\+borrow$<$\mbox{\hyperlink{classobject}{object}}$>$() or reinterpret\+\_\+steal$<$\mbox{\hyperlink{classobject}{object}}$>$()\char`\"{}) object(\mbox{\hyperlink{classhandle}{handle}} h
+\item 
+\Hypertarget{classobject_a6537d8aee1fc94555af84e5bb9ecad21}\label{classobject_a6537d8aee1fc94555af84e5bb9ecad21} 
+{\bfseries object} (const \mbox{\hyperlink{classobject}{object}} \&o)
+\begin{DoxyCompactList}\small\item\em Copy constructor; always increases the reference count. \end{DoxyCompactList}\item 
+\Hypertarget{classobject_a3fc437bccb86b745433164bc3a04a2a4}\label{classobject_a3fc437bccb86b745433164bc3a04a2a4} 
+{\bfseries object} (\mbox{\hyperlink{classobject}{object}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move constructor; steals the object from {\ttfamily other} and preserves its reference count. \end{DoxyCompactList}\item 
+\Hypertarget{classobject_aecd824abdc96ff340acf4ea25a34d76d}\label{classobject_aecd824abdc96ff340acf4ea25a34d76d} 
+{\bfseries $\sim$object} ()
+\begin{DoxyCompactList}\small\item\em Destructor; automatically calls {\ttfamily \doxylink{classhandle_a4bd9642229b0b331172c37b02aa73eda}{handle\+::dec\+\_\+ref()}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classhandle}{handle}} \mbox{\hyperlink{classobject_a4ce66b1d44b37ae6b28e80228b075aae}{release}} ()
+\item 
+\Hypertarget{classobject_a600c71c7485ceee065a5b5e0b09ea7c6}\label{classobject_a600c71c7485ceee065a5b5e0b09ea7c6} 
+\mbox{\hyperlink{classobject}{object}} \& {\bfseries operator=} (const \mbox{\hyperlink{classobject}{object}} \&other)
+\item 
+\Hypertarget{classobject_a8c46c1e3db8b47af31e158e92ef7ec02}\label{classobject_a8c46c1e3db8b47af31e158e92ef7ec02} 
+\mbox{\hyperlink{classobject}{object}} \& {\bfseries operator=} (\mbox{\hyperlink{classobject}{object}} \&\&other) noexcept
+\item 
+\Hypertarget{classobject_acf93eb705d6539ef22e2c4a8eebc4c68}\label{classobject_acf93eb705d6539ef22e2c4a8eebc4c68} 
+{\footnotesize template$<$typename T $>$ }\\T {\bfseries cast} () const \&
+\item 
+\Hypertarget{classobject_a213e60c515e4e3273967df63e06db4e3}\label{classobject_a213e60c515e4e3273967df63e06db4e3} 
+{\footnotesize template$<$typename T $>$ }\\T {\bfseries cast} () \&\&
+\item 
+\Hypertarget{classobject_ad2db8259e6e585a4b61b9a9a9627b7f0}\label{classobject_ad2db8259e6e585a4b61b9a9a9627b7f0} 
+{\bfseries object} (\mbox{\hyperlink{classhandle}{handle}} h, \mbox{\hyperlink{structobject_1_1borrowed__t}{borrowed\+\_\+t}})
+\item 
+\Hypertarget{classobject_a8202a0f0f7fe12a68d8d5fb18e766b07}\label{classobject_a8202a0f0f7fe12a68d8d5fb18e766b07} 
+{\bfseries object} (\mbox{\hyperlink{classhandle}{handle}} h, \mbox{\hyperlink{structobject_1_1stolen__t}{stolen\+\_\+t}})
+\item 
+\Hypertarget{classobject_a6537d8aee1fc94555af84e5bb9ecad21}\label{classobject_a6537d8aee1fc94555af84e5bb9ecad21} 
+{\bfseries object} (const \mbox{\hyperlink{classobject}{object}} \&o)
+\item 
+\Hypertarget{classobject_aa7041d1decccacc5babf309e7af6f437}\label{classobject_aa7041d1decccacc5babf309e7af6f437} 
+{\bfseries object} (\mbox{\hyperlink{classobject}{object}} \&\&o) noexcept
+\item 
+\Hypertarget{classobject_a8019b27ad85765cefe16068dba721619}\label{classobject_a8019b27ad85765cefe16068dba721619} 
+{\bfseries object} (\mbox{\hyperlink{classhandle}{handle}} h, detail\+::borrow\+\_\+t)
+\item 
+\Hypertarget{classobject_a7cd3f4261f10d57c4d886c970b494c48}\label{classobject_a7cd3f4261f10d57c4d886c970b494c48} 
+{\bfseries object} (\mbox{\hyperlink{classhandle}{handle}} h, detail\+::steal\+\_\+t)
+\item 
+\Hypertarget{classobject_a4ce66b1d44b37ae6b28e80228b075aae}\label{classobject_a4ce66b1d44b37ae6b28e80228b075aae} 
+\mbox{\hyperlink{classhandle}{handle}} {\bfseries release} ()
+\item 
+\Hypertarget{classobject_afe96ea645c0995f31340eab82e6cf5fc}\label{classobject_afe96ea645c0995f31340eab82e6cf5fc} 
+void {\bfseries reset} ()
+\item 
+\Hypertarget{classobject_a6bbcf73d2a189f41fa72f24ffd87718a}\label{classobject_a6bbcf73d2a189f41fa72f24ffd87718a} 
+\mbox{\hyperlink{classobject}{object}} \& {\bfseries operator=} (const \mbox{\hyperlink{classobject}{object}} \&o)
+\item 
+\Hypertarget{classobject_ac6aa84a9fa71755ecfaccd60c5afe63a}\label{classobject_ac6aa84a9fa71755ecfaccd60c5afe63a} 
+\mbox{\hyperlink{classobject}{object}} \& {\bfseries operator=} (\mbox{\hyperlink{classobject}{object}} \&\&o) noexcept
+\item 
+\Hypertarget{classobject_acf93eb705d6539ef22e2c4a8eebc4c68}\label{classobject_acf93eb705d6539ef22e2c4a8eebc4c68} 
+{\footnotesize template$<$typename T $>$ }\\T {\bfseries cast} () const \&
+\item 
+\Hypertarget{classobject_a213e60c515e4e3273967df63e06db4e3}\label{classobject_a213e60c515e4e3273967df63e06db4e3} 
+{\footnotesize template$<$typename T $>$ }\\T {\bfseries cast} () \&\&
+\item 
+\Hypertarget{classobject_a4f5464fb468d2c0603780a7e3f4a2e80}\label{classobject_a4f5464fb468d2c0603780a7e3f4a2e80} 
+template$<$$>$ void {\bfseries cast} () const \&
+\item 
+\Hypertarget{classobject_a7646c5ad0fba1cd9c20329807678627c}\label{classobject_a7646c5ad0fba1cd9c20329807678627c} 
+template$<$$>$ void {\bfseries cast} () \&\&
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classhandle}{handle}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle_a53ba30cccfb1cabee421fd4ea555cf44}\label{classhandle_a53ba30cccfb1cabee421fd4ea555cf44} 
+{\bfseries handle} ()=default
+\begin{DoxyCompactList}\small\item\em The default constructor creates a handle with a {\ttfamily nullptr}-\/valued pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classhandle_a99eb912e1b9b823bc447980a16772584}\label{classhandle_a99eb912e1b9b823bc447980a16772584} 
+{\bfseries handle} (Py\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\begin{DoxyCompactList}\small\item\em Creates a {\ttfamily handle} from the given raw Python object pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classhandle_aa58c40063166c7cedefdc4db2d6fa608}\label{classhandle_aa58c40063166c7cedefdc4db2d6fa608} 
+Py\+Object $\ast$ {\bfseries ptr} () const
+\begin{DoxyCompactList}\small\item\em Return the underlying {\ttfamily Py\+Object $\ast$} pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classhandle_af314d063eb29074fcc64595d85b12cec}\label{classhandle_af314d063eb29074fcc64595d85b12cec} 
+Py\+Object $\ast$\& {\bfseries ptr} ()
+\item 
+const \mbox{\hyperlink{classhandle}{handle}} \& \mbox{\hyperlink{classhandle_a1a13c72238d8df4d42c1656e446fbfcb}{inc\+\_\+ref}} () const \&
+\item 
+const \mbox{\hyperlink{classhandle}{handle}} \& \mbox{\hyperlink{classhandle_a4bd9642229b0b331172c37b02aa73eda}{dec\+\_\+ref}} () const \&
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{classhandle_a8158ff37b59a73d48140ab4d718316b9}{cast}} () const
+\item 
+\Hypertarget{classhandle_a2c60694c460b2227f2a00c7b873d7436}\label{classhandle_a2c60694c460b2227f2a00c7b873d7436} 
+{\bfseries operator bool} () const
+\begin{DoxyCompactList}\small\item\em Return {\ttfamily true} when the {\ttfamily handle} wraps a valid Python object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classhandle_a7173e778869746c1c7a071e561c79974}{operator==}} (const \mbox{\hyperlink{classhandle}{handle}} \&h) const
+\item 
+\Hypertarget{classhandle_a71ecf002785a489fbe1db0aa6fb05bc5}\label{classhandle_a71ecf002785a489fbe1db0aa6fb05bc5} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classhandle}{handle}} \&h) const
+\item 
+\Hypertarget{classhandle_a48e44d8de9e6c178fa698fb19efe113d}\label{classhandle_a48e44d8de9e6c178fa698fb19efe113d} 
+bool {\bfseries check} () const
+\item 
+\Hypertarget{classhandle_a8d8ddc1eb26d5faa835438b3d624912b}\label{classhandle_a8d8ddc1eb26d5faa835438b3d624912b} 
+{\bfseries handle} (const \mbox{\hyperlink{classhandle}{handle}} \&)=default
+\item 
+\Hypertarget{classhandle_af8e7508e93ecb3c3bfde576c2d69644a}\label{classhandle_af8e7508e93ecb3c3bfde576c2d69644a} 
+{\bfseries handle} (\mbox{\hyperlink{classhandle}{handle}} \&\&) noexcept=default
+\item 
+\Hypertarget{classhandle_a6cdb23a5bab8776aec02ff2cf5773886}\label{classhandle_a6cdb23a5bab8776aec02ff2cf5773886} 
+\mbox{\hyperlink{classhandle}{handle}} \& {\bfseries operator=} (const \mbox{\hyperlink{classhandle}{handle}} \&)=default
+\item 
+\Hypertarget{classhandle_a944d176f5e3e2506594a0c9fd96cb412}\label{classhandle_a944d176f5e3e2506594a0c9fd96cb412} 
+\mbox{\hyperlink{classhandle}{handle}} \& {\bfseries operator=} (\mbox{\hyperlink{classhandle}{handle}} \&\&) noexcept=default
+\item 
+\Hypertarget{classhandle_a6eba271b4b2ce35f1495c7727e0cc6d0}\label{classhandle_a6eba271b4b2ce35f1495c7727e0cc6d0} 
+NB\+\_\+\+INLINE {\bfseries handle} (const Py\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\item 
+\Hypertarget{classhandle_a4d147dbc6f688ae89e9da0b5b32a9044}\label{classhandle_a4d147dbc6f688ae89e9da0b5b32a9044} 
+NB\+\_\+\+INLINE {\bfseries handle} (const Py\+Type\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\item 
+\Hypertarget{classhandle_a5e855ba3a9d0a6aba5bf18b7bbd9bb0e}\label{classhandle_a5e855ba3a9d0a6aba5bf18b7bbd9bb0e} 
+const \mbox{\hyperlink{classhandle}{handle}} \& {\bfseries inc\+\_\+ref} () const \&noexcept
+\item 
+\Hypertarget{classhandle_abb639296a79ca3a352f96772369aa0aa}\label{classhandle_abb639296a79ca3a352f96772369aa0aa} 
+const \mbox{\hyperlink{classhandle}{handle}} \& {\bfseries dec\+\_\+ref} () const \&noexcept
+\item 
+\Hypertarget{classhandle_a4c644cd0555bf262c7f720ee2fd2894e}\label{classhandle_a4c644cd0555bf262c7f720ee2fd2894e} 
+NB\+\_\+\+INLINE {\bfseries operator bool} () const
+\item 
+\Hypertarget{classhandle_a5da9ef2071680b765494b3ae8930ea35}\label{classhandle_a5da9ef2071680b765494b3ae8930ea35} 
+NB\+\_\+\+INLINE Py\+Object $\ast$ {\bfseries ptr} () const
+\item 
+\Hypertarget{classhandle_aefa5deb13fb8fe6df3ed0f222863ee7e}\label{classhandle_aefa5deb13fb8fe6df3ed0f222863ee7e} 
+template$<$$>$ void {\bfseries cast} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classdtype_a6229b80cad7e05a1701b1e4a9fbc089e}\label{classdtype_a6229b80cad7e05a1701b1e4a9fbc089e} 
+static \mbox{\hyperlink{classdtype}{dtype}} {\bfseries from\+\_\+args} (const \mbox{\hyperlink{classobject}{object}} \&\mbox{\hyperlink{classargs}{args}})
+\begin{DoxyCompactList}\small\item\em This is essentially the same as calling numpy.\+dtype(args) in Python. \end{DoxyCompactList}\item 
+\Hypertarget{classdtype_a06f34b2e5cc8a17f7038e870b9609191}\label{classdtype_a06f34b2e5cc8a17f7038e870b9609191} 
+{\footnotesize template$<$typename T $>$ }\\static \mbox{\hyperlink{classdtype}{dtype}} {\bfseries of} ()
+\begin{DoxyCompactList}\small\item\em Return dtype associated with a C++ type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classhandle}{handle}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle_ad5023e13824cc2337040b77c2fee7136}\label{classhandle_ad5023e13824cc2337040b77c2fee7136} 
+static NB\+\_\+\+INLINE bool {\bfseries check\+\_\+} (\mbox{\hyperlink{classhandle}{handle}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classdtype_ab8bf471c2283a8c735903597fbdecada}\label{classdtype_ab8bf471c2283a8c735903597fbdecada} 
+uint8\+\_\+t {\bfseries code} = 0
+\item 
+\Hypertarget{classdtype_aca59281826dee732d9b8932419144da1}\label{classdtype_aca59281826dee732d9b8932419144da1} 
+uint8\+\_\+t {\bfseries bits} = 0
+\item 
+\Hypertarget{classdtype_af388d38918f7ea73342edb4e7876c915}\label{classdtype_af388d38918f7ea73342edb4e7876c915} 
+uint16\+\_\+t {\bfseries lanes} = 0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes inherited from \mbox{\hyperlink{classobject}{object}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classobject_a4ebda2f2d08435f4d70d822908d7e431}\label{classobject_a4ebda2f2d08435f4d70d822908d7e431} 
+bool {\bfseries is\+\_\+borrowed}\+: \mbox{\hyperlink{classhandle}{handle}}(h) \{ if (is\+\_\+borrowed) \{ \mbox{\hyperlink{classhandle_a1a13c72238d8df4d42c1656e446fbfcb}{inc\+\_\+ref}}()
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+\doxysubsubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classobject}{object}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classobject_a20e57efa897c6305447a85f76ae4277f}\label{classobject_a20e57efa897c6305447a85f76ae4277f} 
+static constexpr auto {\bfseries Name} = detail\+::const\+\_\+name(\char`\"{}object\char`\"{})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classhandle}{handle}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle_af368188a08bca58fb6117ff0f694f26c}\label{classhandle_af368188a08bca58fb6117ff0f694f26c} 
+static constexpr auto {\bfseries Name} = detail\+::const\+\_\+name(\char`\"{}object\char`\"{})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes inherited from \mbox{\hyperlink{classhandle}{handle}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle_a149aca71a8096b92da4b26079269f64a}\label{classhandle_a149aca71a8096b92da4b26079269f64a} 
+Py\+Object $\ast$ {\bfseries m\+\_\+ptr} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classdtype_ac3a3aeed0b289bd6d8e3a0b10ead75ed}\label{classdtype_ac3a3aeed0b289bd6d8e3a0b10ead75ed} 
+\index{dtype@{dtype}!char\_@{char\_}}
+\index{char\_@{char\_}!dtype@{dtype}}
+\doxysubsubsection{\texorpdfstring{char\_()}{char\_()}}
+{\footnotesize\ttfamily char dtype\+::char\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Single-\/character for dtype\textquotesingle{}s type. For example, {\ttfamily float} is \textquotesingle{}f\textquotesingle{}, {\ttfamily double} \textquotesingle{}d\textquotesingle{}, {\ttfamily int} \textquotesingle{}i\textquotesingle{}, and {\ttfamily long} \textquotesingle{}l\textquotesingle{}. \Hypertarget{classdtype_a18ed8c10011953681620744776e2c984}\label{classdtype_a18ed8c10011953681620744776e2c984} 
+\index{dtype@{dtype}!kind@{kind}}
+\index{kind@{kind}!dtype@{dtype}}
+\doxysubsubsection{\texorpdfstring{kind()}{kind()}}
+{\footnotesize\ttfamily char dtype\+::kind (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Single-\/character code for dtype\textquotesingle{}s kind. For example, floating point types are \textquotesingle{}f\textquotesingle{} and integral types are \textquotesingle{}i\textquotesingle{}. 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+numpy.\+h\item 
+ndarray.\+h\end{DoxyCompactItemize}

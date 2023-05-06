@@ -1,0 +1,111 @@
+\hypertarget{classgeneric__iterator}{}\doxysection{generic\+\_\+iterator\texorpdfstring{$<$}{<} Policy \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classgeneric__iterator}\index{generic\_iterator$<$ Policy $>$@{generic\_iterator$<$ Policy $>$}}
+
+
+STL iterator template used for tuple, list, sequence and dict.  
+
+
+
+
+{\ttfamily \#include $<$pytypes.\+h$>$}
+
+Inheritance diagram for generic\+\_\+iterator\texorpdfstring{$<$}{<} Policy \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classgeneric__iterator}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classgeneric__iterator_a307cd6eddc16127eb873d76bcfc07233}\label{classgeneric__iterator_a307cd6eddc16127eb873d76bcfc07233} 
+using {\bfseries difference\+\_\+type} = ssize\+\_\+t
+\item 
+\Hypertarget{classgeneric__iterator_a49d278e5bd704d850843005e61b62883}\label{classgeneric__iterator_a49d278e5bd704d850843005e61b62883} 
+using {\bfseries iterator\+\_\+category} = typename Policy\+::iterator\+\_\+category
+\item 
+\Hypertarget{classgeneric__iterator_ae0024f1a05a39cbf0a2bc6f07b4357e0}\label{classgeneric__iterator_ae0024f1a05a39cbf0a2bc6f07b4357e0} 
+using {\bfseries value\+\_\+type} = typename Policy\+::value\+\_\+type
+\item 
+\Hypertarget{classgeneric__iterator_aed22b28672b10453f89e239e55277808}\label{classgeneric__iterator_aed22b28672b10453f89e239e55277808} 
+using {\bfseries reference} = typename Policy\+::reference
+\item 
+\Hypertarget{classgeneric__iterator_ab1e9fe365dec39e05180fb7e1c153f2e}\label{classgeneric__iterator_ab1e9fe365dec39e05180fb7e1c153f2e} 
+using {\bfseries pointer} = typename Policy\+::pointer
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classgeneric__iterator_a68c753fced7ae65e4469cb2f6932b3a5}\label{classgeneric__iterator_a68c753fced7ae65e4469cb2f6932b3a5} 
+{\bfseries generic\+\_\+iterator} (\mbox{\hyperlink{classhandle}{handle}} seq, ssize\+\_\+t index)
+\item 
+\Hypertarget{classgeneric__iterator_ad352d13be04ed66335ecac5ac5c96608}\label{classgeneric__iterator_ad352d13be04ed66335ecac5ac5c96608} 
+reference {\bfseries operator$\ast$} () const
+\item 
+\Hypertarget{classgeneric__iterator_aa0918f810b09d39e43ab8df9f3661379}\label{classgeneric__iterator_aa0918f810b09d39e43ab8df9f3661379} 
+reference {\bfseries operator\mbox{[}$\,$\mbox{]}} (difference\+\_\+type n) const
+\item 
+\Hypertarget{classgeneric__iterator_a9ea55fcb56d1658a69cb0eda30b8f6b5}\label{classgeneric__iterator_a9ea55fcb56d1658a69cb0eda30b8f6b5} 
+pointer {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classgeneric__iterator_af5273f92265e0556c542bae1fa589833}\label{classgeneric__iterator_af5273f92265e0556c542bae1fa589833} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} \& {\bfseries operator++} ()
+\item 
+\Hypertarget{classgeneric__iterator_aa1914566d242ab0db2be3e8e73e04ec2}\label{classgeneric__iterator_aa1914566d242ab0db2be3e8e73e04ec2} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} {\bfseries operator++} (int)
+\item 
+\Hypertarget{classgeneric__iterator_a55ee6fdc732008c2282ce95f19b06c7d}\label{classgeneric__iterator_a55ee6fdc732008c2282ce95f19b06c7d} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} \& {\bfseries operator-\/-\/} ()
+\item 
+\Hypertarget{classgeneric__iterator_a85925b5b5a1eb238a8bf1214f5ca5742}\label{classgeneric__iterator_a85925b5b5a1eb238a8bf1214f5ca5742} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} {\bfseries operator-\/-\/} (int)
+\item 
+\Hypertarget{classgeneric__iterator_a5296f6aa6b1d299f1aec0798b7bf8cb9}\label{classgeneric__iterator_a5296f6aa6b1d299f1aec0798b7bf8cb9} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} \& {\bfseries operator+=} (difference\+\_\+type n)
+\item 
+\Hypertarget{classgeneric__iterator_a1f28501bcf6001fa3e4b91d361b0dde7}\label{classgeneric__iterator_a1f28501bcf6001fa3e4b91d361b0dde7} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} \& {\bfseries operator-\/=} (difference\+\_\+type n)
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classgeneric__iterator_a33b5fcd097d1dcc87426b4f085094d30}\label{classgeneric__iterator_a33b5fcd097d1dcc87426b4f085094d30} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} {\bfseries operator+} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, difference\+\_\+type n)
+\item 
+\Hypertarget{classgeneric__iterator_a7f7c67731fffe592d503faa2ac6929e9}\label{classgeneric__iterator_a7f7c67731fffe592d503faa2ac6929e9} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} {\bfseries operator+} (difference\+\_\+type n, const \mbox{\hyperlink{classgeneric__iterator}{It}} \&b)
+\item 
+\Hypertarget{classgeneric__iterator_a040063b4d21cbdf70abffd52563067da}\label{classgeneric__iterator_a040063b4d21cbdf70abffd52563067da} 
+\mbox{\hyperlink{classgeneric__iterator}{It}} {\bfseries operator-\/} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, difference\+\_\+type n)
+\item 
+\Hypertarget{classgeneric__iterator_a970506dfb104f24039493a495ff45a2e}\label{classgeneric__iterator_a970506dfb104f24039493a495ff45a2e} 
+difference\+\_\+type {\bfseries operator-\/} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, const \mbox{\hyperlink{classgeneric__iterator}{It}} \&b)
+\item 
+\Hypertarget{classgeneric__iterator_a4c3a003f1490fd5ac1289f8b7c63565c}\label{classgeneric__iterator_a4c3a003f1490fd5ac1289f8b7c63565c} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, const \mbox{\hyperlink{classgeneric__iterator}{It}} \&b)
+\item 
+\Hypertarget{classgeneric__iterator_a00afb6c7a0f23ae65ef61656fa48dbc3}\label{classgeneric__iterator_a00afb6c7a0f23ae65ef61656fa48dbc3} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, const \mbox{\hyperlink{classgeneric__iterator}{It}} \&b)
+\item 
+\Hypertarget{classgeneric__iterator_a1ba57b963ed90488609924525018c0ba}\label{classgeneric__iterator_a1ba57b963ed90488609924525018c0ba} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, const \mbox{\hyperlink{classgeneric__iterator}{It}} \&b)
+\item 
+\Hypertarget{classgeneric__iterator_a86651101e3caeb262109b10e9393a6c6}\label{classgeneric__iterator_a86651101e3caeb262109b10e9393a6c6} 
+bool {\bfseries operator$>$} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, const \mbox{\hyperlink{classgeneric__iterator}{It}} \&b)
+\item 
+\Hypertarget{classgeneric__iterator_a089329cd2b3273776dcdd13b8cd1e396}\label{classgeneric__iterator_a089329cd2b3273776dcdd13b8cd1e396} 
+bool {\bfseries operator$>$=} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, const \mbox{\hyperlink{classgeneric__iterator}{It}} \&b)
+\item 
+\Hypertarget{classgeneric__iterator_a1fb0728d300b006b90032e11e3aafe76}\label{classgeneric__iterator_a1fb0728d300b006b90032e11e3aafe76} 
+bool {\bfseries operator$<$=} (const \mbox{\hyperlink{classgeneric__iterator}{It}} \&a, const \mbox{\hyperlink{classgeneric__iterator}{It}} \&b)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Policy$>$\newline
+class generic\+\_\+iterator$<$ Policy $>$}
+STL iterator template used for tuple, list, sequence and dict. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+pytypes.\+h\end{DoxyCompactItemize}

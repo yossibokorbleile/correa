@@ -1,0 +1,69 @@
+\hypertarget{classcustom__allocator}{}\doxysection{custom\+\_\+allocator\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classcustom__allocator}\index{custom\_allocator$<$ T $>$@{custom\_allocator$<$ T $>$}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcustom__allocator_1_1rebind}{rebind}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcustom__allocator_a36de9c24cded5c2b6dcd59f8fa7cb862}\label{classcustom__allocator_a36de9c24cded5c2b6dcd59f8fa7cb862} 
+using {\bfseries value\+\_\+type} = T
+\item 
+\Hypertarget{classcustom__allocator_a7c9e7d36c897e1a0b2b4e1f3252276b7}\label{classcustom__allocator_a7c9e7d36c897e1a0b2b4e1f3252276b7} 
+using {\bfseries pointer} = T $\ast$
+\item 
+\Hypertarget{classcustom__allocator_af165b81a96cfdfbbd58c2c14d5db2d7c}\label{classcustom__allocator_af165b81a96cfdfbbd58c2c14d5db2d7c} 
+using {\bfseries const\+\_\+pointer} = const T $\ast$
+\item 
+\Hypertarget{classcustom__allocator_af754ddfe2a1ef17af44cfc0dbee22dbb}\label{classcustom__allocator_af754ddfe2a1ef17af44cfc0dbee22dbb} 
+using {\bfseries reference} = T \&
+\item 
+\Hypertarget{classcustom__allocator_a71e86564d3f749e70b2c6b4d36299d04}\label{classcustom__allocator_a71e86564d3f749e70b2c6b4d36299d04} 
+using {\bfseries const\+\_\+reference} = const T \&
+\item 
+\Hypertarget{classcustom__allocator_adad8003a6643fb5a526e045577a1fd85}\label{classcustom__allocator_adad8003a6643fb5a526e045577a1fd85} 
+using {\bfseries size\+\_\+type} = std\+::size\+\_\+t
+\item 
+\Hypertarget{classcustom__allocator_a343b46e23696a737e7e1ee76c5992a07}\label{classcustom__allocator_a343b46e23696a737e7e1ee76c5992a07} 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+\Hypertarget{classcustom__allocator_aef8e5b6b6ae96b4f4272e373cc61042b}\label{classcustom__allocator_aef8e5b6b6ae96b4f4272e373cc61042b} 
+using {\bfseries propagate\+\_\+on\+\_\+container\+\_\+move\+\_\+assignment} = std\+::true\+\_\+type
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcustom__allocator_ab503c4bc8b9b192c6d3f8a2be1d25fdf}\label{classcustom__allocator_ab503c4bc8b9b192c6d3f8a2be1d25fdf} 
+{\bfseries custom\+\_\+allocator} (const \mbox{\hyperlink{classcustom__allocator}{custom\+\_\+allocator}} \&)=default
+\item 
+\Hypertarget{classcustom__allocator_a4cf75d11219139c6a46176804d8f47ac}\label{classcustom__allocator_a4cf75d11219139c6a46176804d8f47ac} 
+{\footnotesize template$<$typename U $>$ }\\{\bfseries custom\+\_\+allocator} (const \mbox{\hyperlink{classcustom__allocator}{custom\+\_\+allocator}}$<$ U $>$ \&)
+\item 
+\Hypertarget{classcustom__allocator_a71e09e88b9e8f754cefea9a1e4cea4d0}\label{classcustom__allocator_a71e09e88b9e8f754cefea9a1e4cea4d0} 
+pointer {\bfseries address} (reference x) const noexcept
+\item 
+\Hypertarget{classcustom__allocator_a548167d5c6adf0e1bb5d85db592c0a8b}\label{classcustom__allocator_a548167d5c6adf0e1bb5d85db592c0a8b} 
+const\+\_\+pointer {\bfseries address} (const\+\_\+reference x) const noexcept
+\item 
+\Hypertarget{classcustom__allocator_a0c72270ff5e01551083f13b6400eb6ab}\label{classcustom__allocator_a0c72270ff5e01551083f13b6400eb6ab} 
+pointer {\bfseries allocate} (size\+\_\+type n, const void $\ast$=0)
+\item 
+\Hypertarget{classcustom__allocator_ab0d2dc8aa6ade63049b4a853d3e47423}\label{classcustom__allocator_ab0d2dc8aa6ade63049b4a853d3e47423} 
+void {\bfseries deallocate} (T $\ast$p, size\+\_\+type)
+\item 
+\Hypertarget{classcustom__allocator_a685031dbeabbe5e04c703e1a39a8a4cb}\label{classcustom__allocator_a685031dbeabbe5e04c703e1a39a8a4cb} 
+size\+\_\+type {\bfseries max\+\_\+size} () const noexcept
+\item 
+\Hypertarget{classcustom__allocator_a868a7af2f368ed5a4c5d2372aee5ba5e}\label{classcustom__allocator_a868a7af2f368ed5a4c5d2372aee5ba5e} 
+{\footnotesize template$<$typename U , typename... Args$>$ }\\void {\bfseries construct} (U $\ast$p, Args \&\&... \mbox{\hyperlink{classargs}{args}})
+\item 
+\Hypertarget{classcustom__allocator_ade87c069d5af6701b2fc6772b167ee89}\label{classcustom__allocator_ade87c069d5af6701b2fc6772b167ee89} 
+{\footnotesize template$<$typename U $>$ }\\void {\bfseries destroy} (U $\ast$p)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+custom\+\_\+allocator\+\_\+tests.\+cpp\end{DoxyCompactItemize}

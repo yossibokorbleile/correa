@@ -1,0 +1,31 @@
+\hypertarget{structdeleter}{}\doxysection{deleter\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Struct Template Reference}
+\label{structdeleter}\index{deleter$<$ T $>$@{deleter$<$ T $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structdeleter_a8b009d1e9e6456d34e9d6acb6038e0c1}\label{structdeleter_a8b009d1e9e6456d34e9d6acb6038e0c1} 
+{\bfseries deleter} ()=default
+\begin{DoxyCompactList}\small\item\em Instance should be cleared using a delete expression. \end{DoxyCompactList}\item 
+\Hypertarget{structdeleter_a9235bbde694bd0bbbb28b209d334e7a3}\label{structdeleter_a9235bbde694bd0bbbb28b209d334e7a3} 
+{\bfseries deleter} (\mbox{\hyperlink{classhandle}{handle}} h)
+\begin{DoxyCompactList}\small\item\em Instance owned by Python, reduce reference count upon deletion. \end{DoxyCompactList}\item 
+\Hypertarget{structdeleter_aeb22ee7c2461f0cc65763c16a00b550a}\label{structdeleter_aeb22ee7c2461f0cc65763c16a00b550a} 
+bool {\bfseries owned\+\_\+by\+\_\+python} () const
+\begin{DoxyCompactList}\small\item\em Does Python own storage of the underlying object. \end{DoxyCompactList}\item 
+\Hypertarget{structdeleter_a542cb9c01b5f5f2f57ce909427c10cd5}\label{structdeleter_a542cb9c01b5f5f2f57ce909427c10cd5} 
+bool {\bfseries owned\+\_\+by\+\_\+cpp} () const
+\begin{DoxyCompactList}\small\item\em Does C++ own storage of the underlying object. \end{DoxyCompactList}\item 
+\Hypertarget{structdeleter_ae8cba7250031ca36dcb0ef8f853e2e25}\label{structdeleter_ae8cba7250031ca36dcb0ef8f853e2e25} 
+void {\bfseries operator()} (void $\ast$p) noexcept
+\begin{DoxyCompactList}\small\item\em Perform the requested deletion operation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structdeleter_ab556a82a8e090740a0f1a45ccf7d54be}\label{structdeleter_ab556a82a8e090740a0f1a45ccf7d54be} 
+Py\+Object $\ast$ {\bfseries o} \{nullptr\}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+unique\+\_\+ptr.\+h\end{DoxyCompactItemize}

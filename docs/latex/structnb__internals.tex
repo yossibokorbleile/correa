@@ -1,0 +1,58 @@
+\hypertarget{structnb__internals}{}\doxysection{nb\+\_\+internals Struct Reference}
+\label{structnb__internals}\index{nb\_internals@{nb\_internals}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structnb__internals_ae1b96671f8363edc29db5b606b7cac2f}\label{structnb__internals_ae1b96671f8363edc29db5b606b7cac2f} 
+Py\+Object $\ast$ {\bfseries nb\+\_\+module}
+\begin{DoxyCompactList}\small\item\em Internal nanobind module. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_a8ffe90149a37ea44f8db1d52db826768}\label{structnb__internals_a8ffe90149a37ea44f8db1d52db826768} 
+Py\+Type\+Object $\ast$ {\bfseries nb\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Registered metaclasses for nanobind classes and enumerations. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_ac60f4bec617108569c05ce61f97dd85f}\label{structnb__internals_ac60f4bec617108569c05ce61f97dd85f} 
+Py\+Type\+Object $\ast$ {\bfseries nb\+\_\+enum}
+\item 
+\Hypertarget{structnb__internals_af102c91dedc523d06ed4a77137bed6f7}\label{structnb__internals_af102c91dedc523d06ed4a77137bed6f7} 
+Py\+Type\+Object $\ast$ {\bfseries nb\+\_\+func}
+\begin{DoxyCompactList}\small\item\em Types of nanobind functions and methods. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_ac91ce92f8a7076004d77cb19c1d0e979}\label{structnb__internals_ac91ce92f8a7076004d77cb19c1d0e979} 
+Py\+Type\+Object $\ast$ {\bfseries nb\+\_\+method}
+\item 
+\Hypertarget{structnb__internals_ac244160200af06f41c184108748976c1}\label{structnb__internals_ac244160200af06f41c184108748976c1} 
+Py\+Type\+Object $\ast$ {\bfseries nb\+\_\+bound\+\_\+method}
+\item 
+\Hypertarget{structnb__internals_a69615339e2783ba1eb9acab7a3a8fad1}\label{structnb__internals_a69615339e2783ba1eb9acab7a3a8fad1} 
+Py\+Type\+Object $\ast$ {\bfseries nb\+\_\+static\+\_\+property}
+\begin{DoxyCompactList}\small\item\em Property variant for static attributes. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_a2b786660145ef2386866a6f38df9093f}\label{structnb__internals_a2b786660145ef2386866a6f38df9093f} 
+bool {\bfseries nb\+\_\+static\+\_\+property\+\_\+enabled}
+\item 
+\Hypertarget{structnb__internals_af6b391a42e712d1166a1a4a21a160ff6}\label{structnb__internals_af6b391a42e712d1166a1a4a21a160ff6} 
+Py\+Type\+Object $\ast$ {\bfseries nb\+\_\+ndarray}
+\begin{DoxyCompactList}\small\item\em N-\/dimensional array wrapper. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_a2b132c36a7732a39e8ef4cf4d9d2f537}\label{structnb__internals_a2b132c36a7732a39e8ef4cf4d9d2f537} 
+\mbox{\hyperlink{classtsl_1_1robin__map}{nb\+\_\+instance\+\_\+map}} {\bfseries inst\+\_\+c2p}
+\begin{DoxyCompactList}\small\item\em Instance pointer -\/\texorpdfstring{$>$}{>} Python object mapping. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_a0669b92905b02da5972f1761b6bd5ca1}\label{structnb__internals_a0669b92905b02da5972f1761b6bd5ca1} 
+\mbox{\hyperlink{classtsl_1_1robin__map}{nb\+\_\+type\+\_\+map}} {\bfseries type\+\_\+c2p}
+\begin{DoxyCompactList}\small\item\em C++ type -\/\texorpdfstring{$>$}{>} Python type mapping. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_a86f0d97dc6cfe0381bad5fa24948449b}\label{structnb__internals_a86f0d97dc6cfe0381bad5fa24948449b} 
+\mbox{\hyperlink{classtsl_1_1robin__map}{py\+\_\+map}}$<$ void $\ast$, \mbox{\hyperlink{classtsl_1_1robin__set}{keep\+\_\+alive\+\_\+set}}, \mbox{\hyperlink{structptr__hash}{ptr\+\_\+hash}} $>$ {\bfseries keep\+\_\+alive}
+\begin{DoxyCompactList}\small\item\em Dictionary of sets storing \doxylink{structkeep__alive}{keep\+\_\+alive} references. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_ab6e1b49d5ff94af32daa27ada7874edd}\label{structnb__internals_ab6e1b49d5ff94af32daa27ada7874edd} 
+\mbox{\hyperlink{classtsl_1_1robin__set}{py\+\_\+set}}$<$ void $\ast$, \mbox{\hyperlink{structptr__hash}{ptr\+\_\+hash}} $>$ {\bfseries funcs}
+\begin{DoxyCompactList}\small\item\em nb\+\_\+func/meth instance list for leak reporting \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_ae52f5a3b2aa4e264a7b602a536f63205}\label{structnb__internals_ae52f5a3b2aa4e264a7b602a536f63205} 
+std\+::vector$<$ std\+::pair$<$ exception\+\_\+translator, void $\ast$ $>$ $>$ {\bfseries exception\+\_\+translators}
+\begin{DoxyCompactList}\small\item\em Registered C++ -\/\texorpdfstring{$>$}{>} Python exception translators. \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_a0a9dc9994a0993f91475ccb07a709add}\label{structnb__internals_a0a9dc9994a0993f91475ccb07a709add} 
+bool {\bfseries print\+\_\+leak\+\_\+warnings} = true
+\begin{DoxyCompactList}\small\item\em Should nanobind print leak warnings on exit? \end{DoxyCompactList}\item 
+\Hypertarget{structnb__internals_a3c20c6d5634fefe89f15ed1468e8234c}\label{structnb__internals_a3c20c6d5634fefe89f15ed1468e8234c} 
+bool {\bfseries print\+\_\+implicit\+\_\+cast\+\_\+warnings} = true
+\begin{DoxyCompactList}\small\item\em Should nanobind print warnings after implicit cast failures? \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+nb\+\_\+internals.\+h\end{DoxyCompactItemize}

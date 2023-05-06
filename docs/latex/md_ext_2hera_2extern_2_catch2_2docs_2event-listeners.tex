@@ -1,0 +1,36 @@
+\label{index_top}%
+\Hypertarget{index_top}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2event-listeners_autotoc_md130}{}\doxysection{Event Listeners}\label{md_ext_2hera_2extern_2_catch2_2docs_2event-listeners_autotoc_md130}
+An event listener is a bit like a reporter, in that it responds to various reporter events in Catch2, but it is not expected to write any output. Instead, an event listener performs actions within the test process, such as performing global initialization (e.\+g. of a C library), or cleaning out in-\/memory logs if they are not needed (the test case passed).
+
+Unlike reporters, each registered event listener is always active. Event listeners are always notified before reporter(s).
+
+To write your own event listener, you should derive from {\ttfamily Catch\+::\+Test\+Event\+Listener\+Base}, as it provides empty stubs for all reporter events, allowing you to only override events you care for. Afterwards you have to register it with Catch2 using {\ttfamily CATCH\+\_\+\+REGISTER\+\_\+\+LISTENER} macro, so that Catch2 knows about it and instantiates it before running tests.
+
+\doxylink{struct_example}{Example} event listener\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <catch2/reporters/catch\_reporter\_event\_listener.hpp>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <catch2/reporters/catch\_reporter\_registrars.hpp>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{class\ }testRunListener\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_catch_1_1_event_listener_base}{Catch::EventListenerBase}}\ \{}
+\DoxyCodeLine{\textcolor{keyword}{public}:}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{using\ }Catch::EventListenerBase::EventListenerBase;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_catch_1_1_event_listener_base_a49b422668f34cc02d5f5ebeed3e275e0}{testRunStarting}}(\mbox{\hyperlink{struct_catch_1_1_test_run_info}{Catch::TestRunInfo}}\ \textcolor{keyword}{const}\&)\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ lib\_foo\_init();}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{CATCH\_REGISTER\_LISTENER(testRunListener)}
+
+\end{DoxyCode}
+
+
+{\itshape Note that you should not use any assertion macros within a Listener!}
+
+\href{reporter-events.md\#top}{\texttt{ You can find the list of events that the listeners can react to on its own page}}.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

@@ -8,7 +8,7 @@
 */
 
 /*!
-* @file _correa,cppp
+* @file _correa.cpp
 * @brief create bindings for Correa.
 */
 

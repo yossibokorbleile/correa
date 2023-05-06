@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['inout_0',['INOUT',['../classcorrea_1_1_i_n_o_u_t.html',1,'correa']]]
+  ['frechet_0',['Frechet',['../classcorrea_1_1_frechet.html',1,'correa']]]
 ];

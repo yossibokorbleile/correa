@@ -10,8 +10,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-option(CORREA_BUILD_EXECUTABLES "build executables "OFF)
-
+option(CORREA_BUILD_EXECUTABLES "build executables "OFF)	
 option(CORREA_BUILD_PYTHON_BINDINGS "build python bindings" ON)
 # Boost
 find_package(Boost REQUIRED)

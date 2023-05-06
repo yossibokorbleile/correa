@@ -1,0 +1,18 @@
+\hypertarget{_x25-_listener_can_ask_for_captured_stdout_8cpp}{}\doxysection{X25-\/\+Listener\+Can\+Ask\+For\+Captured\+Stdout.cpp File Reference}
+\label{_x25-_listener_can_ask_for_captured_stdout_8cpp}\index{X25-\/ListenerCanAskForCapturedStdout.cpp@{X25-\/ListenerCanAskForCapturedStdout.cpp}}
+{\ttfamily \#include $<$catch2/catch\+\_\+test\+\_\+macros.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+event\+\_\+listener.\+hpp$>$}\newline
+{\ttfamily \#include $<$catch2/reporters/catch\+\_\+reporter\+\_\+registrars.\+hpp$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_x25-_listener_can_ask_for_captured_stdout_8cpp_af8a8d2e95d78c2307ac17ec61a1b8d94}\label{_x25-_listener_can_ask_for_captured_stdout_8cpp_af8a8d2e95d78c2307ac17ec61a1b8d94} 
+{\bfseries TEST\+\_\+\+CASE} (\char`\"{}Writes to stdout\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Registers custom listener that asks for captured stdout/err
+
+Running the binary with this listener, and asking for multiple {\itshape noncapturing} reporters (one would be sufficient, but that would also mean depending on implementation details inside Catch2\textquotesingle{}s handling of listeners), we check that the listener gets redirected stdout, even though the reporters didn\textquotesingle{}t ask for it. 

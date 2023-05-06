@@ -1,0 +1,123 @@
+\label{index_top}%
+\Hypertarget{index_top}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md472}{}\doxysection{Reporters}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md472}
+Reporters are a customization point for most of Catch2\textquotesingle{}s output, e.\+g. formatting and writing out \href{reporter-events.md\#top}{\texttt{ assertions (whether passing or failing), sections, test cases, benchmarks, and so on}}.
+
+Catch2 comes with a bunch of reporters by default (currently 8), and you can also write your own reporter. Because multiple reporters can be active at the same time, your own reporters do not even have to handle all reporter event, just the ones you are interested in, e.\+g. benchmarks.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md473}{}\doxysubsection{Using different reporters}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md473}
+You can see which reporters are available by running the test binary with {\ttfamily -\/-\/list-\/reporters}. You can then pick one of them with the \href{command-line.md\#choosing-a-reporter-to-use}{\texttt{ {\ttfamily -\/r}, {\ttfamily -\/-\/reporter} option}}, followed by the name of the desired reporter, like so\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/reporter\ xml}
+
+\end{DoxyCode}
+
+
+You can also select multiple reporters to be used at the same time. In that case you should read the \doxylink{md_ext_2hera_2extern_2_catch2_2docs_2reporters_multiple-reporters}{section on using multiple reporters} to avoid any surprises from doing so.
+
+\label{md_ext_2hera_2extern_2_catch2_2docs_2reporters_multiple-reporters}%
+\Hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporters_multiple-reporters}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md474}{}\doxysubsection{Using multiple reporters}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md474}
+\begin{quote}
+Support for having multiple parallel reporters was \href{https://github.com/catchorg/Catch2/pull/2183}{\texttt{ introduced}} in Catch2 X.\+Y.\+Z \end{quote}
+Catch2 supports using multiple reporters at the same time while having them write into different destinations. The two main uses of this are
+
+
+\begin{DoxyItemize}
+\item having both human-\/friendly and machine-\/parseable (e.\+g. in JUnit format) output from one run of binary
+\item having \char`\"{}partial\char`\"{} reporters that are highly specialized, e.\+g. having one reporter that writes out benchmark results as markdown tables and does nothing else, while also having standard testing output separately
+\end{DoxyItemize}
+
+Specifying multiple reporter looks like this\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/-\/reporter\ console::-\/\ -\/-\/reporter\ JUnit::result-\/junit.xml}
+
+\end{DoxyCode}
+
+
+Using multiple reporters (or one reporter and one-\/or-\/more \href{event-listener.md\#top}{\texttt{ event listeners}}) can have surprisingly complex semantics when using customization points provided to reporters by Catch2, namely capturing stdout/stderr from test cases.
+
+As long as at least one reporter (or listener) asks Catch2 to capture stdout/stderr, captured stdout and stderr will be available to all reporters and listeners.
+
+Because this might be surprising to the users, if at least one active {\itshape reporter} is non-\/capturing, then Catch2 tries to roughly emulate non-\/capturing behaviour by printing out the captured stdout/stderr just before {\ttfamily test\+Case\+Partial\+Ended} event is sent out to the active reporters and listeners. This means that stdout/stderr is no longer printed out from tests as it is being written, but instead it is written out in batch after each runthrough of a test case is finished.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md475}{}\doxysubsection{Writing your own reporter}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md475}
+You can also write your own custom reporter and tell Catch2 to use it. When writing your reporter, you have two options\+:
+
+
+\begin{DoxyItemize}
+\item Derive from {\ttfamily \doxylink{struct_catch_1_1_i_streaming_reporter}{Catch\+::\+IStreaming\+Reporter}}. When doing this, you will have to provide handling for all \href{reporter-events.md\#top}{\texttt{ reporter events}}.
+\item Derive from one of the provided utility reporter bases in Catch2.
+\end{DoxyItemize}
+
+Generally we recommend doing the latter, as it is less work.
+
+Apart from overriding handling of the individual reporter events, reporters have access to some extra customization points, described below.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md476}{}\doxysubsubsection{Utility reporter bases}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md476}
+Catch2 currently provides two utility reporter bases\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily \doxylink{class_catch_1_1_streaming_reporter_base}{Catch\+::\+Streaming\+Reporter\+Base}}
+\item {\ttfamily \doxylink{class_catch_1_1_cumulative_reporter_base}{Catch\+::\+Cumulative\+Reporter\+Base}}
+\end{DoxyItemize}
+
+{\ttfamily Streaming\+Reporter\+Base} is useful for reporters that can format and write out the events as they come in. It provides (usually empty) implementation for all reporter events, and if you let it handle the relevant events, it also handles storing information about active test run and test case.
+
+{\ttfamily Cumulative\+Reporter\+Base} is a base for reporters that need to see the whole test run, before they can start writing the output, such as the JUnit and Sonar\+Qube reporters. This post-\/facto approach requires the assertions to be stringified when it is finished, so that the assertion can be written out later. Because the stringification can be expensive, and not all cumulative reporters need the assertions, this base provides customization point to change whether the assertions are saved or not, separate for passing and failing assertions.
+
+{\itshape Generally we recommend that if you override a member function from either of the bases, you call into the base\textquotesingle{}s implementation first. This is not necessarily in all cases, but it is safer and easier.}
+
+Writing your own reporter then looks like this\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <catch2/reporters/catch\_reporter\_streaming\_base.hpp>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <catch2/catch\_test\_case\_info.hpp>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <catch2/reporters/catch\_reporter\_registrars.hpp>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{class\ }\mbox{\hyperlink{class_partial_reporter}{PartialReporter}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_catch_1_1_streaming_reporter_base}{Catch::StreamingReporterBase}}\ \{}
+\DoxyCodeLine{\textcolor{keyword}{public}:}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{using\ }StreamingReporterBase::StreamingReporterBase;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{static}\ std::string\ getDescription()\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Reporter\ for\ testing\ TestCasePartialStarting/Ended\ events"{}};}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_partial_reporter_a54b22abca926ce4dcd0447c2524d1771}{testCasePartialStarting}}(\mbox{\hyperlink{struct_catch_1_1_test_case_info}{Catch::TestCaseInfo}}\ \textcolor{keyword}{const}\&\ testInfo,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ partNumber)\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}TestCaseStartingPartial:\ "{}}\ <<\ testInfo.name\ <<\ \textcolor{charliteral}{'\#'}\ <<\ partNumber\ <<\ \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_partial_reporter_a7113defdea5894ef0704a9b02d51b0bc}{testCasePartialEnded}}(\mbox{\hyperlink{struct_catch_1_1_test_case_stats}{Catch::TestCaseStats}}\ \textcolor{keyword}{const}\&\ testCaseStats,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ partNumber)\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}TestCasePartialEnded:\ "{}}\ <<\ testCaseStats.testInfo-\/>name\ <<\ \textcolor{charliteral}{'\#'}\ <<\ partNumber\ <<\ \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{CATCH\_REGISTER\_REPORTER(\textcolor{stringliteral}{"{}partial"{}},\ \mbox{\hyperlink{class_partial_reporter}{PartialReporter}})}
+
+\end{DoxyCode}
+
+
+This create a simple reporter that responds to {\ttfamily test\+Case\+Partial$\ast$} events, and calls itself \char`\"{}partial\char`\"{} reporter, so it can be invoked with {\ttfamily -\/-\/reporter partial} command line flag.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md477}{}\doxysubsubsection{$<$tt$>$\+Reporter\+Preferences$<$/tt$>$}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md477}
+Each reporter instance contains instance of {\ttfamily Reporter\+Preferences}, a type that holds flags for the behaviour of Catch2 when this reporter run. Currently there are two customization options\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily should\+Redirect\+Std\+Out} -\/ whether the reporter wants to handle writes to stdout/stderr from user code, or not. This is useful for reporters that output machine-\/parseable output, e.\+g. the JUnit reporter, or the XML reporter.
+\item {\ttfamily should\+Report\+All\+Assertions} -\/ whether the reporter wants to handle {\ttfamily assertion\+Ended} events for passing assertions as well as failing assertions. Usually reporters do not report successful assertions and don\textquotesingle{}t need them for their output, but sometimes the desired output format includes passing assertions even without the {\ttfamily -\/s} flag.
+\end{DoxyItemize}\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md478}{}\doxysubsubsection{Other expected functionality of a reporter}\label{md_ext_2hera_2extern_2_catch2_2docs_2reporters_autotoc_md478}
+When writing a custom reporter, there are few more things that you should keep in mind. These are not important for correctness, but they are important for the reporter to work {\itshape nicely}.
+
+
+\begin{DoxyItemize}
+\item Catch2 provides a simple verbosity option for users. There are three verbosity levels, \char`\"{}quiet\char`\"{}, \char`\"{}normal\char`\"{}, and \char`\"{}high\char`\"{}, and if it makes sense for reporter\textquotesingle{}s output format, it should respond to these by changing what, and how much, it writes out.
+\item Catch2 operates with an rng-\/seed. Knowing what seed a test run had is important if you want to replicate it, so your reporter should report the rng-\/seed, if at all possible given the target output format.
+\item Catch2 also operates with test filters, or test specs. If a filter is present, you should also report the filter, if at all possible given the target output format.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

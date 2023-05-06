@@ -1,0 +1,83 @@
+\hypertarget{structarg}{}\doxysection{arg Struct Reference}
+\label{structarg}\index{arg@{arg}}
+
+
+{\ttfamily \#include $<$cast.\+h$>$}
+
+Inheritance diagram for arg\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structarg}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr \mbox{\hyperlink{structarg_ae6211325dd7551f254b0428f9e1e4e4c}{arg}} (const char $\ast$\mbox{\hyperlink{structname}{name}}=nullptr)
+\item 
+\Hypertarget{structarg_af21c066dfb7fe62ff952a8ea4713b7ed}\label{structarg_af21c066dfb7fe62ff952a8ea4713b7ed} 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{structarg__v}{arg\+\_\+v}} {\bfseries operator=} (T \&\&value) const
+\begin{DoxyCompactList}\small\item\em Assign a value to this argument. \end{DoxyCompactList}\item 
+\Hypertarget{structarg_a0cf3b854adaacfc1e939e1aa3671d8f5}\label{structarg_a0cf3b854adaacfc1e939e1aa3671d8f5} 
+\mbox{\hyperlink{structarg}{arg}} \& {\bfseries noconvert} (bool flag=true)
+\begin{DoxyCompactList}\small\item\em Indicate that the type should not be converted in the type caster. \end{DoxyCompactList}\item 
+\Hypertarget{structarg_a2bbae810b7d03dc2e7c04388d32b3307}\label{structarg_a2bbae810b7d03dc2e7c04388d32b3307} 
+\mbox{\hyperlink{structarg}{arg}} \& {\bfseries none} (bool flag=true)
+\begin{DoxyCompactList}\small\item\em Indicates that the argument should/shouldn\textquotesingle{}t allow None (e.\+g. for nullable pointer args) \end{DoxyCompactList}\item 
+\Hypertarget{structarg_aa320193432ad05e581b6b46eb382d4b4}\label{structarg_aa320193432ad05e581b6b46eb382d4b4} 
+NB\+\_\+\+INLINE constexpr {\bfseries arg} (const char $\ast$\mbox{\hyperlink{structname}{name}}=nullptr)
+\item 
+\Hypertarget{structarg_af9934cd9bb5ece032ab162e1cb2c6058}\label{structarg_af9934cd9bb5ece032ab162e1cb2c6058} 
+{\footnotesize template$<$typename T $>$ }\\NB\+\_\+\+INLINE \mbox{\hyperlink{structarg__v}{arg\+\_\+v}} {\bfseries operator=} (T \&\&value) const
+\item 
+\Hypertarget{structarg_a7c47ad34c2b34f9bd15624b5cda25ba0}\label{structarg_a7c47ad34c2b34f9bd15624b5cda25ba0} 
+NB\+\_\+\+INLINE \mbox{\hyperlink{structarg}{arg}} \& {\bfseries noconvert} (bool value=true)
+\item 
+\Hypertarget{structarg_a547cd7c2f66f013ac5b4c9387285c7ec}\label{structarg_a547cd7c2f66f013ac5b4c9387285c7ec} 
+NB\+\_\+\+INLINE \mbox{\hyperlink{structarg}{arg}} \& {\bfseries none} (bool value=true)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structarg_a0eb04285a0562de59c9b4c1ec1c252b5}\label{structarg_a0eb04285a0562de59c9b4c1ec1c252b5} 
+const char $\ast$ {\bfseries name}
+\begin{DoxyCompactList}\small\item\em If non-\/null, this is a named kwargs argument. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structarg_af69a71cd0c34cbce3ef8705e7b7da817}{flag\+\_\+noconvert}}\+: 1
+\item 
+\Hypertarget{structarg_a57121005d089a7b05536d320ebc9d32f}\label{structarg_a57121005d089a7b05536d320ebc9d32f} 
+bool {\bfseries flag\+\_\+none}\+: 1
+\begin{DoxyCompactList}\small\item\em If set (the default), allow None to be passed to this argument. \end{DoxyCompactList}\item 
+\Hypertarget{structarg_aaf8a07d4734822d2d4955782cc2205c8}\label{structarg_aaf8a07d4734822d2d4955782cc2205c8} 
+uint8\+\_\+t {\bfseries convert\+\_\+} \{ true \}
+\item 
+\Hypertarget{structarg_a629c03f9856817897962cd9d7624f558}\label{structarg_a629c03f9856817897962cd9d7624f558} 
+bool {\bfseries none\+\_\+} \{ false \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Annotation for arguments 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structarg_ae6211325dd7551f254b0428f9e1e4e4c}\label{structarg_ae6211325dd7551f254b0428f9e1e4e4c} 
+\index{arg@{arg}!arg@{arg}}
+\index{arg@{arg}!arg@{arg}}
+\doxysubsubsection{\texorpdfstring{arg()}{arg()}}
+{\footnotesize\ttfamily constexpr arg\+::arg (\begin{DoxyParamCaption}\item[{const char $\ast$}]{name = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [constexpr]}}
+
+Constructs an argument with the name of the argument; if null or omitted, this is a positional argument. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structarg_af69a71cd0c34cbce3ef8705e7b7da817}\label{structarg_af69a71cd0c34cbce3ef8705e7b7da817} 
+\index{arg@{arg}!flag\_noconvert@{flag\_noconvert}}
+\index{flag\_noconvert@{flag\_noconvert}!arg@{arg}}
+\doxysubsubsection{\texorpdfstring{flag\_noconvert}{flag\_noconvert}}
+{\footnotesize\ttfamily bool arg\+::flag\+\_\+noconvert}
+
+If set, do not allow conversion (requires a supporting type caster!) 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+cast.\+h\item 
+nb\+\_\+attr.\+h\item 
+nb\+\_\+cast.\+h\end{DoxyCompactItemize}

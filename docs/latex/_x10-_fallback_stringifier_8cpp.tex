@@ -1,0 +1,24 @@
+\hypertarget{_x10-_fallback_stringifier_8cpp}{}\doxysection{X10-\/\+Fallback\+Stringifier.cpp File Reference}
+\label{_x10-_fallback_stringifier_8cpp}\index{X10-\/FallbackStringifier.cpp@{X10-\/FallbackStringifier.cpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$catch2/catch\+\_\+test\+\_\+macros.\+hpp$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structfoo}{foo}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_x10-_fallback_stringifier_8cpp_acc07612f29563277b38d96006c7fe302}\label{_x10-_fallback_stringifier_8cpp_acc07612f29563277b38d96006c7fe302} 
+{\footnotesize template$<$typename T $>$ }\\std\+::string {\bfseries fallback\+Stringifier} (T const \&)
+\item 
+\Hypertarget{_x10-_fallback_stringifier_8cpp_a91807e1bfe62070874a320f979fe34e3}\label{_x10-_fallback_stringifier_8cpp_a91807e1bfe62070874a320f979fe34e3} 
+{\bfseries TEST\+\_\+\+CASE} (\char`\"{}aa\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{class_test}{Test} that the user can define custom fallback\+Stringifier
+
+This is done by defining a custom fallback stringifier that prints out a specific string, and then asserting (to cause stringification) over a type without stringification support. 

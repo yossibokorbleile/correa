@@ -1,0 +1,173 @@
+\label{index_top}%
+\Hypertarget{index_top}%
+ \hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md503}{}\doxysection{Tutorial}\label{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md503}
+{\bfseries{Contents}}~\newline
+ Getting Catch2~\newline
+ Writing tests~\newline
+ Test cases and sections~\newline
+ BDD style testing~\newline
+ Data and Type driven tests~\newline
+ Next steps~\newline
+\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md504}{}\doxysubsection{Getting Catch2}\label{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md504}
+Ideally you should be using Catch2 through its \href{cmake-integration.md\#top}{\texttt{ CMake integration}}. Catch2 also provides pkg-\/config files and single TU distribution, but this documentation will assume you are using CMake. If you are using single-\/\+TU distribution instead, remember to replace the included header with {\ttfamily \doxylink{catch__amalgamated_8hpp}{catch\+\_\+amalgamated.\+hpp}}.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md505}{}\doxysubsection{Writing tests}\label{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md505}
+Let\textquotesingle{}s start with a really simple example (\href{../examples/010-TestCase.cpp}{\texttt{ code}}). Say you have written a function to calculate factorials and now you want to test it (let\textquotesingle{}s leave aside TDD for now).
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ Factorial(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ number\ )\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ number\ <=\ 1\ ?\ number\ :\ Factorial(number-\/1)*number;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <catch2/catch\_test\_macros.hpp>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ Factorial(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ number\ )\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ number\ <=\ 1\ ?\ number\ :\ Factorial(number-\/1)*number;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{TEST\_CASE(\ \textcolor{stringliteral}{"{}Factorials\ are\ computed"{}},\ \textcolor{stringliteral}{"{}[factorial]"{}}\ )\ \{}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(1)\ ==\ 1\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(2)\ ==\ 2\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(3)\ ==\ 6\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(10)\ ==\ 3628800\ );}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+This will compile to a complete executable which responds to \href{command-line.md\#top}{\texttt{ command line arguments}}. If you just run it with no arguments it will execute all test cases (in this case there is just one), report any failures, report a summary of how many tests passed and failed and return the number of failed tests (useful for if you just want a yes/ no answer to\+: \char`\"{}did it work\char`\"{}).
+
+Anyway, as the tests above as written will pass, but there is a bug. The problem is that {\ttfamily Factorial(0)} should return 1 (due to \href{https://en.wikipedia.org/wiki/Factorial\#Factorial_of_zero}{\texttt{ its definition}}). Let\textquotesingle{}s add that as an assertion to the test case\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{TEST\_CASE(\ \textcolor{stringliteral}{"{}Factorials\ are\ computed"{}},\ \textcolor{stringliteral}{"{}[factorial]"{}}\ )\ \{}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(0)\ ==\ 1\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(1)\ ==\ 1\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(2)\ ==\ 2\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(3)\ ==\ 6\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ Factorial(10)\ ==\ 3628800\ );}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+After another compile \& run cycle, we will see a test failure. The output will look something like\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Example.cpp:9:\ FAILED:}
+\DoxyCodeLine{\ \ REQUIRE(\ Factorial(0)\ ==\ 1\ )}
+\DoxyCodeLine{with\ expansion:}
+\DoxyCodeLine{\ \ 0\ ==\ 1}
+
+\end{DoxyCode}
+
+
+Note that the output contains both the original expression, {\ttfamily REQUIRE( Factorial(0) == 1 )} and the actual value returned by the call to the {\ttfamily Factorial} function\+: {\ttfamily 0}.
+
+We can fix this bug by slightly modifying the {\ttfamily Factorial} function to\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ Factorial(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ number\ )\ \{}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return}\ number\ >\ 1\ ?\ Factorial(number-\/1)*number\ :\ 1;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md506}{}\doxysubsubsection{What did we do here?}\label{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md506}
+Although this was a simple test it\textquotesingle{}s been enough to demonstrate a few things about how Catch2 is used. Let\textquotesingle{}s take a moment to consider those before we move on.
+
+
+\begin{DoxyItemize}
+\item We introduce test cases with the {\ttfamily TEST\+\_\+\+CASE} macro. This macro takes one or two string arguments -\/ a free form test name and, optionally, one or more tags (for more see Test cases and Sections).
+\item The test automatically self-\/registers with the test runner, and user does not have do anything more to ensure that it is picked up by the test framework. {\itshape Note that you can run specific test, or set of tests, through the \href{command-line\#top}{\texttt{ command line}}.}
+\item The individual test assertions are written using the {\ttfamily REQUIRE} macro. It accepts a boolean expression, and uses expression templates to internally decompose it, so that it can be individually stringified on test failure.
+\end{DoxyItemize}
+
+On the last point, note that there are more testing macros available, because not all useful checks can be expressed as a simple boolean expression. As an example, checking that an expression throws an exception is done with the {\ttfamily REQUIRE\+\_\+\+THROWS} macro. More on that later.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md507}{}\doxysubsection{Test cases and sections}\label{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md507}
+Like most test frameworks, Catch2 supports a class-\/based fixture mechanism, where individual tests are methods on class and setup/teardown can be done in constructor/destructor of the type.
+
+However, their use in Catch2 is rare, because idiomatic Catch2 tests instead use {\itshape sections} to share setup and teardown code between test code. This is best explained through an example (\href{../examples/100-Fix-Section.cpp}{\texttt{ code}})\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ ++}
+\DoxyCodeLine{TEST\_CASE(\ \textcolor{stringliteral}{"{}vectors\ can\ be\ sized\ and\ resized"{}},\ \textcolor{stringliteral}{"{}[vector]"{}}\ )\ \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ std::vector<int>\ v(\ 5\ );}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ v.size()\ ==\ 5\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ v.capacity()\ >=\ 5\ );}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ SECTION(\ \textcolor{stringliteral}{"{}resizing\ bigger\ changes\ size\ and\ capacity"{}}\ )\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ v.resize(\ 10\ );}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.size()\ ==\ 10\ );}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.capacity()\ >=\ 10\ );}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ SECTION(\ \textcolor{stringliteral}{"{}resizing\ smaller\ changes\ size\ but\ not\ capacity"{}}\ )\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ v.resize(\ 0\ );}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.size()\ ==\ 0\ );}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.capacity()\ >=\ 5\ );}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ SECTION(\ \textcolor{stringliteral}{"{}reserving\ bigger\ changes\ capacity\ but\ not\ size"{}}\ )\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ v.reserve(\ 10\ );}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.size()\ ==\ 5\ );}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.capacity()\ >=\ 10\ );}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ SECTION(\ \textcolor{stringliteral}{"{}reserving\ smaller\ does\ not\ change\ size\ or\ capacity"{}}\ )\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ v.reserve(\ 0\ );}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.size()\ ==\ 5\ );}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.capacity()\ >=\ 5\ );}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+For each {\ttfamily SECTION} the {\ttfamily TEST\+\_\+\+CASE} is executed from the start. This means that each section is entered with a freshly constructed vector {\ttfamily v}, that we know has size 5 and capacity at least 5, because the two assertions are also checked before the section is entered. Each run through a test case will execute one, and only one, leaf section.
+
+Section can also be nested, in which case the parent section can be entered multiple times, once for each leaf section. Nested sections are most useful when you have multiple tests that share part of the set up. To continue on the vector example above, you could add a check that {\ttfamily std\+::vector\+::reserve} does not remove unused excess capacity, like this\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{SECTION(\ \textcolor{stringliteral}{"{}reserving\ bigger\ changes\ capacity\ but\ not\ size"{}}\ )\ \{}
+\DoxyCodeLine{\ \ \ \ v.reserve(\ 10\ );}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ v.size()\ ==\ 5\ );}
+\DoxyCodeLine{\ \ \ \ REQUIRE(\ v.capacity()\ >=\ 10\ );}
+\DoxyCodeLine{\ \ \ \ SECTION(\ \textcolor{stringliteral}{"{}reserving\ down\ unused\ capacity\ does\ not\ change\ capacity"{}}\ )\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ v.reserve(\ 7\ );}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.size()\ ==\ 5\ );}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ REQUIRE(\ v.capacity()\ >=\ 10\ );}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Another way to look at sections is that they are a way to define a tree of paths through the test. Each section represents a node, and the final tree is walked in depth-\/first manner, with each path only visiting only one leaf node.
+
+There is no practical limit on nesting sections, as long as your compiler can handle them, but keep in mind that overly nested sections can become unreadable. From experience, having section nest more than 3 levels is usually very hard to follow and not worth the removed duplication.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md508}{}\doxysubsection{BDD style testing}\label{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md508}
+Catch2 also provides some basic support for BDD-\/style testing. There are macro aliases for {\ttfamily TEST\+\_\+\+CASE} and {\ttfamily SECTIONS} that you can use so that the resulting tests read as BDD spec. {\ttfamily SCENARIO} acts as a {\ttfamily TEST\+\_\+\+CASE} with \char`\"{}\+Scenario\+: \char`\"{} name prefix. Then there are {\ttfamily GIVEN}, {\ttfamily WHEN}, {\ttfamily THEN} (and their variants with {\ttfamily AND\+\_\+} prefix), which act as a {\ttfamily SECTION}, similarly prefixed with the macro name.
+
+For more details on the macros look at the \href{test-cases-and-sections.md\#top}{\texttt{ test cases and sections}} part of the reference docs, or at the \href{../examples/120-Bdd-ScenarioGivenWhenThen.cpp}{\texttt{ vector example done with BDD macros}}.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md509}{}\doxysubsection{Data and Type driven tests}\label{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md509}
+\doxylink{class_test}{Test} cases in Catch2 can also be driven by types, input data, or both at the same time.
+
+For more details look into the Catch2 reference, either at the \href{test-cases-and-sections.md\#type-parametrised-test-cases}{\texttt{ type parametrized test cases}}, or \href{generators.md\#top}{\texttt{ data generators}}.\hypertarget{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md510}{}\doxysubsection{Next steps}\label{md_ext_2hera_2extern_2_catch2_2docs_2tutorial_autotoc_md510}
+This page is a brief introduction to get you up and running with Catch2, and to show the basic features of Catch2. The features mentioned here can get you quite far, but there are many more. However, you can read about these as you go, in the ever-\/growing \href{Readme.md\#top}{\texttt{ reference section}} of the documentation.
+
+\DoxyHorRuler{0}
+
+
+\href{Readme.md\#top}{\texttt{ Home}} 

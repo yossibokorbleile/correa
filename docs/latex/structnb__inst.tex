@@ -1,0 +1,51 @@
+\hypertarget{structnb__inst}{}\doxysection{nb\+\_\+inst Struct Reference}
+\label{structnb__inst}\index{nb\_inst@{nb\_inst}}
+
+
+Python object representing an instance of a bound C++ type.  
+
+
+
+
+{\ttfamily \#include $<$nb\+\_\+internals.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structnb__inst_a94ec5a622bc882b3f26eeffebec7949f}\label{structnb__inst_a94ec5a622bc882b3f26eeffebec7949f} 
+Py\+Object\+\_\+\+HEAD int32\+\_\+t {\bfseries offset}
+\begin{DoxyCompactList}\small\item\em Offset to the actual instance data. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structnb__inst_aed5544298149e9c31c65111052edc2c5}{direct}}\+: 1
+\item 
+\Hypertarget{structnb__inst_a409e0ed1b46fb297582c34b3d698b8fd}\label{structnb__inst_a409e0ed1b46fb297582c34b3d698b8fd} 
+bool {\bfseries internal}\+: 1
+\begin{DoxyCompactList}\small\item\em Is the instance data co-\/located with the Python object? \end{DoxyCompactList}\item 
+\Hypertarget{structnb__inst_a5d70c9019f26769ff91f1242d9ecfd8a}\label{structnb__inst_a5d70c9019f26769ff91f1242d9ecfd8a} 
+bool {\bfseries ready}\+: 1
+\begin{DoxyCompactList}\small\item\em Is the instance properly initialized? \end{DoxyCompactList}\item 
+\Hypertarget{structnb__inst_a6006a6453a7ad7f7b9fc0262e2e4cec5}\label{structnb__inst_a6006a6453a7ad7f7b9fc0262e2e4cec5} 
+bool {\bfseries destruct}\+: 1
+\begin{DoxyCompactList}\small\item\em Should the destructor be called when this instance is GCed? \end{DoxyCompactList}\item 
+\Hypertarget{structnb__inst_aef907aa3395addbe302526ec3c13c5be}\label{structnb__inst_aef907aa3395addbe302526ec3c13c5be} 
+bool {\bfseries cpp\+\_\+delete}\+: 1
+\begin{DoxyCompactList}\small\item\em Should nanobind call \textquotesingle{}operator delete\textquotesingle{} when this instance is GCed? \end{DoxyCompactList}\item 
+\Hypertarget{structnb__inst_ab3e510dff1be2fe931a30f7996b4691b}\label{structnb__inst_ab3e510dff1be2fe931a30f7996b4691b} 
+bool {\bfseries clear\+\_\+keep\+\_\+alive}\+: 1
+\begin{DoxyCompactList}\small\item\em Does this instance hold reference to others? (via internals.\+keep\+\_\+alive) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Python object representing an instance of a bound C++ type. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structnb__inst_aed5544298149e9c31c65111052edc2c5}\label{structnb__inst_aed5544298149e9c31c65111052edc2c5} 
+\index{nb\_inst@{nb\_inst}!direct@{direct}}
+\index{direct@{direct}!nb\_inst@{nb\_inst}}
+\doxysubsubsection{\texorpdfstring{direct}{direct}}
+{\footnotesize\ttfamily bool nb\+\_\+inst\+::direct}
+
+The variable \textquotesingle{}offset\textquotesingle{} can either encode an offset relative to the \doxylink{structnb__inst}{nb\+\_\+inst} address that leads to the instance data, or it can encode a relative offset to a pointer that must be dereferenced to get to the instance data. \textquotesingle{}direct\textquotesingle{} is \textquotesingle{}true\textquotesingle{} in the former case. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+nb\+\_\+internals.\+h\end{DoxyCompactItemize}

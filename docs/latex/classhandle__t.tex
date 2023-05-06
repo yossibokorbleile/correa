@@ -1,0 +1,142 @@
+\hypertarget{classhandle__t}{}\doxysection{handle\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classhandle__t}\index{handle\_t$<$ T $>$@{handle\_t$<$ T $>$}}
+Inheritance diagram for handle\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classhandle__t}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle__t_a132ddf72e69b9e98079fa780f3fd0a92}\label{classhandle__t_a132ddf72e69b9e98079fa780f3fd0a92} 
+{\bfseries handle\+\_\+t} (const \mbox{\hyperlink{classhandle}{handle}} \&h)
+\item 
+\Hypertarget{classhandle__t_a53ba30cccfb1cabee421fd4ea555cf44}\label{classhandle__t_a53ba30cccfb1cabee421fd4ea555cf44} 
+{\bfseries handle} ()=default
+\begin{DoxyCompactList}\small\item\em The default constructor creates a handle with a {\ttfamily nullptr}-\/valued pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classhandle__t_a99eb912e1b9b823bc447980a16772584}\label{classhandle__t_a99eb912e1b9b823bc447980a16772584} 
+{\bfseries handle} (Py\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\begin{DoxyCompactList}\small\item\em Creates a {\ttfamily handle} from the given raw Python object pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classhandle__t_a53ba30cccfb1cabee421fd4ea555cf44}\label{classhandle__t_a53ba30cccfb1cabee421fd4ea555cf44} 
+{\bfseries handle} ()=default
+\item 
+\Hypertarget{classhandle__t_a8d8ddc1eb26d5faa835438b3d624912b}\label{classhandle__t_a8d8ddc1eb26d5faa835438b3d624912b} 
+{\bfseries handle} (const \mbox{\hyperlink{classhandle}{handle}} \&)=default
+\item 
+\Hypertarget{classhandle__t_af8e7508e93ecb3c3bfde576c2d69644a}\label{classhandle__t_af8e7508e93ecb3c3bfde576c2d69644a} 
+{\bfseries handle} (\mbox{\hyperlink{classhandle}{handle}} \&\&) noexcept=default
+\item 
+\Hypertarget{classhandle__t_a6eba271b4b2ce35f1495c7727e0cc6d0}\label{classhandle__t_a6eba271b4b2ce35f1495c7727e0cc6d0} 
+NB\+\_\+\+INLINE {\bfseries handle} (const Py\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\item 
+\Hypertarget{classhandle__t_a4d147dbc6f688ae89e9da0b5b32a9044}\label{classhandle__t_a4d147dbc6f688ae89e9da0b5b32a9044} 
+NB\+\_\+\+INLINE {\bfseries handle} (const Py\+Type\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\item 
+\Hypertarget{classhandle__t_a6cdb23a5bab8776aec02ff2cf5773886}\label{classhandle__t_a6cdb23a5bab8776aec02ff2cf5773886} 
+\mbox{\hyperlink{classhandle}{handle}} \& {\bfseries operator=} (const \mbox{\hyperlink{classhandle}{handle}} \&)=default
+\item 
+\Hypertarget{classhandle__t_a944d176f5e3e2506594a0c9fd96cb412}\label{classhandle__t_a944d176f5e3e2506594a0c9fd96cb412} 
+\mbox{\hyperlink{classhandle}{handle}} \& {\bfseries operator=} (\mbox{\hyperlink{classhandle}{handle}} \&\&) noexcept=default
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classhandle}{handle}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle_a53ba30cccfb1cabee421fd4ea555cf44}\label{classhandle_a53ba30cccfb1cabee421fd4ea555cf44} 
+{\bfseries handle} ()=default
+\begin{DoxyCompactList}\small\item\em The default constructor creates a handle with a {\ttfamily nullptr}-\/valued pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classhandle_a99eb912e1b9b823bc447980a16772584}\label{classhandle_a99eb912e1b9b823bc447980a16772584} 
+{\bfseries handle} (Py\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\begin{DoxyCompactList}\small\item\em Creates a {\ttfamily handle} from the given raw Python object pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classhandle_aa58c40063166c7cedefdc4db2d6fa608}\label{classhandle_aa58c40063166c7cedefdc4db2d6fa608} 
+Py\+Object $\ast$ {\bfseries ptr} () const
+\begin{DoxyCompactList}\small\item\em Return the underlying {\ttfamily Py\+Object $\ast$} pointer. \end{DoxyCompactList}\item 
+\Hypertarget{classhandle_af314d063eb29074fcc64595d85b12cec}\label{classhandle_af314d063eb29074fcc64595d85b12cec} 
+Py\+Object $\ast$\& {\bfseries ptr} ()
+\item 
+const \mbox{\hyperlink{classhandle}{handle}} \& \mbox{\hyperlink{classhandle_a1a13c72238d8df4d42c1656e446fbfcb}{inc\+\_\+ref}} () const \&
+\item 
+const \mbox{\hyperlink{classhandle}{handle}} \& \mbox{\hyperlink{classhandle_a4bd9642229b0b331172c37b02aa73eda}{dec\+\_\+ref}} () const \&
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{classhandle_a8158ff37b59a73d48140ab4d718316b9}{cast}} () const
+\item 
+\Hypertarget{classhandle_a2c60694c460b2227f2a00c7b873d7436}\label{classhandle_a2c60694c460b2227f2a00c7b873d7436} 
+{\bfseries operator bool} () const
+\begin{DoxyCompactList}\small\item\em Return {\ttfamily true} when the {\ttfamily handle} wraps a valid Python object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classhandle_a7173e778869746c1c7a071e561c79974}{operator==}} (const \mbox{\hyperlink{classhandle}{handle}} \&h) const
+\item 
+\Hypertarget{classhandle_a71ecf002785a489fbe1db0aa6fb05bc5}\label{classhandle_a71ecf002785a489fbe1db0aa6fb05bc5} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classhandle}{handle}} \&h) const
+\item 
+\Hypertarget{classhandle_a48e44d8de9e6c178fa698fb19efe113d}\label{classhandle_a48e44d8de9e6c178fa698fb19efe113d} 
+bool {\bfseries check} () const
+\item 
+\Hypertarget{classhandle_a8d8ddc1eb26d5faa835438b3d624912b}\label{classhandle_a8d8ddc1eb26d5faa835438b3d624912b} 
+{\bfseries handle} (const \mbox{\hyperlink{classhandle}{handle}} \&)=default
+\item 
+\Hypertarget{classhandle_af8e7508e93ecb3c3bfde576c2d69644a}\label{classhandle_af8e7508e93ecb3c3bfde576c2d69644a} 
+{\bfseries handle} (\mbox{\hyperlink{classhandle}{handle}} \&\&) noexcept=default
+\item 
+\Hypertarget{classhandle_a6cdb23a5bab8776aec02ff2cf5773886}\label{classhandle_a6cdb23a5bab8776aec02ff2cf5773886} 
+\mbox{\hyperlink{classhandle}{handle}} \& {\bfseries operator=} (const \mbox{\hyperlink{classhandle}{handle}} \&)=default
+\item 
+\Hypertarget{classhandle_a944d176f5e3e2506594a0c9fd96cb412}\label{classhandle_a944d176f5e3e2506594a0c9fd96cb412} 
+\mbox{\hyperlink{classhandle}{handle}} \& {\bfseries operator=} (\mbox{\hyperlink{classhandle}{handle}} \&\&) noexcept=default
+\item 
+\Hypertarget{classhandle_a6eba271b4b2ce35f1495c7727e0cc6d0}\label{classhandle_a6eba271b4b2ce35f1495c7727e0cc6d0} 
+NB\+\_\+\+INLINE {\bfseries handle} (const Py\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\item 
+\Hypertarget{classhandle_a4d147dbc6f688ae89e9da0b5b32a9044}\label{classhandle_a4d147dbc6f688ae89e9da0b5b32a9044} 
+NB\+\_\+\+INLINE {\bfseries handle} (const Py\+Type\+Object $\ast$\mbox{\hyperlink{classhandle_aa58c40063166c7cedefdc4db2d6fa608}{ptr}})
+\item 
+\Hypertarget{classhandle_a5e855ba3a9d0a6aba5bf18b7bbd9bb0e}\label{classhandle_a5e855ba3a9d0a6aba5bf18b7bbd9bb0e} 
+const \mbox{\hyperlink{classhandle}{handle}} \& {\bfseries inc\+\_\+ref} () const \&noexcept
+\item 
+\Hypertarget{classhandle_abb639296a79ca3a352f96772369aa0aa}\label{classhandle_abb639296a79ca3a352f96772369aa0aa} 
+const \mbox{\hyperlink{classhandle}{handle}} \& {\bfseries dec\+\_\+ref} () const \&noexcept
+\item 
+\Hypertarget{classhandle_a4c644cd0555bf262c7f720ee2fd2894e}\label{classhandle_a4c644cd0555bf262c7f720ee2fd2894e} 
+NB\+\_\+\+INLINE {\bfseries operator bool} () const
+\item 
+\Hypertarget{classhandle_a5da9ef2071680b765494b3ae8930ea35}\label{classhandle_a5da9ef2071680b765494b3ae8930ea35} 
+NB\+\_\+\+INLINE Py\+Object $\ast$ {\bfseries ptr} () const
+\item 
+\Hypertarget{classhandle_aefa5deb13fb8fe6df3ed0f222863ee7e}\label{classhandle_aefa5deb13fb8fe6df3ed0f222863ee7e} 
+template$<$$>$ void {\bfseries cast} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle__t_a7926e6c549c0f1979b42cda6e8b5b7f9}\label{classhandle__t_a7926e6c549c0f1979b42cda6e8b5b7f9} 
+static bool {\bfseries check\+\_\+} (\mbox{\hyperlink{classhandle}{handle}} h)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classhandle}{handle}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle_ad5023e13824cc2337040b77c2fee7136}\label{classhandle_ad5023e13824cc2337040b77c2fee7136} 
+static NB\+\_\+\+INLINE bool {\bfseries check\+\_\+} (\mbox{\hyperlink{classhandle}{handle}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle__t_ac77d82c4403769508c7127eebca4b74d}\label{classhandle__t_ac77d82c4403769508c7127eebca4b74d} 
+static constexpr auto {\bfseries Name} = detail\+::make\+\_\+caster$<$T$>$\+::\+Name
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes inherited from \mbox{\hyperlink{classhandle}{handle}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle_af368188a08bca58fb6117ff0f694f26c}\label{classhandle_af368188a08bca58fb6117ff0f694f26c} 
+static constexpr auto {\bfseries Name} = detail\+::const\+\_\+name(\char`\"{}object\char`\"{})
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+\doxysubsubsection*{Protected Attributes inherited from \mbox{\hyperlink{classhandle}{handle}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classhandle_a149aca71a8096b92da4b26079269f64a}\label{classhandle_a149aca71a8096b92da4b26079269f64a} 
+Py\+Object $\ast$ {\bfseries m\+\_\+ptr} = nullptr
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+nb\+\_\+types.\+h\end{DoxyCompactItemize}

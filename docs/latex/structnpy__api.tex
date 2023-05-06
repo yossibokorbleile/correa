@@ -1,0 +1,138 @@
+\hypertarget{structnpy__api}{}\doxysection{npy\+\_\+api Struct Reference}
+\label{structnpy__api}\index{npy\_api@{npy\_api}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structnpy__api_1_1_py_array___dims}{Py\+Array\+\_\+\+Dims}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structnpy__api_a788409fb003cbdfdb9adee0cfb6573f9}\label{structnpy__api_a788409fb003cbdfdb9adee0cfb6573f9} 
+enum {\bfseries constants} \{ \newline
+{\bfseries NPY\+\_\+\+ARRAY\+\_\+\+C\+\_\+\+CONTIGUOUS\+\_\+} = 0x0001
+, {\bfseries NPY\+\_\+\+ARRAY\+\_\+\+F\+\_\+\+CONTIGUOUS\+\_\+} = 0x0002
+, {\bfseries NPY\+\_\+\+ARRAY\+\_\+\+OWNDATA\+\_\+} = 0x0004
+, {\bfseries NPY\+\_\+\+ARRAY\+\_\+\+FORCECAST\+\_\+} = 0x0010
+, \newline
+{\bfseries NPY\+\_\+\+ARRAY\+\_\+\+ENSUREARRAY\+\_\+} = 0x0040
+, {\bfseries NPY\+\_\+\+ARRAY\+\_\+\+ALIGNED\+\_\+} = 0x0100
+, {\bfseries NPY\+\_\+\+ARRAY\+\_\+\+WRITEABLE\+\_\+} = 0x0400
+, {\bfseries NPY\+\_\+\+BOOL\+\_\+} = 0
+, \newline
+{\bfseries NPY\+\_\+\+BYTE\+\_\+}
+, {\bfseries NPY\+\_\+\+UBYTE\+\_\+}
+, {\bfseries NPY\+\_\+\+SHORT\+\_\+}
+, {\bfseries NPY\+\_\+\+USHORT\+\_\+}
+, \newline
+{\bfseries NPY\+\_\+\+INT\+\_\+}
+, {\bfseries NPY\+\_\+\+UINT\+\_\+}
+, {\bfseries NPY\+\_\+\+LONG\+\_\+}
+, {\bfseries NPY\+\_\+\+ULONG\+\_\+}
+, \newline
+{\bfseries NPY\+\_\+\+LONGLONG\+\_\+}
+, {\bfseries NPY\+\_\+\+ULONGLONG\+\_\+}
+, {\bfseries NPY\+\_\+\+FLOAT\+\_\+}
+, {\bfseries NPY\+\_\+\+DOUBLE\+\_\+}
+, \newline
+{\bfseries NPY\+\_\+\+LONGDOUBLE\+\_\+}
+, {\bfseries NPY\+\_\+\+CFLOAT\+\_\+}
+, {\bfseries NPY\+\_\+\+CDOUBLE\+\_\+}
+, {\bfseries NPY\+\_\+\+CLONGDOUBLE\+\_\+}
+, \newline
+{\bfseries NPY\+\_\+\+OBJECT\+\_\+} = 17
+, {\bfseries NPY\+\_\+\+STRING\+\_\+}
+, {\bfseries NPY\+\_\+\+UNICODE\+\_\+}
+, {\bfseries NPY\+\_\+\+VOID\+\_\+}
+, \newline
+{\bfseries NPY\+\_\+\+INT8\+\_\+} = NPY\+\_\+\+BYTE\+\_\+
+, {\bfseries NPY\+\_\+\+UINT8\+\_\+} = NPY\+\_\+\+UBYTE\+\_\+
+, {\bfseries NPY\+\_\+\+INT16\+\_\+} = NPY\+\_\+\+SHORT\+\_\+
+, {\bfseries NPY\+\_\+\+UINT16\+\_\+} = NPY\+\_\+\+USHORT\+\_\+
+, \newline
+{\bfseries NPY\+\_\+\+INT32\+\_\+} = platform\+\_\+lookup\texorpdfstring{$<$}{<}std\+::int32\+\_\+t, long, int, short\texorpdfstring{$>$}{>}(NPY\+\_\+\+LONG\+\_\+, NPY\+\_\+\+INT\+\_\+, NPY\+\_\+\+SHORT\+\_\+)
+, {\bfseries NPY\+\_\+\+UINT32\+\_\+}
+, {\bfseries NPY\+\_\+\+INT64\+\_\+} = platform\+\_\+lookup\texorpdfstring{$<$}{<}std\+::int64\+\_\+t, long, long long, int\texorpdfstring{$>$}{>}(NPY\+\_\+\+LONG\+\_\+, NPY\+\_\+\+LONGLONG\+\_\+, NPY\+\_\+\+INT\+\_\+)
+, {\bfseries NPY\+\_\+\+UINT64\+\_\+}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structnpy__api_afc42a9db9fecb476cd2902665a64f891}\label{structnpy__api_afc42a9db9fecb476cd2902665a64f891} 
+bool {\bfseries Py\+Array\+\_\+\+Check\+\_\+} (Py\+Object $\ast$obj) const
+\item 
+\Hypertarget{structnpy__api_aadb8a33f970e864d5cefbc6f033d5d71}\label{structnpy__api_aadb8a33f970e864d5cefbc6f033d5d71} 
+bool {\bfseries Py\+Array\+Descr\+\_\+\+Check\+\_\+} (Py\+Object $\ast$obj) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structnpy__api_aa680c124450310a5060d0b2605a983dd}\label{structnpy__api_aa680c124450310a5060d0b2605a983dd} 
+static \mbox{\hyperlink{structnpy__api}{npy\+\_\+api}} \& {\bfseries get} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structnpy__api_ab40ac29b4dd4d4b3ff26fca367190a0d}\label{structnpy__api_ab40ac29b4dd4d4b3ff26fca367190a0d} 
+unsigned int($\ast$ {\bfseries Py\+Array\+\_\+\+Get\+NDArray\+CFeature\+Version\+\_\+} )()
+\item 
+\Hypertarget{structnpy__api_a88721af475173fe015753a83805dedd2}\label{structnpy__api_a88721af475173fe015753a83805dedd2} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+Descr\+From\+Type\+\_\+} )(int)
+\item 
+\Hypertarget{structnpy__api_acf04d46d8cd679f1956b43b2f3ba8c3f}\label{structnpy__api_acf04d46d8cd679f1956b43b2f3ba8c3f} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+New\+From\+Descr\+\_\+} )(Py\+Type\+Object $\ast$, Py\+Object $\ast$, int, Py\+\_\+intptr\+\_\+t const $\ast$, Py\+\_\+intptr\+\_\+t const $\ast$, void $\ast$, int, Py\+Object $\ast$)
+\item 
+\Hypertarget{structnpy__api_a05f836b1d8fc0e9649e85fbec260bb3a}\label{structnpy__api_a05f836b1d8fc0e9649e85fbec260bb3a} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+Descr\+New\+From\+Type\+\_\+} )(int)
+\item 
+\Hypertarget{structnpy__api_a7d5205f195d633125051fe3ade860062}\label{structnpy__api_a7d5205f195d633125051fe3ade860062} 
+int($\ast$ {\bfseries Py\+Array\+\_\+\+Copy\+Into\+\_\+} )(Py\+Object $\ast$, Py\+Object $\ast$)
+\item 
+\Hypertarget{structnpy__api_aac540e12f831613cf3fa028ef217f14c}\label{structnpy__api_aac540e12f831613cf3fa028ef217f14c} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+New\+Copy\+\_\+} )(Py\+Object $\ast$, int)
+\item 
+\Hypertarget{structnpy__api_a90606f7c6be32c8206dc496d8925d984}\label{structnpy__api_a90606f7c6be32c8206dc496d8925d984} 
+Py\+Type\+Object $\ast$ {\bfseries Py\+Array\+\_\+\+Type\+\_\+}
+\item 
+\Hypertarget{structnpy__api_a00960472c4802c69109ddfa9bb54fca5}\label{structnpy__api_a00960472c4802c69109ddfa9bb54fca5} 
+Py\+Type\+Object $\ast$ {\bfseries Py\+Void\+Arr\+Type\+\_\+\+Type\+\_\+}
+\item 
+\Hypertarget{structnpy__api_a098d32c95003331ae8cf6c968163153a}\label{structnpy__api_a098d32c95003331ae8cf6c968163153a} 
+Py\+Type\+Object $\ast$ {\bfseries Py\+Array\+Descr\+\_\+\+Type\+\_\+}
+\item 
+\Hypertarget{structnpy__api_abe566f870aaecf886008ff611c5c90b6}\label{structnpy__api_abe566f870aaecf886008ff611c5c90b6} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+Descr\+From\+Scalar\+\_\+} )(Py\+Object $\ast$)
+\item 
+\Hypertarget{structnpy__api_afb0feb8c06a027a503d9252e2c58f2c7}\label{structnpy__api_afb0feb8c06a027a503d9252e2c58f2c7} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+From\+Any\+\_\+} )(Py\+Object $\ast$, Py\+Object $\ast$, int, int, int, Py\+Object $\ast$)
+\item 
+\Hypertarget{structnpy__api_a194b80a44e3e6fe70a42feb0d01d242e}\label{structnpy__api_a194b80a44e3e6fe70a42feb0d01d242e} 
+int($\ast$ {\bfseries Py\+Array\+\_\+\+Descr\+Converter\+\_\+} )(Py\+Object $\ast$, Py\+Object $\ast$$\ast$)
+\item 
+\Hypertarget{structnpy__api_a679481716d90329a4a5af98fab660a9b}\label{structnpy__api_a679481716d90329a4a5af98fab660a9b} 
+bool($\ast$ {\bfseries Py\+Array\+\_\+\+Equiv\+Types\+\_\+} )(Py\+Object $\ast$, Py\+Object $\ast$)
+\item 
+\Hypertarget{structnpy__api_a3b7e813e8153a4e56d5046c7da10248d}\label{structnpy__api_a3b7e813e8153a4e56d5046c7da10248d} 
+int($\ast$ {\bfseries Py\+Array\+\_\+\+Get\+Array\+Params\+From\+Object\+\_\+} )(Py\+Object $\ast$, Py\+Object $\ast$, unsigned char, Py\+Object $\ast$$\ast$, int $\ast$, Py\+\_\+intptr\+\_\+t $\ast$, Py\+Object $\ast$$\ast$, Py\+Object $\ast$)
+\item 
+\Hypertarget{structnpy__api_a5158438bb676a7b32f1998b8bbd3074e}\label{structnpy__api_a5158438bb676a7b32f1998b8bbd3074e} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+Squeeze\+\_\+} )(Py\+Object $\ast$)
+\item 
+\Hypertarget{structnpy__api_a7dd4d69b7cafe7f2faf6bdec7c7a6ef9}\label{structnpy__api_a7dd4d69b7cafe7f2faf6bdec7c7a6ef9} 
+int($\ast$ {\bfseries Py\+Array\+\_\+\+Set\+Base\+Object\+\_\+} )(Py\+Object $\ast$, Py\+Object $\ast$)
+\item 
+\Hypertarget{structnpy__api_a60b97eb923d387d969480e5e385c17cc}\label{structnpy__api_a60b97eb923d387d969480e5e385c17cc} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+Resize\+\_\+} )(Py\+Object $\ast$, \mbox{\hyperlink{structnpy__api_1_1_py_array___dims}{Py\+Array\+\_\+\+Dims}} $\ast$, int, int)
+\item 
+\Hypertarget{structnpy__api_a18acaacbbb8b38cc1a2b6ff9960276b0}\label{structnpy__api_a18acaacbbb8b38cc1a2b6ff9960276b0} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+Newshape\+\_\+} )(Py\+Object $\ast$, \mbox{\hyperlink{structnpy__api_1_1_py_array___dims}{Py\+Array\+\_\+\+Dims}} $\ast$, int)
+\item 
+\Hypertarget{structnpy__api_aefe67be97356ee0892dbe6df2e031d31}\label{structnpy__api_aefe67be97356ee0892dbe6df2e031d31} 
+Py\+Object $\ast$($\ast$ {\bfseries Py\+Array\+\_\+\+View\+\_\+} )(Py\+Object $\ast$, Py\+Object $\ast$, Py\+Object $\ast$)
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+numpy.\+h\end{DoxyCompactItemize}

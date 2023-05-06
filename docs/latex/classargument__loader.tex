@@ -1,0 +1,45 @@
+\hypertarget{classargument__loader}{}\doxysection{argument\+\_\+loader\texorpdfstring{$<$}{<} Args \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classargument__loader}\index{argument\_loader$<$ Args $>$@{argument\_loader$<$ Args $>$}}
+
+
+Helper class which loads arguments for C++ functions called from Python.  
+
+
+
+
+{\ttfamily \#include $<$cast.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classargument__loader_ac5cff5197a03f99f06169af9f43d6537}\label{classargument__loader_ac5cff5197a03f99f06169af9f43d6537} 
+bool {\bfseries load\+\_\+args} (\mbox{\hyperlink{structfunction__call}{function\+\_\+call}} \&call)
+\item 
+\Hypertarget{classargument__loader_acb978d9776e7b7d6a7a5f904c6b08671}\label{classargument__loader_acb978d9776e7b7d6a7a5f904c6b08671} 
+{\footnotesize template$<$typename Return , typename Guard , typename Func $>$ }\\enable\+\_\+if\+\_\+t$<$!std\+::is\+\_\+void$<$ Return $>$\+::value, Return $>$ {\bfseries call} (Func \&\&f) \&\&
+\item 
+\Hypertarget{classargument__loader_a484b2cbfdf718144ea57cf75ede80606}\label{classargument__loader_a484b2cbfdf718144ea57cf75ede80606} 
+{\footnotesize template$<$typename Return , typename Guard , typename Func $>$ }\\enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+void$<$ Return $>$\+::value, \mbox{\hyperlink{structvoid__type}{void\+\_\+type}} $>$ {\bfseries call} (Func \&\&f) \&\&
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classargument__loader_aefd489f954b4706554d6c4e7e705617f}\label{classargument__loader_aefd489f954b4706554d6c4e7e705617f} 
+static constexpr bool {\bfseries has\+\_\+kwargs} = kwargs\+\_\+pos != -\/1
+\item 
+\Hypertarget{classargument__loader_a8b8c4fdb7c405186e9a07bc8f50f7c7e}\label{classargument__loader_a8b8c4fdb7c405186e9a07bc8f50f7c7e} 
+static constexpr int {\bfseries args\+\_\+pos} = constexpr\+\_\+last$<$argument\+\_\+is\+\_\+args, Args...$>$()
+\item 
+\Hypertarget{classargument__loader_a48c33de6037140357b1ba8fd154cff59}\label{classargument__loader_a48c33de6037140357b1ba8fd154cff59} 
+static constexpr auto {\bfseries arg\+\_\+names} = concat(type\+\_\+descr(\mbox{\hyperlink{classtype__caster}{make\+\_\+caster}}$<$Args$>$\mbox{\hyperlink{structname}{\+::name}})...)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename... Args$>$\newline
+class argument\+\_\+loader$<$ Args $>$}
+Helper class which loads arguments for C++ functions called from Python. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+cast.\+h\end{DoxyCompactItemize}
