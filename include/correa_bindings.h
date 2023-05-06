@@ -79,7 +79,7 @@ namespace correa{
 		inout.read(path_to_vertices, &ndim, &npoint, &X);
 		pbuilder.clean_points(&npoint, X);
 		pbuilder.buildPolygon(npoint, X, poly);
-
+		
 		// Center polygon
 		int iscale = 0;
 		double range = 100;
@@ -119,20 +119,6 @@ namespace correa{
 		Polygon poly = initialise_polygon(path_to_vertices, path_to_focal);
 		return poly;
 	}
- 
-	/*auto wasserstein_distance(std::vector<std::pair<double,double>> diagram_1, std::vector<std::pair<double,double>> diagram_2, double wasserstein_power, double delta) {
-		hera::AuctionParams<double> params;
-		params.max_num_phases = 800;
-		params.wasserstein_power = wasserstein_power;
-		params.delta = delta;
-		params.internal_p = wasserstein_power;
-
-		auto res = hera::wasserstein_cost_detailed(diagram_1, diagram_2, params);
-
-		std::cout << "Relative error: " << res.final_relative_error << std::endl;
-
-		return res.distance;
-	}*/
 
 	class PyPolygon{
 		using PersistenceDiagram = std::vector<std::pair<double,double>>;
@@ -390,10 +376,10 @@ namespace correa{
 			auto AllDistances(PyPolygon &poly1, PyPolygon& poly2,  int q=2, bool verbose = false){ 
 				Polygon p1 = poly1.polygon();
 				Polygon p2 = poly2.polygon();
-				PH0 f1(p1.vertices);
-				PH0 f2(p2.vertices);
-				f1.Persistence();
-				f2.Persistence();
+//				PH0 f1(p1.vertices);/
+//				PH0 f2(p2.vertices);
+//				f1.Persistence();
+//				f2.Persistence();
 				//double dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurveOT;
 				double dWasserstein = WassersteinDistance(p1, p2, q=2);
 				double dFrechet = FrechetDistance(p1, p2);
