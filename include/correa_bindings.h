@@ -1,12 +1,11 @@
 /*
- 	CorreaBindings.h
+ 	correa_bindings.h
 
  	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
 				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
  	Date: April 2023
 	Version: 1
 */
-
 
 #ifndef _CORREABINDINGS_H_
 #define _CORREABINDINGS_H_
@@ -284,7 +283,11 @@ namespace correa{
 	};  
 
  
-
+/*!
+* wrapper to compare pairs of polygons.
+* 
+* Has a variety of methods to calculate the distances between a pair of polygons. 
+*/
 	class ComparePolygons {
 
 		private:
@@ -380,8 +383,40 @@ namespace correa{
 				return std::abs(willmore1 - willmore2);
 			};
 
-			double CurvOTDistance(Polygon& poly1, Polygon& poly2) {
+			double CurveOTDistance(Polygon& poly1, Polygon& poly2) {
 				return curv.curvOT(poly1, poly2);
+			}
+
+			auto AllDistances(PyPolygon &poly1, PyPolygon& poly2,  int q=2, bool verbose = false){ 
+				Polygon p1 = poly1.polygon();
+				Polygon p2 = poly2.polygon();
+				PH0 f1(p1.vertices);
+				PH0 f2(p2.vertices);
+				f1.Persistence();
+				f2.Persistence();
+				double dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurveOT;
+				dWasserstein = WassersteinDistance(p1, p2, q=2);
+				dFrechet = FrechetDistance(p1, p2);
+				dMax = MaxEllipseDistance(p1, p2);
+				dMin = MinEllipseDistance(p1, p2);
+				dLSQ = LSQEllipseDistance(p1, p2);
+				dWillmore = WillmoreDistance(p1, p2);
+				dCurveOT = CurveOTDistance(p1, p2);
+				if (verbose) {
+					std::cerr << "The two polygons are:" << std::endl;
+					std::cerr << p1 << std::endl;
+					std::cerr << "and" << std::endl;
+					std::cerr << p2 << std::endl;
+					std::cerr << " and the distances between them are:" << std::endl;
+					std::cerr << "Wasserstein distance (q="<<q<<"):	" << std::setw(7) << std::fixed << std::setprecision(3) << dWasserstein << std::endl;
+					std::cerr << "Frechet distance:					"  << std::setw(7) << std::fixed << std::setprecision(3)<< dFrechet << std::endl;
+					std::cerr << "Max Ellipse distance:	"  << std::setw(7) << std::fixed << std::setprecision(3)<< dMax << std::endl;
+					std::cerr << "Min Ellipse distance:	"  << std::setw(7) << std::fixed << std::setprecision(3)<< dMin << std::endl;
+					std::cerr << "LSQ Ellipse distance:	"  << std::setw(7) << std::fixed << std::setprecision(3)<< dLSQ << std::endl;
+					std::cerr << "Willmore distance:	"  << std::setw(7) << std::fixed << std::setprecision(3)<< dWillmore << std::endl;
+					std::cerr << "Curve OT distance:	"  << std::setw(7) << std::fixed << std::setprecision(3)<< dCurveOT << std::endl;
+				}
+				return dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurveOT;
 			}
 			
 	};

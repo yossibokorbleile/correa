@@ -36,8 +36,14 @@ NB_MODULE(_correa, m) {
 
     nb::class_<correa::ComparePolygons>(m, "ComparePolygons")
         .def(nb::init<>())
-        .def("WassersteinDistance", &correa::ComparePolygons::WassersteinDistance)
-        .def("FrechetDistance", &correa::ComparePolygons::FrechetDistance);
+        .def("WassersteinDistance", &correa::ComparePolygons::PyWassersteinDistance)
+        .def("FrechetDistance", &correa::ComparePolygons::PyFrechetDistance)
+        .def("MaxEllipseDistance", &correa::ComparePolygons::PyMaxEllipseDistance)
+        .def("MinEllipseDistance", &correa::ComparePolygons::PyMinEllipseDistance)
+        .def("LSQEllipseDistance", &corera::ComparePolygons::PyLSQEllipseDistance)
+        .def("PyWillmoreDistance", &correa::ComparePolygons::PyWillmoreDistance)
+        .def("PyCurveOTDistance", &correa::ComparePolygons::PyCurveOTDistance)
+        .def("AllDistances", &correa::ComparePolygons::AllDistances);
     //m.def("load_polygon", &correa::load_polygon);
     m.def("print_polygon", &correa::print_polygon);
 
