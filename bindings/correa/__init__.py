@@ -34,8 +34,5 @@ def plot_polygon(p : _correa.PyPolygon):
 def polygon_properties(p : _correa.PyPolygon):
 	print_polygon(p)
 
-def ComparePolygons():
-	return _correa.ComparePolygons()
-
-def AllDistances(cp, poly1, poly2, q=2, verbose=False):
-    return cp.AllDistances(poly1, poly2, q, verbose)
+def compare_polygons(poly1, poly2):#, q=2, verbose=False):
+	return _correa.compare_polygons(poly1, poly2)#, q=q, verbose=verbose)

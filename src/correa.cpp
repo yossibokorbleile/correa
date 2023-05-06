@@ -34,17 +34,7 @@ NB_MODULE(_correa, m) {
         .def("size", &correa::PyPolygon::size)
         .def("persistence_diagram", &correa::PyPolygon::persistence_diagram);
 
-    nb::class_<correa::ComparePolygons>(m, "ComparePolygons")
-        .def(nb::init<>())
-        .def("WassersteinDistance", &correa::ComparePolygons::PyWassersteinDistance)
-        .def("FrechetDistance", &correa::ComparePolygons::PyFrechetDistance)
-        .def("MaxEllipseDistance", &correa::ComparePolygons::PyMaxEllipseDistance)
-        .def("MinEllipseDistance", &correa::ComparePolygons::PyMinEllipseDistance)
-        .def("LSQEllipseDistance", &correa::ComparePolygons::PyLSQEllipseDistance)
-        .def("PyWillmoreDistance", &correa::ComparePolygons::PyWillmoreDistance)
-        .def("PyCurveOTDistance", &correa::ComparePolygons::PyCurveOTDistance)
-        .def("AllDistances", &correa::ComparePolygons::AllDistances);
-    //m.def("load_polygon", &correa::load_polygon);
+    m.def("compare_polygons", &correa::compare_polygons);
     m.def("print_polygon", &correa::print_polygon);
 
 }
