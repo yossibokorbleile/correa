@@ -1,0 +1,9 @@
+.DS*
+build/
+bin/
+CMakeFiles
+CPackConfig.cmake
+CPackSourceConfig.cmake
+cmake_install.cmake
+libnanobind-static.a
+*.so

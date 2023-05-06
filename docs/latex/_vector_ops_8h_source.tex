@@ -1,0 +1,224 @@
+\hypertarget{_vector_ops_8h_source}{}\doxysection{Vector\+Ops.\+h}
+\label{_vector_ops_8h_source}\index{VectorOps.h@{VectorOps.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ VectorOps.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ \ Version\ 1:\ 11/12/2018}}
+\DoxyCodeLine{00004\ \textcolor{comment}{}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ Purpose:\ Sets\ of\ routine\ for\ performing\ operations\ on\ vectors\ using\ pthreads}}
+\DoxyCodeLine{00006\ \textcolor{comment}{}}
+\DoxyCodeLine{00007\ \textcolor{comment}{Copyright\ (c)\ Patrice\ Koehl.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{}}
+\DoxyCodeLine{00009\ \textcolor{comment}{>>>\ SOURCE\ LICENSE\ >>>}}
+\DoxyCodeLine{00010\ \textcolor{comment}{}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ This\ library\ is\ free\ software;\ you\ can\ redistribute\ it\ and/or}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ modify\ it\ under\ the\ terms\ of\ the\ GNU\ Lesser\ General\ Public}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ License\ as\ published\ by\ the\ Free\ Software\ Foundation;\ either}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ version\ 2.1\ of\ the\ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ This\ library\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the\ GNU}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ Lesser\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Lesser\ General\ Public}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ License\ along\ with\ this\ library;\ if\ not,\ write\ to\ the\ Free\ Software}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ Foundation,\ Inc.,\ 59\ Temple\ Place,\ Suite\ 330,\ Boston,\ MA\ 02111-\/1307\ USA}}
+\DoxyCodeLine{00024\ \textcolor{comment}{}}
+\DoxyCodeLine{00025\ \textcolor{comment}{>>>\ END\ OF\ LICENSE\ >>>}}
+\DoxyCodeLine{00026\ \textcolor{comment}{}}
+\DoxyCodeLine{00027\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#ifndef\ \_VECTOROPS\_H\_}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ \_VECTOROPS\_H\_}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ Includes}}
+\DoxyCodeLine{00034\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#include\ <pthread.h>}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ Definitions\ for\ multi-\/threading}}
+\DoxyCodeLine{00042\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structthread__data}{thread\_data}}\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{int}\ Nval;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{double}\ fact;}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{double}\ offset;}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{double}\ *vect;}
+\DoxyCodeLine{00049\ \}\ \mbox{\hyperlink{structthread__data}{thread\_data}};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \mbox{\hyperlink{structthread__data}{thread\_data}}\ thread\_datas[NUM\_THREADS];}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ Function\ Definitions}}
+\DoxyCodeLine{00055\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{auto}\ coupling\ =\ [](\textcolor{keywordtype}{double}\ xb,\ \textcolor{keywordtype}{double}\ beta)}
+\DoxyCodeLine{00058\ \{\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{double}\ vexp,\ val;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{double}\ x\ =\ xb*beta;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{double}\ tol\ =\ 1.e-\/10;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}(std::abs(x)\ <\ tol)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ val\ =\ 0.5;}
+\DoxyCodeLine{00064\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(x\ <\ 0)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ vexp\ =\ std::exp(x);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ val\ =\ 1./(1-\/vexp)\ +\ 1/x;}
+\DoxyCodeLine{00067\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ vexp\ =\ std::exp(-\/x);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ val\ =\ vexp/(vexp-\/1.0)\ +\ 1/x;}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00072\ \};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{keyword}{auto}\ dcoupling\ =\ [](\textcolor{keywordtype}{double}\ xb,\ \textcolor{keywordtype}{double}\ beta)}
+\DoxyCodeLine{00075\ \{\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{double}\ vexp,\ val;}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{double}\ x\ =\ xb*beta;}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{double}\ tol\ =\ 1.e-\/10;}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}(std::abs(x)\ <\ tol)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ val\ =\ -\/1.0/12;}
+\DoxyCodeLine{00081\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(x\ <\ 0)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ vexp\ =\ std::exp(x);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ val\ =\ vexp/((1-\/vexp)*(1-\/vexp))\ -\/\ 1/(x*x);}
+\DoxyCodeLine{00084\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ vexp\ =\ std::exp(-\/x);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ val\ =\ vexp/((1-\/vexp)*(1-\/vexp))\ -\/\ 1/(x*x);}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00089\ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ Vect\_exp\_thread:\ computes\ the\ element-\/wise\ exponential\ of\ a\ vector}}
+\DoxyCodeLine{00093\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{keywordtype}{void}*\ vect\_coupling\_thread(\textcolor{keywordtype}{void}*\ data)}
+\DoxyCodeLine{00096\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{int}\ threadid\ =\ *((\textcolor{keywordtype}{int}\ *)\ data);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{int}\ Nval\ =\ thread\_datas[threadid].Nval;}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{double}\ beta\ =\ thread\_datas[threadid].fact;}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{double}\ val;}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ Nval;\ i++)}
+\DoxyCodeLine{00104\ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ val\ =\ thread\_datas[threadid].vect[i];}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ val\ =\ coupling(val,\ beta);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ thread\_datas[threadid].vect[i]\ =\ val;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00110\ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ Vect\_abs\_thread:\ computes\ the\ element-\/wise\ absolute\ value\ of\ a\ vector}}
+\DoxyCodeLine{00114\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{keywordtype}{void}*\ vect\_dcoupling\_thread(\textcolor{keywordtype}{void}*\ data)}
+\DoxyCodeLine{00117\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{int}\ threadid\ =\ *((\textcolor{keywordtype}{int}\ *)\ data);}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{int}\ Nval\ =\ thread\_datas[threadid].Nval;}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{double}\ beta\ =\ thread\_datas[threadid].fact;}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{double}\ val;}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ Nval;\ i++)}
+\DoxyCodeLine{00125\ \ \ \ \ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ val\ =\ thread\_datas[threadid].vect[i];}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ val\ =\ beta*dcoupling(val,\ beta);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ thread\_datas[threadid].vect[i]\ =\ val;}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00131\ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00134\ \textcolor{comment}{\ vect\_coupling:\ compute\ the\ element-\/wise\ exponential\ of\ an\ array\ using\ pthreads}}
+\DoxyCodeLine{00135\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \textcolor{keywordtype}{void}\ vect\_coupling(\textcolor{keywordtype}{int}\ N,\ \textcolor{keywordtype}{double}\ *X,\ \textcolor{keywordtype}{double}\ fact,\ \textcolor{keywordtype}{int}\ nthreads)}
+\DoxyCodeLine{00138\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordtype}{int}\ nval\ =\ N\ /\ nthreads;}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{int}\ nval2\ =\ nval*(nthreads-\/1);}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{comment}{/*\ \ \ \ \ \ ==========================================================================================}}
+\DoxyCodeLine{00143\ \textcolor{comment}{\ \ \ \ Generate\ all\ threads}}
+\DoxyCodeLine{00144\ \textcolor{comment}{\ \ \ \ \ \ \ \ ==========================================================================================\ */}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nthreads-\/1;\ i++)\ }
+\DoxyCodeLine{00147\ \ \ \ \ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ threadids[i]=i;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ thread\_datas[i].Nval\ =\ nval;}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ thread\_datas[i].fact\ =\ fact;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ thread\_datas[i].vect\ \ =\ \&X[nval*i];}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ pthread\_create(\&threads[i],\ NULL,\ vect\_coupling\_thread,\ (\textcolor{keywordtype}{void}*)\ \&threadids[i]);}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \ \ }
+\DoxyCodeLine{00156\ \textcolor{comment}{/*\ \ \ \ \ \ ==========================================================================================}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ \ \ Compute\ on\ main\ thread}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ \ \ \ \ \ \ ==========================================================================================\ */}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{double}\ val;}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ nval2;\ i\ <\ N;\ i++)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ val\ =\ coupling(X[i],fact);}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ X[i]\ =\ val;}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \textcolor{comment}{/*\ \ \ \ \ \ ==========================================================================================}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ \ \ Join\ all\ the\ threads\ (to\ make\ sure\ they\ are\ all\ finished)}}
+\DoxyCodeLine{00168\ \textcolor{comment}{\ \ \ \ \ \ \ \ ==========================================================================================\ */}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i\ <\ nthreads-\/1;\ i++)}
+\DoxyCodeLine{00171\ \ \ \ \ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ pthread\_join(threads[i],\ NULL);}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \}}
+\DoxyCodeLine{00175\ \textcolor{comment}{/*================================================================================================}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ vect\_dcoupling:\ compute\ the\ element-\/wise\ absolute\ value\ of\ an\ array\ using\ pthreads}}
+\DoxyCodeLine{00177\ \textcolor{comment}{==================================================================================================\ */}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \textcolor{keywordtype}{void}\ vect\_dcoupling(\textcolor{keywordtype}{int}\ N,\ \textcolor{keywordtype}{double}\ *X,\ \textcolor{keywordtype}{double}\ fact,\ \textcolor{keywordtype}{int}\ nthreads)}
+\DoxyCodeLine{00180\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordtype}{int}\ nval\ =\ N\ /\ nthreads;}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordtype}{int}\ nval2\ =\ nval*(nthreads-\/1);}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{comment}{/*\ \ \ \ \ \ ==========================================================================================}}
+\DoxyCodeLine{00185\ \textcolor{comment}{\ \ \ \ Generate\ all\ threads}}
+\DoxyCodeLine{00186\ \textcolor{comment}{\ \ \ \ \ \ \ \ ==========================================================================================\ */}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nthreads-\/1;\ i++)\ }
+\DoxyCodeLine{00189\ \ \ \ \ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ threadids[i]=i;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ thread\_datas[i].Nval\ =\ nval;}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ thread\_datas[i].fact\ =\ fact;}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ thread\_datas[i].vect\ \ =\ \&X[nval*i];}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ pthread\_create(\&threads[i],\ NULL,\ vect\_dcoupling\_thread,\ (\textcolor{keywordtype}{void}*)\ \&threadids[i]);}
+\DoxyCodeLine{00196\ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \ \ }
+\DoxyCodeLine{00198\ \textcolor{comment}{/*\ \ \ \ \ \ ==========================================================================================}}
+\DoxyCodeLine{00199\ \textcolor{comment}{\ \ \ \ Compute\ on\ main\ thread}}
+\DoxyCodeLine{00200\ \textcolor{comment}{\ \ \ \ \ \ \ \ ==========================================================================================\ */}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordtype}{double}\ val;}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ nval2;\ i\ <\ N;\ i++)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ val\ =\ fact*dcoupling(X[i],fact);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ X[i]\ =\ val;}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \textcolor{comment}{/*\ \ \ \ \ \ ==========================================================================================}}
+\DoxyCodeLine{00209\ \textcolor{comment}{\ \ \ \ Join\ all\ the\ threads\ (to\ make\ sure\ they\ are\ all\ finished)}}
+\DoxyCodeLine{00210\ \textcolor{comment}{\ \ \ \ \ \ \ \ ==========================================================================================\ */}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i\ <\ nthreads-\/1;\ i++)}
+\DoxyCodeLine{00213\ \ \ \ \ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ pthread\_join(threads[i],\ NULL);}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

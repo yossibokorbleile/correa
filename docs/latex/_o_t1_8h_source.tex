@@ -1,0 +1,651 @@
+\hypertarget{_o_t1_8h_source}{}\doxysection{OT1.\+h}
+\label{_o_t1_8h_source}\index{OT1.h@{OT1.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*\ ====OT1\_H\ ===================================================================================}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ Author:\ Patrice\ Koehl\ (in\ collaboration\ with\ Henri\ Orland),\ November\ 2018}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Department\ of\ Computer\ Science}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ University\ of\ California,\ Davis}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ This\ file\ implements\ different\ methods\ needed\ to\ solve\ the\ optimal\ transport\ problem\ using}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ the\ minimization\ of\ a\ free\ energy}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ ===============================================================================================\ */}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ \_OT1\_H\_}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ \_OT1\_H\_}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \#include\ <cmath>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \#include\ <algorithm>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#include\ <functional>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \#include\ "{}VectorOps.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \#include\ "{}ConjGradOT.h"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \mbox{\hyperlink{class_conj_grad_o_t}{ConjGradOT}}\ conjgrad;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ \ prototypes\ for\ BLAS\ and\ LAPACK\ functions\ }}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ BLAS1:\ copy\ one\ vector\ into\ another}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ dcopy\_(\textcolor{keywordtype}{int}\ *\ n,\ \textcolor{keywordtype}{double}\ *\ X,\ \textcolor{keywordtype}{int}\ *incx,\ \textcolor{keywordtype}{double}\ *\ Y,\ \textcolor{keywordtype}{int}\ *incy);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ BLAS1:\ scale\ a\ vector}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ dscal\_(\textcolor{keywordtype}{int}\ *\ n,\ \textcolor{keywordtype}{double}\ *scale,\ \textcolor{keywordtype}{double}\ *Y,\ \textcolor{keywordtype}{int}\ *incy);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ BLAS1:\ dot\ product\ of\ two\ vectors\ \ \ \ }}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{double}\ ddot\_(\textcolor{keywordtype}{int}\ *\ n,\ \textcolor{keywordtype}{double}\ *\ u,\ \textcolor{keywordtype}{int}\ *\ incu,\ \textcolor{keywordtype}{double}\ *\ v,\ \textcolor{keywordtype}{int}\ *incv);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ BLAS1:\ norm\ of\ a\ vector}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{double}\ dnrm2\_(\textcolor{keywordtype}{int}\ *\ n,\ \textcolor{keywordtype}{double}\ *\ X,\ \textcolor{keywordtype}{int}\ *incx);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ BLAS2:\ perform\ Y\ :=\ alpha*op(\ A\ )*\ B\ \ +\ beta*Y}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ dgemv\_(\textcolor{keywordtype}{char}\ *\ trans,\ \textcolor{keywordtype}{int}\ *\ m,\ \textcolor{keywordtype}{int}\ *\ n,\ \textcolor{keywordtype}{double}\ *\ alpha,\ \textcolor{keywordtype}{double}\ *A,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *lda,\ \textcolor{keywordtype}{double}\ *\ X,\ \textcolor{keywordtype}{int}\ *\ incx,\ \textcolor{keywordtype}{double}\ *beta,\ \textcolor{keywordtype}{double}\ *\ Y,\ \textcolor{keywordtype}{int}\ *\ incy);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ BLAS3:\ perform\ C\ :=\ alpha*op(\ A\ )*\ op(B)\ \ +\ beta*C}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ dgemm\_(\textcolor{keywordtype}{char}\ *\ transa,\ \textcolor{keywordtype}{char}\ *\ transb,\ \textcolor{keywordtype}{int}\ *\ m,\ \textcolor{keywordtype}{int}\ *\ n,\ \textcolor{keywordtype}{int}\ *\ k,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *\ alpha,\ \textcolor{keywordtype}{double}\ *\ A,\ \textcolor{keywordtype}{int}\ *\ lda,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *\ B,\ \textcolor{keywordtype}{int}\ *\ ldb,\ \textcolor{keywordtype}{double}\ *\ beta,\ \textcolor{keywordtype}{double}\ *\ C,\ \textcolor{keywordtype}{int}\ *\ ldc);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ LAPACK:\ solve\ a\ real\ system\ of\ linear\ equations\ A\ *\ X\ =\ B,\ where\ A\ is\ a\ symmetric\ matrix\ }}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ dsysv\_(\textcolor{keywordtype}{char}\ *uplo,\ \textcolor{keywordtype}{int}\ *n,\ \textcolor{keywordtype}{int}\ *nrhs,\ \textcolor{keywordtype}{double}\ *A,\ \textcolor{keywordtype}{int}\ *lda,\ \textcolor{keywordtype}{int}\ *ipiv,\ \textcolor{keywordtype}{double}\ *b,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *ldb,\ \textcolor{keywordtype}{double}\ *work,\ \textcolor{keywordtype}{int}\ *lwork,\ \textcolor{keywordtype}{int}\ *info);}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ LAPACK:\ diagonalize\ a\ symmetric\ matrix}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ dsyevd(\textcolor{keywordtype}{char}\ *\ JOBZ,\ \textcolor{keywordtype}{char}\ *\ UPLO,\ \textcolor{keywordtype}{int}\ *N,\ \textcolor{keywordtype}{double}\ *A,\ \textcolor{keywordtype}{int}\ *LDA,\ \textcolor{keywordtype}{double}\ *W,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *WORK,\ \textcolor{keywordtype}{int}\ *LWORK,\ \textcolor{keywordtype}{int}\ *IWORK,\ \textcolor{keywordtype}{int}\ *LIWORK,\ \textcolor{keywordtype}{int}\ *INFO);}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ LAPACK:\ solve\ a\ real\ system\ of\ linear\ equations\ A\ *\ X\ =\ B,\ where\ A\ is\ a\ symmetric\ matrix\ }}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ dsysvx\_(\textcolor{keywordtype}{char}\ *fact,\ \textcolor{keywordtype}{char}\ *uplo,\ \textcolor{keywordtype}{int}\ *n,\ \textcolor{keywordtype}{int}\ *nrhs,\ \textcolor{keywordtype}{double}\ *A,\ \textcolor{keywordtype}{int}\ *lda,\ \textcolor{keywordtype}{double}\ *AF,}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *ldaf,\ \textcolor{keywordtype}{int}\ *ipiv,\ \textcolor{keywordtype}{double}\ *b,\ \textcolor{keywordtype}{int}\ *ldb,\ \textcolor{keywordtype}{double}\ *x,\ \textcolor{keywordtype}{int}\ *ldx,}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *rcond,\ \textcolor{keywordtype}{double}\ *ferr,\ \textcolor{keywordtype}{double}\ *berr,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *work,\ \textcolor{keywordtype}{int}\ *lwork,\ \textcolor{keywordtype}{int}\ *iwork,\ \textcolor{keywordtype}{int}\ *info);}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ \ \ The\ OT1\ class}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_o_t1}{OT1}}\{}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{//\ Solve\ for\ G\ and\ d\ at\ infinite\ beta\ (iterative\ over\ beta)}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{double}\ ot1(\textcolor{keywordtype}{int}\ npoint1,\ \textcolor{keywordtype}{double}\ *m1,\ \textcolor{keywordtype}{int}\ npoint2,\ \textcolor{keywordtype}{double}\ *m2,\ \textcolor{keywordtype}{double}\ *C,}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *WorkSpace,\ \textcolor{keywordtype}{double}\ beta\_init,\ \textcolor{keywordtype}{double}\ beta\_final,}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{int}\ iprint,\ \textcolor{keywordtype}{int}\ nthreads);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{comment}{//\ Solve\ for\ G\ at\ a\ given\ beta\ value}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{int}\ solveG(\textcolor{keywordtype}{int}\ npoint1,\ \textcolor{keywordtype}{double}\ *m1,\ \textcolor{keywordtype}{int}\ npoint2,\ \textcolor{keywordtype}{double}\ *m2,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *lambda,\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{double}\ *mu,\ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ tol,\ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *WorkSpace,\ \textcolor{keywordtype}{int}\ nthreads,\ \textcolor{keywordtype}{int}\ *info);}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ Check\ marginals:\ row\ sums\ and\ column\ sums\ of\ the\ transport\ plan\ G}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{void}\ checkMarginals(\textcolor{keywordtype}{int}\ n1,\ \textcolor{keywordtype}{double}\ *m1,\ \textcolor{keywordtype}{int}\ n2,\ \ \textcolor{keywordtype}{double}\ *m2,\ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *err\_row,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *err\_col,\ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *Space1D);}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ tranport\ plan\ G\ based\ on\ the\ auxiliary\ variables\ lambda\ and\ mu}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ computeG(\textcolor{keywordtype}{int}\ npoint1,\ \textcolor{keywordtype}{int}\ npoint2,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{double}\ *lambda,\ \textcolor{keywordtype}{double}\ *mu,\ \textcolor{keywordtype}{double}\ beta);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{comment}{//\ Check\ current\ Jacobian\ system}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{double}\ computeRC(\textcolor{keywordtype}{int}\ npoint1,\ \textcolor{keywordtype}{double}\ *m1,\ \textcolor{keywordtype}{int}\ npoint2,\ \textcolor{keywordtype}{double}\ *m2,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ *lambda,\ \textcolor{keywordtype}{double}\ *mu,\ \textcolor{keywordtype}{double}\ *row,\ \textcolor{keywordtype}{double}\ *col,\ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{int}\ nthreads);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{comment}{//\ Solve\ Jacobian\ system\ for\ updates\ in\ Lambda\ and\ Mu,\ using\ direct\ solver}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{void}\ computedX\_direct(\textcolor{keywordtype}{int}\ n1,\ \textcolor{keywordtype}{int}\ n2,\ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *lambda,\ \textcolor{keywordtype}{double}\ *mu,\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *row,\ \textcolor{keywordtype}{double}\ *col,\ \textcolor{keywordtype}{double}\ *Space,\ \textcolor{keywordtype}{double}\ *Jac,\ \textcolor{keywordtype}{double}\ *B,\ \textcolor{keywordtype}{double}\ *Sol,\ \textcolor{keywordtype}{int}\ nthreads);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//\ Solve\ Jacobian\ system\ for\ updates\ in\ Lambda\ and\ Mu,\ using\ iterative\ solver\ (CG)}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{int}\ computedX\_iter(\textcolor{keywordtype}{int}\ n1,\ \textcolor{keywordtype}{int}\ n2,\ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *lambda,\ \textcolor{keywordtype}{double}\ *mu,\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *row,\ \textcolor{keywordtype}{double}\ *col,\ \textcolor{keywordtype}{double}\ *B,\ \textcolor{keywordtype}{double}\ *Sol,\ \textcolor{keywordtype}{double}\ *Space,\ \textcolor{keywordtype}{int}\ nthreads);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ \ Common\ variables}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ \ \ checkMarginals}}
+\DoxyCodeLine{00113\ \textcolor{comment}{}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\ \ \ Notes:}}
+\DoxyCodeLine{00115\ \textcolor{comment}{\ \ \ =====}}
+\DoxyCodeLine{00116\ \textcolor{comment}{\ \ \ Check\ the\ marginals\ of\ a\ coupling\ matrix}}
+\DoxyCodeLine{00117\ \textcolor{comment}{}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ \ \ Input:}}
+\DoxyCodeLine{00119\ \textcolor{comment}{\ \ \ =====}}
+\DoxyCodeLine{00120\ \textcolor{comment}{\ \ \ \ n:\ \ number\ of\ points\ on\ space\ 1}}
+\DoxyCodeLine{00121\ \textcolor{comment}{\ \ \ \ m1:\ measure\ on\ space\ 1}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ \ \ \ n2:\ number\ of\ points\ on\ space\ 2}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ \ \ \ m2:\ measure\ on\ space\ 2}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ \ \ G:\ \ coupling\ matrix}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ Output:}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ \ \ err\_row:\ error\ on\ row\ marginals}}
+\DoxyCodeLine{00127\ \textcolor{comment}{\ \ \ \ err\_col:\ error\ on\ col\ marginals}}
+\DoxyCodeLine{00128\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{void}\ OT1::checkMarginals(\textcolor{keywordtype}{int}\ n1,\ \textcolor{keywordtype}{double}\ *m1,\ \textcolor{keywordtype}{int}\ n2,\ \ \textcolor{keywordtype}{double}\ *m2,\ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *err\_row,}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *err\_col,\ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *Space1D)}
+\DoxyCodeLine{00132\ \ \ \{}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{double}\ alpha,\ beta;}
+\DoxyCodeLine{00135\ \ \ \ \ alpha\ =\ 1.0;\ beta\ =\ 0.0;}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordtype}{int}\ inc\ =\ 1;}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{char}\ Trans\ \ \ =\ \textcolor{charliteral}{'T'};}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{char}\ NoTrans\ =\ \textcolor{charliteral}{'N'};}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ dgemv\_(\&NoTrans,\ \&n1,\ \&n2,\ \&alpha,\ G,\ \&n1,\ ones,\ \&inc,\ \&beta,\ Space1D,\ \&inc);}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <n1;\ i++)\ \{\ Space1D[i]\ =\ Space1D[i]\ -\/\ m1[i];\};}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordtype}{double}\ val\ =\ ddot\_(\&n1,\ Space1D,\ \&inc,\ Space1D,\ \&inc);}
+\DoxyCodeLine{00143\ \ \ \ \ *err\_row\ =\ std::sqrt(val);}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ dgemv\_(\&Trans,\ \&n1,\ \&n2,\ \&alpha,\ G,\ \&n1,\ ones,\ \&inc,\ \&beta,\ Space1D,\ \&inc);}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <n2;\ i++)\ \{\ Space1D[i]\ =\ Space1D[i]\ -\/\ m2[i];\};}
+\DoxyCodeLine{00147\ \ \ \ \ val\ =\ ddot\_(\&n2,\ Space1D,\ \&inc,\ Space1D,\ \&inc);}
+\DoxyCodeLine{00148\ \ \ \ \ *err\_col\ =\ std::sqrt(val);}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ \ \ computeG}}
+\DoxyCodeLine{00152\ \textcolor{comment}{}}
+\DoxyCodeLine{00153\ \textcolor{comment}{\ \ \ Input:}}
+\DoxyCodeLine{00154\ \textcolor{comment}{\ \ \ =====}}
+\DoxyCodeLine{00155\ \textcolor{comment}{\ \ \ \ npoint1:\ \ \ \ number\ of\ points\ for\ point\ set\ 1}}
+\DoxyCodeLine{00156\ \textcolor{comment}{\ \ \ \ npoint2:\ \ \ \ number\ of\ points\ for\ point\ set\ 2}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ \ \ C:\ \ \ \ \ \ cost\ matrix}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ \ \ beta:\ \ \ \ \ \ \ current\ beta}}
+\DoxyCodeLine{00159\ \textcolor{comment}{\ \ \ \ lambda:\ \ \ \ \ current\ values\ of\ Lagragians\ lambda}}
+\DoxyCodeLine{00160\ \textcolor{comment}{\ \ \ \ mu:\ \ \ \ \ current\ values\ of\ Lagragians\ mu}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ \ \ \ nthreads:\ \ \ number\ of\ threads\ for\ parallel\ computation}}
+\DoxyCodeLine{00162\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{00163\ \textcolor{comment}{\ \ \ Output:}}
+\DoxyCodeLine{00164\ \textcolor{comment}{\ \ \ ======}}
+\DoxyCodeLine{00165\ \textcolor{comment}{\ \ \ \ G:\ \ \ \ \ \ coupling\ matrix}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordtype}{void}\ OT1::computeG(\textcolor{keywordtype}{int}\ npoint1,\ \textcolor{keywordtype}{int}\ npoint2,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,\ }
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordtype}{double}\ *lambda,\ \textcolor{keywordtype}{double}\ *mu,\ \textcolor{keywordtype}{double}\ beta)}
+\DoxyCodeLine{00170\ \ \ \{}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordtype}{double}\ val;}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordtype}{double}\ tol\ =\ 1.e-\/8;}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ npoint2;\ j++)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ npoint1;\ i++)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ val\ =\ C[i+j*npoint1]\ +\ lambda[i]\ +\ mu[j];}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ val\ =\ coupling(val,\ beta);}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(val\ <\ tol)\ val\ =\ 0;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(val\ >\ 1.-\/\ tol)\ val\ =\ 1;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ G[i+npoint1*j]\ =\ val;}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \}}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ \ \ computeRC}}
+\DoxyCodeLine{00189\ \textcolor{comment}{}}
+\DoxyCodeLine{00190\ \textcolor{comment}{\ \ \ Input:}}
+\DoxyCodeLine{00191\ \textcolor{comment}{\ \ \ =====}}
+\DoxyCodeLine{00192\ \textcolor{comment}{\ \ \ \ npoint1:\ \ \ \ number\ of\ points\ for\ point\ set\ 1}}
+\DoxyCodeLine{00193\ \textcolor{comment}{\ \ \ \ m1:\ \ \ \ \ measure\ on\ points1}}
+\DoxyCodeLine{00194\ \textcolor{comment}{\ \ \ \ npoint2:\ \ \ \ number\ of\ points\ for\ point\ set\ 2}}
+\DoxyCodeLine{00195\ \textcolor{comment}{\ \ \ \ m2:\ \ \ \ \ measure\ on\ points2}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ \ \ \ C:\ \ \ \ \ \ cost\ matrix}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ \ \ \ beta:\ \ \ \ \ \ \ current\ beta}}
+\DoxyCodeLine{00198\ \textcolor{comment}{\ \ \ \ lambda:\ \ \ \ \ current\ values\ of\ Lagragians\ lambda}}
+\DoxyCodeLine{00199\ \textcolor{comment}{\ \ \ \ mu:\ \ \ \ \ current\ values\ of\ Lagragians\ mu}}
+\DoxyCodeLine{00200\ \textcolor{comment}{\ \ \ \ nthreads:\ \ \ number\ of\ threads\ for\ parallel\ computation}}
+\DoxyCodeLine{00201\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{00202\ \textcolor{comment}{\ \ \ Output:}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ \ \ ======}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ \ \ row:\ \ \ \ \ \ \ \ errors\ on\ row\ sums}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ \ \ col:\ \ \ \ \ \ \ \ errors\ on\ col\ sums}}
+\DoxyCodeLine{00206\ \textcolor{comment}{\ \ \ \ err\_r:\ \ \ \ \ \ total\ error\ on\ row\ sums}}
+\DoxyCodeLine{00207\ \textcolor{comment}{\ \ \ \ err\_m:\ \ \ \ \ \ total\ error\ on\ col\ sums}}
+\DoxyCodeLine{00208\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{keywordtype}{double}\ OT1::computeRC(\textcolor{keywordtype}{int}\ npoint1,\ \textcolor{keywordtype}{double}\ *m1,\ \textcolor{keywordtype}{int}\ npoint2,\ \textcolor{keywordtype}{double}\ *m2,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ *lambda,\ \textcolor{keywordtype}{double}\ *mu,\ \textcolor{keywordtype}{double}\ *row,\ \textcolor{keywordtype}{double}\ *col,\ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{int}\ nthreads)}
+\DoxyCodeLine{00212\ \ \ \{}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordtype}{int}\ n1n2\ =\ npoint1*npoint2;}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordtype}{char}\ Trans\ \ \ =\ \textcolor{charliteral}{'T'};}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordtype}{char}\ NoTrans\ =\ \textcolor{charliteral}{'N'};}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordtype}{int}\ inc\ =\ 1;}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordtype}{int}\ one\ =\ 1;}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordtype}{double}\ a,\ b;}
+\DoxyCodeLine{00220\ \ \ \ \ }
+\DoxyCodeLine{00221\ \ \ \ \ dcopy\_(\&n1n2,\ C,\ \&inc,\ G,\ \&inc);}
+\DoxyCodeLine{00222\ \ \ \ \ a\ =\ 1.0;\ b\ =\ 1;}
+\DoxyCodeLine{00223\ \ \ \ \ dgemm\_(\&NoTrans,\ \&Trans,\ \&npoint1,\ \&npoint2,\ \&one,\ \&a,\ lambda,\ \&npoint1,\ ones,\ \&npoint2,\ \&b,\ }
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ G,\ \&npoint1);}
+\DoxyCodeLine{00225\ \ \ \ \ dgemm\_(\&NoTrans,\ \&Trans,\ \&npoint1,\ \&npoint2,\ \&one,\ \&a,\ ones,\ \&npoint1,\ mu,\ \&npoint2,\ \&b,\ }
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ G,\ \&npoint1);}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ \ \ vect\_coupling(n1n2,\ G,\ beta,\ nthreads);}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \ \ dcopy\_(\&npoint1,\ m1,\ \&inc,\ row,\ \&inc);}
+\DoxyCodeLine{00231\ \ \ \ \ a\ =\ 1;\ b\ =\ -\/1;}
+\DoxyCodeLine{00232\ \ \ \ \ dgemv\_(\&NoTrans,\ \&npoint1,\ \&npoint2,\ \&a,\ G,\ \&npoint1,\ ones,\ \&inc,\ \&b,\ row,\ \&inc);}
+\DoxyCodeLine{00233\ \ \ \ \ dcopy\_(\&npoint2,\ m2,\ \&inc,\ col,\ \&inc);}
+\DoxyCodeLine{00234\ \ \ \ \ dgemv\_(\&Trans,\ \&npoint1,\ \&npoint2,\ \&a,\ G,\ \&npoint1,\ ones,\ \&inc,\ \&b,\ col,\ \&inc);}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordtype}{double}\ err\_l\ =\ 0;}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordtype}{double}\ val\ =\ ddot\_(\&npoint1,\ row,\ \&inc,\ row,\ \&inc);}
+\DoxyCodeLine{00238\ \ \ \ \ err\_l\ =\ std::sqrt(val);}
+\DoxyCodeLine{00239\ \textcolor{comment}{//\ \ for(int\ i\ =\ 0;\ i\ <\ npoint1;\ i++)\ err\_l\ +=\ std::abs(row[i]);}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordtype}{double}\ err\_m\ =\ 0;}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordtype}{int}\ n2\ =\ npoint2-\/1;}
+\DoxyCodeLine{00243\ \ \ \ \ val\ =\ ddot\_(\&n2,\ col,\ \&inc,\ col,\ \&inc);}
+\DoxyCodeLine{00244\ \ \ \ \ err\_m\ =\ std::sqrt(val);}
+\DoxyCodeLine{00245\ \textcolor{comment}{//\ \ for(int\ j\ =\ 0;\ j\ <\ npoint2-\/1;\ j++)\ err\_m\ +=\ std::abs(col[j]);}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordtype}{double}\ err\ =\ err\_l+err\_m;}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ \ \ computedX\_direct}}
+\DoxyCodeLine{00255\ \textcolor{comment}{}}
+\DoxyCodeLine{00256\ \textcolor{comment}{\ \ \ Input:}}
+\DoxyCodeLine{00257\ \textcolor{comment}{\ \ \ =====}}
+\DoxyCodeLine{00258\ \textcolor{comment}{\ \ \ \ npoint1:\ \ \ \ number\ of\ points\ for\ point\ set\ 1}}
+\DoxyCodeLine{00259\ \textcolor{comment}{\ \ \ \ npoint2:\ \ \ \ number\ of\ points\ for\ point\ set\ 2}}
+\DoxyCodeLine{00260\ \textcolor{comment}{\ \ \ \ beta:\ \ \ \ \ \ \ current\ beta}}
+\DoxyCodeLine{00261\ \textcolor{comment}{\ \ \ \ C:\ \ \ \ \ \ Cost\ matrix}}
+\DoxyCodeLine{00262\ \textcolor{comment}{\ \ \ \ lambda:\ \ \ \ \ current\ values\ of\ Lagragians\ lambda}}
+\DoxyCodeLine{00263\ \textcolor{comment}{\ \ \ \ mu:\ \ \ \ \ current\ values\ of\ Lagragians\ mu}}
+\DoxyCodeLine{00264\ \textcolor{comment}{\ \ \ \ row:\ \ \ \ \ \ \ \ errors\ on\ row\ marginals}}
+\DoxyCodeLine{00265\ \textcolor{comment}{\ \ \ \ col:\ \ \ \ \ \ \ \ errors\ on\ col\ marginals}}
+\DoxyCodeLine{00266\ \textcolor{comment}{\ \ \ \ nthreads:\ \ \ number\ of\ threads\ for\ parallel\ computation}}
+\DoxyCodeLine{00267\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{00268\ \textcolor{comment}{\ \ \ Output:}}
+\DoxyCodeLine{00269\ \textcolor{comment}{\ \ \ ======}}
+\DoxyCodeLine{00270\ \textcolor{comment}{\ \ \ \ drow:\ \ \ \ \ \ \ updates\ on\ lambda}}
+\DoxyCodeLine{00271\ \textcolor{comment}{\ \ \ \ dcol:\ \ \ \ \ \ \ updates\ on\ mu}}
+\DoxyCodeLine{00272\ \textcolor{comment}{}}
+\DoxyCodeLine{00273\ \textcolor{comment}{\ \ \ Method:}}
+\DoxyCodeLine{00274\ \textcolor{comment}{\ \ \ ======}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ \ \ \ We\ write\ the\ Jacobian\ as:}}
+\DoxyCodeLine{00276\ \textcolor{comment}{\ \ \ \ \ \ \ \ Jac\ =\ [A\ \ \ \ \ B]}}
+\DoxyCodeLine{00277\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ [B\string^T\ \ \ D]}}
+\DoxyCodeLine{00278\ \textcolor{comment}{\ \ \ \ where\ A\ and\ D\ are\ diagonal\ matrices}}
+\DoxyCodeLine{00279\ \textcolor{comment}{\ \ \ \ To\ solve:}}
+\DoxyCodeLine{00280\ \textcolor{comment}{\ \ \ \ Jac\ dF\ =\ B}}
+\DoxyCodeLine{00281\ \textcolor{comment}{\ \ \ \ we\ write\ it\ as:}}
+\DoxyCodeLine{00282\ \textcolor{comment}{\ \ \ \ A\ x\ +\ B\ y\ =\ a\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (1)}}
+\DoxyCodeLine{00283\ \textcolor{comment}{\ \ \ \ B\string^T\ x\ +\ D\ y\ =\ b\ \ \ \ \ \ \ \ \ \ \ \ \ (2)}}
+\DoxyCodeLine{00284\ \textcolor{comment}{\ \ \ \ We\ multiply\ (2)\ by\ BD\string^\{-\/1\}}}
+\DoxyCodeLine{00285\ \textcolor{comment}{\ \ \ \ A\ x\ +\ B\ y\ =\ a}}
+\DoxyCodeLine{00286\ \textcolor{comment}{\ \ \ \ BD\string^\{-\/1\}B\string^T\ x\ +\ B\ y\ =\ BD\string^\{-\/1\}b\ \ \ \ \ \ \ \ \ \ \ (2')}}
+\DoxyCodeLine{00287\ \textcolor{comment}{\ \ \ \ and\ (1)\ -\/\ (2')\ gives:}}
+\DoxyCodeLine{00288\ \textcolor{comment}{\ \ \ \ (A\ -\/\ BD\string^\{-\/1\}B\string^T)\ x\ =\ a\ -\/\ BD\string^\{-\/1\}b}}
+\DoxyCodeLine{00289\ \textcolor{comment}{\ \ \ \ which\ we\ solve\ using\ dsysv,\ and\ then:}}
+\DoxyCodeLine{00290\ \textcolor{comment}{\ \ \ \ y\ =\ D\string^\{-\/1\}b\ -\/\ B\string^Tx}}
+\DoxyCodeLine{00291\ \textcolor{comment}{}}
+\DoxyCodeLine{00292\ \textcolor{comment}{\ \ \ \ Note\ that\ if\ dim(a)\ >\ dim(b),\ we\ reverse\ the\ system}}
+\DoxyCodeLine{00293\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{00294\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ \ \ \textcolor{keywordtype}{void}\ OT1::computedX\_direct(\textcolor{keywordtype}{int}\ n1,\ \textcolor{keywordtype}{int}\ n2,\ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *lambda,\ \textcolor{keywordtype}{double}\ *mu,\ }
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *row,\ \textcolor{keywordtype}{double}\ *col,\ \textcolor{keywordtype}{double}\ *Space,\ \textcolor{keywordtype}{double}\ *Jac,\ \textcolor{keywordtype}{double}\ *B,\ \textcolor{keywordtype}{double}\ *Sol,\ \textcolor{keywordtype}{int}\ nthreads)}
+\DoxyCodeLine{00298\ \ \ \{}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keywordtype}{int}\ npoint1\ =\ n1;}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordtype}{int}\ npoint2\ =\ n2+1;}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordtype}{int}\ n1n2\ =\ npoint1*npoint2;}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordtype}{int}\ n1pn2\ =\ n1+n2;}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keywordtype}{char}\ Trans\ \ \ =\ \textcolor{charliteral}{'T'};}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordtype}{char}\ NoTrans\ =\ \textcolor{charliteral}{'N'};}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordtype}{int}\ inc\ =\ 1;}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordtype}{int}\ one\ =\ 1;}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordtype}{double}\ a,\ b;}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \ \ \ \ dcopy\_(\&n1,\ row,\ \&inc,\ B,\ \&inc);}
+\DoxyCodeLine{00311\ \ \ \ \ dcopy\_(\&n2,\ col,\ \&inc,\ \&B[npoint1],\ \&inc);}
+\DoxyCodeLine{00312\ \ \ \ \ a\ =\ -\/1;}
+\DoxyCodeLine{00313\ \ \ \ \ dscal\_(\&n1pn2,\ \&a,\ B,\ \&inc);}
+\DoxyCodeLine{00314\ \ \ \ \ }
+\DoxyCodeLine{00315\ \ \ \ \ dcopy\_(\&n1n2,\ C,\ \&inc,\ G,\ \&inc);}
+\DoxyCodeLine{00316\ \ \ \ \ a\ =\ 1.0;\ b\ =\ 1;}
+\DoxyCodeLine{00317\ \ \ \ \ dgemm\_(\&NoTrans,\ \&Trans,\ \&npoint1,\ \&npoint2,\ \&one,\ \&a,\ lambda,\ \&npoint1,\ ones,\ \&npoint2,\ \&b,\ }
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ G,\ \&npoint1);}
+\DoxyCodeLine{00319\ \ \ \ \ dgemm\_(\&NoTrans,\ \&Trans,\ \&npoint1,\ \&npoint2,\ \&one,\ \&a,\ ones,\ \&npoint1,\ mu,\ \&npoint2,\ \&b,\ }
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ G,\ \&npoint1);}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \ \ \ \ vect\_dcoupling(n1n2,\ G,\ beta,\ nthreads);}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ \ \ \ \ a\ =\ 1;\ b\ =\ 0;}
+\DoxyCodeLine{00325\ \ \ \ \ dgemv\_(\&NoTrans,\ \&npoint1,\ \&npoint2,\ \&a,\ G,\ \&npoint1,\ ones,\ \&inc,\ \&b,\ row,\ \&inc);}
+\DoxyCodeLine{00326\ \ \ \ \ dgemv\_(\&Trans,\ \&npoint1,\ \&npoint2,\ \&a,\ G,\ \&npoint1,\ ones,\ \&inc,\ \&b,\ col,\ \&inc);}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordtype}{int}\ nrhs\ =\ 1;\ \textcolor{keywordtype}{char}\ U\ \ =\ \textcolor{charliteral}{'L'};\ \textcolor{keywordtype}{int}\ info;}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keywordtype}{int}\ lwork;}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordtype}{int}\ *IPIV\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{int}[std::max(npoint1,\ npoint2)];}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordflow}{if}(n1\ <=\ n2+1)\ \{}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n2;\ j++)\ col[j]\ =\ 1.0/col[j];}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n2;\ j++)\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Space[i+j*n1]\ =\ G[i+j*n1]*col[j];}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ a\ =\ -\/1.0;\ b\ =\ 0;}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ dgemm\_(\&NoTrans,\ \&Trans,\ \&n1,\ \&n1,\ \&n2,\ \&a,\ Space,\ \&n1,\ G,\ \&n1,\ \&b,\ Jac,\ \&n1);}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ Jac[i+n1*i]\ +=\ row[i];}
+\DoxyCodeLine{00345\ }
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ a\ =\ -\/1.0;\ b\ =\ 1.0;}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ dgemv\_(\&NoTrans,\ \&n1,\ \&n2,\ \&a,\ Space,\ \&n1,\ \&B[npoint1],\ \&inc,\ \&b,\ B,\ \&inc);}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ lwork\ =\ 128*n1;}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ dsysv\_(\&U,\ \&n1,\ \&nrhs,\ Jac,\ \&n1,\ IPIV,\ B,\ \&n1,\ Space,\ \&lwork,\ \&info);}
+\DoxyCodeLine{00351\ }
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ a\ =\ -\/1.0;\ b\ =\ 1.0;}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ dgemv\_(\&Trans,\ \&n1,\ \&n2,\ \&a,\ G,\ \&n1,\ B,\ \&inc,\ \&b,\ \&B[npoint1],\ \&inc);}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n2;\ j++)\ B[npoint1+j]\ =\ col[j]*B[npoint1+j];}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ dcopy\_(\&n1pn2,\ B,\ \&inc,\ Sol,\ \&inc);}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n1;\ j++)\ row[j]\ =\ 1.0/row[j];}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n2;\ j++)\ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ \{}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Space[i+j*n1]\ =\ G[i+j*n1]*row[i];}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ a\ =\ -\/1.0;\ b\ =\ 0;}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ dgemm\_(\&Trans,\ \&NoTrans,\ \&n2,\ \&n2,\ \&n1,\ \&a,\ G,\ \&n1,\ Space,\ \&n1,\ \&b,\ Jac,\ \&n2);}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n2;\ i++)\ Jac[i+n2*i]\ +=\ col[i];}
+\DoxyCodeLine{00371\ }
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ a\ =\ 1.0;\ b\ =\ -\/1.0;}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ dgemv\_(\&Trans,\ \&n1,\ \&n2,\ \&a,\ Space,\ \&n1,\ B,\ \&inc,\ \&b,\ \&B[npoint1],\ \&inc);}
+\DoxyCodeLine{00374\ }
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ lwork\ =\ 128*n2;}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ dsysv\_(\&U,\ \&n2,\ \&nrhs,\ Jac,\ \&n2,\ IPIV,\ \&B[npoint1],\ \&n2,\ Space,\ \&lwork,\ \&info);}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ a\ =\ -\/1.0;\ b\ =\ -\/1.0;}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ dgemv\_(\&NoTrans,\ \&n1,\ \&n2,\ \&a,\ G,\ \&n1,\ \&B[npoint1],\ \&inc,\ \&b,\ B,\ \&inc);}
+\DoxyCodeLine{00381\ }
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n1;\ i++)\ B[i]\ =\ row[i]*B[i];}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ dcopy\_(\&n1pn2,\ B,\ \&inc,\ Sol,\ \&inc);}
+\DoxyCodeLine{00384\ \ \ \ \ \}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \}}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00389\ \textcolor{comment}{\ \ \ computedX\_iter}}
+\DoxyCodeLine{00390\ \textcolor{comment}{}}
+\DoxyCodeLine{00391\ \textcolor{comment}{\ \ \ Input:}}
+\DoxyCodeLine{00392\ \textcolor{comment}{\ \ \ =====}}
+\DoxyCodeLine{00393\ \textcolor{comment}{\ \ \ \ npoint1:\ \ \ \ number\ of\ points\ for\ point\ set\ 1}}
+\DoxyCodeLine{00394\ \textcolor{comment}{\ \ \ \ npoint2:\ \ \ \ number\ of\ points\ for\ point\ set\ 2}}
+\DoxyCodeLine{00395\ \textcolor{comment}{\ \ \ \ beta:\ \ \ \ \ \ \ current\ beta}}
+\DoxyCodeLine{00396\ \textcolor{comment}{\ \ \ \ C:\ \ \ \ \ \ Cost\ matrix}}
+\DoxyCodeLine{00397\ \textcolor{comment}{\ \ \ \ lambda:\ \ \ \ \ current\ values\ of\ Lagragians\ lambda}}
+\DoxyCodeLine{00398\ \textcolor{comment}{\ \ \ \ mu:\ \ \ \ \ current\ values\ of\ Lagragians\ mu}}
+\DoxyCodeLine{00399\ \textcolor{comment}{\ \ \ \ row:\ \ \ \ \ \ \ \ errors\ on\ row\ marginals}}
+\DoxyCodeLine{00400\ \textcolor{comment}{\ \ \ \ col:\ \ \ \ \ \ \ \ errors\ on\ col\ marginals}}
+\DoxyCodeLine{00401\ \textcolor{comment}{\ \ \ \ nthreads:\ \ \ number\ of\ threads\ for\ parallel\ computation}}
+\DoxyCodeLine{00402\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{00403\ \textcolor{comment}{\ \ \ Output:}}
+\DoxyCodeLine{00404\ \textcolor{comment}{\ \ \ ======}}
+\DoxyCodeLine{00405\ \textcolor{comment}{\ \ \ \ drow:\ \ \ \ \ \ \ updates\ on\ lambda}}
+\DoxyCodeLine{00406\ \textcolor{comment}{\ \ \ \ dcol:\ \ \ \ \ \ \ updates\ on\ mu}}
+\DoxyCodeLine{00407\ \textcolor{comment}{}}
+\DoxyCodeLine{00408\ \textcolor{comment}{\ \ \ Method:}}
+\DoxyCodeLine{00409\ \textcolor{comment}{\ \ \ ======}}
+\DoxyCodeLine{00410\ \textcolor{comment}{\ \ \ \ We\ write\ the\ Jacobian\ as:}}
+\DoxyCodeLine{00411\ \textcolor{comment}{\ \ \ \ \ \ \ \ Jac\ =\ [A\ \ \ \ \ B]}}
+\DoxyCodeLine{00412\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ [B\string^T\ \ \ D]}}
+\DoxyCodeLine{00413\ \textcolor{comment}{\ \ \ \ where\ A\ and\ D\ are\ diagonal\ matrices}}
+\DoxyCodeLine{00414\ \textcolor{comment}{\ \ \ \ We\ solve:}}
+\DoxyCodeLine{00415\ \textcolor{comment}{\ \ \ \ Jac\ dF\ =\ B}}
+\DoxyCodeLine{00416\ \textcolor{comment}{\ \ \ \ using\ preconditioned\ conjugate\ gradient}}
+\DoxyCodeLine{00417\ \textcolor{comment}{}}
+\DoxyCodeLine{00418\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00420\ \ \ \textcolor{keywordtype}{int}\ OT1::computedX\_iter(\textcolor{keywordtype}{int}\ n1,\ \textcolor{keywordtype}{int}\ n2,\ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *lambda,\ \textcolor{keywordtype}{double}\ *mu,\ }
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *row,\ \textcolor{keywordtype}{double}\ *col,\ \textcolor{keywordtype}{double}\ *B,\ \textcolor{keywordtype}{double}\ *Sol,\ \textcolor{keywordtype}{double}\ *Space,\ \textcolor{keywordtype}{int}\ nthreads)}
+\DoxyCodeLine{00422\ \ \ \{}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keywordtype}{int}\ npoint1\ =\ n1;}
+\DoxyCodeLine{00425\ \ \ \ \ \textcolor{keywordtype}{int}\ npoint2\ =\ n2+1;}
+\DoxyCodeLine{00426\ \ \ \ \ \textcolor{keywordtype}{int}\ n1n2\ =\ npoint1*npoint2;}
+\DoxyCodeLine{00427\ \ \ \ \ \textcolor{keywordtype}{int}\ n1pn2\ =\ n1+n2;}
+\DoxyCodeLine{00428\ \ \ \ \ \textcolor{keywordtype}{char}\ Trans\ \ \ =\ \textcolor{charliteral}{'T'};}
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{keywordtype}{char}\ NoTrans\ =\ \textcolor{charliteral}{'N'};}
+\DoxyCodeLine{00430\ \ \ \ \ \textcolor{keywordtype}{int}\ inc\ =\ 1;}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keywordtype}{int}\ one\ =\ 1;}
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keywordtype}{double}\ a,\ b;}
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{keywordtype}{double}\ tol\ =\ 1.e-\/4;}
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00435\ \ \ \ \ dcopy\_(\&n1,\ row,\ \&inc,\ B,\ \&inc);}
+\DoxyCodeLine{00436\ \ \ \ \ dcopy\_(\&n2,\ col,\ \&inc,\ \&B[npoint1],\ \&inc);}
+\DoxyCodeLine{00437\ \ \ \ \ a\ =\ -\/1;}
+\DoxyCodeLine{00438\ \ \ \ \ dscal\_(\&n1pn2,\ \&a,\ B,\ \&inc);}
+\DoxyCodeLine{00439\ \ \ \ \ }
+\DoxyCodeLine{00440\ \ \ \ \ dcopy\_(\&n1n2,\ C,\ \&inc,\ G,\ \&inc);}
+\DoxyCodeLine{00441\ \ \ \ \ a\ =\ 1.0;\ b\ =\ 1;}
+\DoxyCodeLine{00442\ \ \ \ \ dgemm\_(\&NoTrans,\ \&Trans,\ \&npoint1,\ \&npoint2,\ \&one,\ \&a,\ lambda,\ \&npoint1,\ ones,\ \&npoint2,\ \&b,\ }
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ G,\ \&npoint1);}
+\DoxyCodeLine{00444\ \ \ \ \ dgemm\_(\&NoTrans,\ \&Trans,\ \&npoint1,\ \&npoint2,\ \&one,\ \&a,\ ones,\ \&npoint1,\ mu,\ \&npoint2,\ \&b,\ }
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ G,\ \&npoint1);}
+\DoxyCodeLine{00446\ }
+\DoxyCodeLine{00447\ \ \ \ \ vect\_dcoupling(n1n2,\ G,\ beta,\ nthreads);}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \ \ \ \ a\ =\ 1;\ b\ =\ 0;}
+\DoxyCodeLine{00450\ \ \ \ \ dgemv\_(\&NoTrans,\ \&npoint1,\ \&npoint2,\ \&a,\ G,\ \&npoint1,\ ones,\ \&inc,\ \&b,\ row,\ \&inc);}
+\DoxyCodeLine{00451\ \ \ \ \ dgemv\_(\&Trans,\ \&npoint1,\ \&npoint2,\ \&a,\ G,\ \&npoint1,\ ones,\ \&inc,\ \&b,\ col,\ \&inc);}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00453\ \ \ \ \ \textcolor{keywordtype}{int}\ niter\ =\ conjgrad.cgDriver(n1,\ n2,\ row,\ col,\ G,\ B,\ Sol,\ \&Space[0],\ \&Space[n1pn2],}
+\DoxyCodeLine{00454\ \ \ \ \ \&Space[2*n1pn2],\ \&Space[3*n1pn2],\ \&Space[4*n1pn2],\ \&Space[5*n1pn2],\ tol);}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \ \ \ \ \textcolor{keywordflow}{return}\ niter;}
+\DoxyCodeLine{00457\ }
+\DoxyCodeLine{00458\ \ \ \}}
+\DoxyCodeLine{00459\ }
+\DoxyCodeLine{00460\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00461\ \textcolor{comment}{\ \ \ solveG}}
+\DoxyCodeLine{00462\ \textcolor{comment}{}}
+\DoxyCodeLine{00463\ \textcolor{comment}{\ \ \ Input:}}
+\DoxyCodeLine{00464\ \textcolor{comment}{\ \ \ =====}}
+\DoxyCodeLine{00465\ \textcolor{comment}{\ \ \ \ npoint1:\ \ \ \ number\ of\ points\ for\ point\ set\ 1}}
+\DoxyCodeLine{00466\ \textcolor{comment}{\ \ \ \ m1:\ \ \ \ \ measure\ on\ points1}}
+\DoxyCodeLine{00467\ \textcolor{comment}{\ \ \ \ npoint2:\ \ \ \ number\ of\ points\ for\ point\ set\ 2}}
+\DoxyCodeLine{00468\ \textcolor{comment}{\ \ \ \ m2:\ \ \ \ \ measure\ on\ points2}}
+\DoxyCodeLine{00469\ \textcolor{comment}{\ \ \ \ C:\ \ \ \ \ \ cost\ matrix}}
+\DoxyCodeLine{00470\ \textcolor{comment}{\ \ \ \ beta:\ \ \ \ \ \ \ parameter\ beta}}
+\DoxyCodeLine{00471\ \textcolor{comment}{\ \ \ \ tol:\ \ \ \ \ \ \ \ tolerance\ criteria}}
+\DoxyCodeLine{00472\ \textcolor{comment}{\ \ \ \ nthreads:\ \ \ number\ of\ threads\ for\ parallel\ computation}}
+\DoxyCodeLine{00473\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{00474\ \textcolor{comment}{\ \ \ Output:}}
+\DoxyCodeLine{00475\ \textcolor{comment}{\ \ \ ======}}
+\DoxyCodeLine{00476\ \textcolor{comment}{\ \ \ \ G:\ \ \ \ \ \ coupling\ matrix}}
+\DoxyCodeLine{00477\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ \ \ \textcolor{keywordtype}{int}\ OT1::solveG(\textcolor{keywordtype}{int}\ npoint1,\ \textcolor{keywordtype}{double}\ *m1,\ \textcolor{keywordtype}{int}\ npoint2,\ \textcolor{keywordtype}{double}\ *m2,\ \textcolor{keywordtype}{double}\ *C,\ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *lambda,\ }
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordtype}{double}\ *mu,\ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ tol,\ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *WorkSpace,\ \textcolor{keywordtype}{int}\ nthreads,\ \textcolor{keywordtype}{int}\ *info)}
+\DoxyCodeLine{00481\ \ \ \{}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \ \ \ \ \textcolor{keywordtype}{int}\ nmax\ =\ std::max(npoint1,\ npoint2);}
+\DoxyCodeLine{00484\ \ \ \ \ \textcolor{keywordtype}{double}\ *row\ =\ \&WorkSpace[0];}
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordtype}{double}\ *col\ =\ \&WorkSpace[npoint1];}
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{keywordtype}{double}\ *B\ \ \ =\ \&WorkSpace[npoint1+npoint2];}
+\DoxyCodeLine{00487\ \ \ \ \ \textcolor{keywordtype}{double}\ *Sol\ =\ \&WorkSpace[2*(npoint1+npoint2)];}
+\DoxyCodeLine{00488\ \ \ \ \ \textcolor{keywordtype}{double}\ *Space\ =\ \&WorkSpace[3*(npoint1+npoint2)];}
+\DoxyCodeLine{00489\ \ \ \ \ \textcolor{keywordtype}{double}\ *Jac\ \ \ =\ \&WorkSpace[3*(npoint1+npoint2)\ +\ nmax*nmax];}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00491\ \ \ \ \ \textcolor{keywordtype}{int}\ n1\ =\ npoint1;}
+\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keywordtype}{int}\ n2\ =\ npoint2-\/1;}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00494\ \ \ \ \ \textcolor{keywordtype}{double}\ err,\ err\_old;}
+\DoxyCodeLine{00495\ }
+\DoxyCodeLine{00496\ \ \ \ \ err=computeRC(npoint1,\ m1,\ npoint2,\ m2,\ C,\ G,\ beta,\ lambda,\ mu,\ row,\ col,\ ones,\ nthreads);}
+\DoxyCodeLine{00497\ \textcolor{comment}{//\ \ std::cout\ <<\ "{}err0\ =\ "{}\ <<\ err\ <<\ std::endl;}}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \ \ \ \ *info\ =\ 0;}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keywordtype}{int}\ iter\ =\ 0;}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordtype}{int}\ nstep;}
+\DoxyCodeLine{00502\ \ \ \ \ \textcolor{keywordtype}{double}\ step;}
+\DoxyCodeLine{00503\ \ \ \ \ \textcolor{keywordflow}{while}\ (err\ >\ tol)}
+\DoxyCodeLine{00504\ \ \ \ \ \{}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ err\_old\ =\ err;}
+\DoxyCodeLine{00506\ \textcolor{comment}{//\ \ \ \ \ \ int\ it\ =\ computedX\_iter(n1,\ n2,\ beta,\ C,\ G,\ lambda,\ mu,}}
+\DoxyCodeLine{00507\ \textcolor{comment}{//\ \ \ \ \ \ ones,\ row,\ col,\ B,\ Sol,\ Space,\ nthreads);}}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ computedX\_direct(n1,\ n2,\ beta,\ C,\ G,\ lambda,\ mu,}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ ones,\ row,\ col,\ Space,\ Jac,\ B,\ Sol,\ nthreads);}
+\DoxyCodeLine{00510\ }
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ step\ =\ 1.0;}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ nstep\ =\ 0;}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 30;\ i++)\ \{}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \ \ \ \ memset(Space,\ 0,\ (npoint1+npoint2)*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ npoint1;\ i++)\ Space[i]\ =\ lambda[i]\ +\ step*Sol[i];}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ npoint2-\/1;\ j++)\ Space[npoint1+j]\ =\ mu[j]\ +\ step*Sol[npoint1+j];}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \ \ err=computeRC(npoint1,\ m1,\ npoint2,\ m2,\ C,\ G,\ beta,\ Space,\ \&Space[npoint1],}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \ \ \ \ row,\ col,\ ones,\ nthreads);}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(err\ <\ err\_old)\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \ \ \ \ step\ =\ step/2;}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \ \ \ \ nstep++;}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00523\ \textcolor{comment}{//\ \ \ \ \ \ std::cout\ <<\ "{}err\_old\ =\ "{}\ <<\ err\_old\ <<\ "{}\ err\ =\ "{}\ <<\ err\ <<\ "{}\ nstep\ =\ "{}\ <<\ nstep\ <<\ "{}\ it\ =\ "{}\ <<\ iter\ <<\ std::endl;}}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(iter==100\ ||\ nstep==30)\ \{}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \ \ \ \ *info\ =\ 1;}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ npoint1;\ i++)\ lambda[i]\ =\ Space[i];}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ npoint2-\/1;\ j++)\ mu[j]\ =\ Space[npoint1+j];}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ iter++;}
+\DoxyCodeLine{00533\ \ \ \ \ \}}
+\DoxyCodeLine{00534\ }
+\DoxyCodeLine{00535\ \ \ \ \ \textcolor{keywordtype}{int}\ niter\ =\ iter;}
+\DoxyCodeLine{00536\ }
+\DoxyCodeLine{00537\ \ \ \ \ computeG(npoint1,\ npoint2,\ C,\ G,\ lambda,\ mu,\ beta);}
+\DoxyCodeLine{00538\ }
+\DoxyCodeLine{00539\ \ \ \ \ \textcolor{keywordflow}{return}\ niter;}
+\DoxyCodeLine{00540\ }
+\DoxyCodeLine{00541\ \ \ \}}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00543\ \textcolor{comment}{/*\ ===============================================================================================}}
+\DoxyCodeLine{00544\ \textcolor{comment}{\ \ \ OT1\ (Wasserstein\ /\ Earth\ Mover)}}
+\DoxyCodeLine{00545\ \textcolor{comment}{}}
+\DoxyCodeLine{00546\ \textcolor{comment}{\ \ \ Input:}}
+\DoxyCodeLine{00547\ \textcolor{comment}{\ \ \ =====}}
+\DoxyCodeLine{00548\ \textcolor{comment}{\ \ \ \ npoint1:\ \ \ \ number\ of\ points\ for\ point\ set\ 1}}
+\DoxyCodeLine{00549\ \textcolor{comment}{\ \ \ \ m1:\ \ \ \ \ measure\ on\ points1}}
+\DoxyCodeLine{00550\ \textcolor{comment}{\ \ \ \ npoint2:\ \ \ \ number\ of\ points\ for\ point\ set\ 2}}
+\DoxyCodeLine{00551\ \textcolor{comment}{\ \ \ \ m2:\ \ \ \ \ measure\ on\ points2}}
+\DoxyCodeLine{00552\ \textcolor{comment}{\ \ \ \ C:\ \ \ \ \ \ cost\ matrix}}
+\DoxyCodeLine{00553\ \textcolor{comment}{\ \ \ \ beta1:\ \ \ \ \ \ starting\ beta}}
+\DoxyCodeLine{00554\ \textcolor{comment}{\ \ \ \ nthreads:\ \ \ number\ of\ threads\ for\ parallel\ computation}}
+\DoxyCodeLine{00555\ \textcolor{comment}{}}
+\DoxyCodeLine{00556\ \textcolor{comment}{\ \ \ \ ones:\ \ \ \ \ \ \ vector\ of\ ones,\ of\ size\ max(npoint1,\ npoint2)}}
+\DoxyCodeLine{00557\ \textcolor{comment}{\ \ \ \ WorkSpace\ \ \ working\ array\ of\ size\ 2*nmax*nmax\ +\ 10*nmax,\ where\ nmax=max(npoint1,\ npoint2)}}
+\DoxyCodeLine{00558\ \textcolor{comment}{\ \ \ \ beta\_init\ \ \ starting\ value\ for\ beta\ (usually\ 1000)}}
+\DoxyCodeLine{00559\ \textcolor{comment}{\ \ \ \ beta\_init\ \ \ final\ value\ for\ beta\ (usually\ 10\string^\{10\}}}
+\DoxyCodeLine{00560\ \textcolor{comment}{\ \ \ \ iprint\ \ \ \ \ \ flag:\ }}
+\DoxyCodeLine{00561\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0:\ no\ printing}}
+\DoxyCodeLine{00562\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 1:\ print\ info\ about\ annealing\ process}}
+\DoxyCodeLine{00563\ \textcolor{comment}{\ \ \ \ }}
+\DoxyCodeLine{00564\ \textcolor{comment}{\ \ \ Output:}}
+\DoxyCodeLine{00565\ \textcolor{comment}{\ \ \ ======}}
+\DoxyCodeLine{00566\ \textcolor{comment}{\ \ \ \ dist:\ \ \ \ \ \ \ Optimal\ transport\ distance}}
+\DoxyCodeLine{00567\ \textcolor{comment}{\ \ \ \ G:\ \ \ \ \ \ coupling\ matrix}}
+\DoxyCodeLine{00568\ \textcolor{comment}{\ \ \ ===============================================================================================\ */}}
+\DoxyCodeLine{00569\ }
+\DoxyCodeLine{00570\ \ \ \textcolor{keywordtype}{double}\ OT1::ot1(\textcolor{keywordtype}{int}\ npoint1,\ \textcolor{keywordtype}{double}\ *m1,\ \textcolor{keywordtype}{int}\ npoint2,\ \textcolor{keywordtype}{double}\ *m2,\ \textcolor{keywordtype}{double}\ *C,}
+\DoxyCodeLine{00571\ \ \ \ \ \textcolor{keywordtype}{double}\ *G,\ \textcolor{keywordtype}{double}\ *ones,\ \textcolor{keywordtype}{double}\ *WorkSpace,\ \textcolor{keywordtype}{double}\ beta\_init,\ \textcolor{keywordtype}{double}\ betaf,}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keywordtype}{int}\ iprint,\ \textcolor{keywordtype}{int}\ nthreads)}
+\DoxyCodeLine{00573\ \ \ \{}
+\DoxyCodeLine{00574\ }
+\DoxyCodeLine{00575\ \ \ \ \ \textcolor{keywordtype}{double}\ *lambda\ =\ \&WorkSpace[0];}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{keywordtype}{double}\ *mu\ \ \ \ \ =\ \&WorkSpace[npoint1];}
+\DoxyCodeLine{00577\ }
+\DoxyCodeLine{00578\ \ \ \ \ memset(lambda,\ 0,\ npoint1*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{00579\ \ \ \ \ memset(mu,\ 0,\ npoint2*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}));}
+\DoxyCodeLine{00580\ }
+\DoxyCodeLine{00581\ \ \ \ \ \textcolor{comment}{//\ Define\ all\ variables\ needed\ to\ compute\ Earh\ Mover's\ distance}}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ \ \ \ \ \textcolor{keywordtype}{double}\ beta\_val,\ tol;}
+\DoxyCodeLine{00584\ \ \ \ \ \textcolor{keywordtype}{double}\ dist,\ err\_row,\ err\_col;}
+\DoxyCodeLine{00585\ \ \ \ \ \textcolor{keywordtype}{int}\ n1n2\ =\ npoint1*npoint2;}
+\DoxyCodeLine{00586\ \ \ \ \ \textcolor{keywordtype}{int}\ inc\ =\ 1;}
+\DoxyCodeLine{00587\ }
+\DoxyCodeLine{00588\ \ \ \ \ dist\ =\ 1.0;}
+\DoxyCodeLine{00589\ }
+\DoxyCodeLine{00590\ \ \ \ \ \textcolor{keywordtype}{int}\ niter;}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{keywordtype}{int}\ nitermax\ =\ 0;}
+\DoxyCodeLine{00592\ }
+\DoxyCodeLine{00593\ \ \ \ \ beta\_val\ =\ beta\_init;}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \ \ \ \ \textcolor{keywordflow}{if}(iprint\ ==\ 1)\ \{}
+\DoxyCodeLine{00596\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ "{}}\ <<\ std::endl;}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}\ <<\ \textcolor{stringliteral}{"{}====================================================================================================="{}}\ <<\ std::endl;}
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ Beta\ \ \ \ \ \ \ \ \ \ \ Iter\ \ \ \ \ \ \ \ \ \ \ \ \ \ U\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Ent\ \ \ \ \ \ \ \ \ \ \ \ \ Err\_row\ \ \ \ \ \ \ \ \ Err\_col\ \ \ "{}}\ <<\ std::endl;}
+\DoxyCodeLine{00599\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}\ <<\ \textcolor{stringliteral}{"{}====================================================================================================="{}}\ <<\ std::endl;}
+\DoxyCodeLine{00600\ \ \ \ \ \}}
+\DoxyCodeLine{00601\ }
+\DoxyCodeLine{00602\ \ \ \ \ \textcolor{keywordtype}{int}\ info;}
+\DoxyCodeLine{00603\ \ \ \ \ \textcolor{keywordtype}{double}\ coef\ =\ std::sqrt(std::sqrt(10));}
+\DoxyCodeLine{00604\ }
+\DoxyCodeLine{00605\ \ \ \ \ \textcolor{keywordflow}{while}(beta\_val\ <\ betaf)}
+\DoxyCodeLine{00606\ \ \ \ \ \{}
+\DoxyCodeLine{00607\ }
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ tol\ =\ std::max(1./beta\_val,\ 1.e-\/5);}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ tol\ =\ 1.e-\/5;}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ niter\ =\ solveG(npoint1,\ m1,\ npoint2,\ m2,\ C,\ G,\ lambda,\ mu,\ beta\_val,\ tol,}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ \ \ \ \ ones,\ \&WorkSpace[npoint1+npoint2],\ nthreads,\ \&info);}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ nitermax\ +=\ niter;}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \ \ checkMarginals(npoint1,\ m1,\ npoint2,\ \ m2,\ G,\ \&err\_row,\ \&err\_col,\ ones,}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \ \ \ \ \&WorkSpace[npoint1+npoint2]);}
+\DoxyCodeLine{00616\ }
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \ \ dist\ =\ ddot\_(\&n1n2,\ G,\ \&inc,\ C,\ \&inc);\ }
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ent\ =\ 0;}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ npoint1*npoint2;\ i++)\ \{}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(G[i]>0.0)\ ent\ -\/=\ G[i]*std::log(G[i]);}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00622\ }
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(iprint==1)\ \{}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}\ <<\ \textcolor{stringliteral}{"{}\ \ \ "{}}\ <<\ std::setw(10)<<\ beta\_val\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ "{}};}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ std::setw(10)\ <<\ niter\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}\ <<\ std::setw(10)\ <<\ dist\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}};}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ std::setw(10)\ <<\ ent\ <<\ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}};}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ std::setw(10)\ <<\ err\_row\ <<\ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}\ <<\ err\_col\ <<\ std::endl;}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00629\ }
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ beta\_val\ =\ beta\_val*coef;}
+\DoxyCodeLine{00631\ \ \ \ \ \}}
+\DoxyCodeLine{00632\ }
+\DoxyCodeLine{00633\ }
+\DoxyCodeLine{00634\ \ \ \ \ \textcolor{keywordflow}{if}(iprint==1)\ \{}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}\ <<\ \textcolor{stringliteral}{"{}====================================================================================================="{}}\ <<\ std::endl;}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\ "{}}\ <<\ std::endl;}
+\DoxyCodeLine{00637\ \ \ \ \ \}}
+\DoxyCodeLine{00638\ }
+\DoxyCodeLine{00639\ \ \ \ \ computeG(npoint1,\ npoint2,\ C,\ G,\ lambda,\ mu,\ betaf);}
+\DoxyCodeLine{00640\ }
+\DoxyCodeLine{00641\ \ \ \ \ \textcolor{keywordflow}{return}\ dist;}
+\DoxyCodeLine{00642\ }
+\DoxyCodeLine{00643\ \ \ \}}
+\DoxyCodeLine{00644\ }
+\DoxyCodeLine{00645\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

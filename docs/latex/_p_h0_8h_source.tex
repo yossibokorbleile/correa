@@ -1,0 +1,217 @@
+\hypertarget{_p_h0_8h_source}{}\doxysection{PH0.\+h}
+\label{_p_h0_8h_source}\index{PH0.h@{PH0.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ \ \ PH0.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ Authors:\ Patrice\ Koehl,\ Department\ of\ Computer\ Science,\ University\ of\ California,\ Davis}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Yossi\ Bokor\ Bleile,\ Department\ of\ Mathematical\ Sciences,\ University\ of\ Aalborg,\ Aalborg}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Date:\ April\ 2023}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ \ \ Version:\ 1}}
+\DoxyCodeLine{00008\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_PH0\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_PH0\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <tuple>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}Vertex.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}Polygon.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}Component.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\#include\ "{}hera/common/diagram\_point.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//.\#include\ "{}hera/wasserstein.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00023\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{comment}{/*\ Lets\ do\ the\ the\ persistent\ homology\ in\ dimension\ 0\ now\ */}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{namespace\ }correa\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcorrea_1_1_p_h0}{PH0}}\{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{using\ }PersistenceDiagram\ =\ std::vector<std::pair<double,double>\ >;}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ vector<std::tuple<int,\ double,\ int>\ >\ unsorted\_nodes;}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ vector<Comp>\ comps;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ PersistenceDiagram\ pd;}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ n\_pts;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_p_h0}{PH0}}(vector<pair<int,\ double>\ >\ x);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcorrea_1_1_p_h0}{PH0}}(vector<Vertex>\ points);}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ AddNode(pair<int,\ double>\&\ y);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Persistence();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ PersistenceDiagram\ persistence\_diagram()\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pd;}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ printPD()\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ pd.size();\ i++)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}("{}}\ <<\ get<0>(pd[i])\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ get<1>(pd[i])\ <<\ \textcolor{stringliteral}{"{})"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{comment}{/*\ Constructor\ from\ a\ vector\ of\ nodes\ */}}
+\DoxyCodeLine{00055\ PH0::PH0(vector<pair<int,\ double>\ >\ x)\{}
+\DoxyCodeLine{00056\ \ \ \ \ n\_pts\ =\ x.size();}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n\_pts;\ i++)\{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ tuple<int,\ double,\ int>\ pt;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ get<0>(pt)\ =\ x[i].first;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ get<1>(pt)\ =\ x[i].second;}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ get<2>(pt)\ =\ x[i].first;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ unsorted\_nodes.push\_back(pt);}
+\DoxyCodeLine{00063\ \ \ \ \ \};}
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{comment}{/*\ Constructor\ from\ a\ vector\ of\ Vertex\ */}}
+\DoxyCodeLine{00067\ PH0::PH0(vector<Vertex>\ points)\{}
+\DoxyCodeLine{00068\ \ \ \ \ n\_pts\ =\ points.size();}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n\_pts;\ i++)\{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ Vertex\ vert\ =\ points[i];}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ height;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ height\ =\ vert.height();}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ tuple<int,\ double,\ int>\ vertex\_tuple(i,\ height,\ i);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ unsorted\_nodes.push\_back(vertex\_tuple);}
+\DoxyCodeLine{00075\ \ \ \ \ \};}
+\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{comment}{/*\ Add\ nodes\ to\ the\ filtation\ */}}
+\DoxyCodeLine{00079\ \textcolor{keywordtype}{void}\ PH0::AddNode(pair<int,\ double>\&\ y)\{}
+\DoxyCodeLine{00080\ \ \ \ \ tuple<int,\ double,\ int>\ pt;}
+\DoxyCodeLine{00081\ \ \ \ \ get<0>(pt)\ =\ y.first;}
+\DoxyCodeLine{00082\ \ \ \ \ get<1>(pt)\ =\ y.second;}
+\DoxyCodeLine{00083\ \ \ \ \ get<2>(pt)\ =\ y.first;}
+\DoxyCodeLine{00084\ \ \ \ \ unsorted\_nodes.push\_back(pt);}
+\DoxyCodeLine{00085\ \};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{comment}{/*\ Compare\ the\ heights\ of\ two\ nodes\ */}}
+\DoxyCodeLine{00088\ \textcolor{keywordtype}{bool}\ HeightComparison(tuple<int,\ double>\&\ x,\ tuple<int,\ double>\&\ y)\{}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{return}\ (get<1>(x)<\ get<1>(y));}
+\DoxyCodeLine{00090\ \};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{comment}{/*\ Obtain\ the\ components\ and\ their\ birth/death\ times\ */}}
+\DoxyCodeLine{00094\ \textcolor{keywordtype}{void}\ PH0::Persistence()\{}
+\DoxyCodeLine{00095\ \ \ \ \ vector<tuple<int,\ double>\ >\ sorted\_nodes;}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n\_pts;\ i++)\{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ tuple<int,\ double>\ x;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ get<0>(x)\ =\ get<0>(unsorted\_nodes[i]);}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ get<1>(x)\ =\ get<1>(unsorted\_nodes[i]);}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ sorted\_nodes.push\_back(x);}
+\DoxyCodeLine{00101\ \ \ \ \ \};}
+\DoxyCodeLine{00102\ \ \ \ \ sort(sorted\_nodes.begin(),\ sorted\_nodes.end(),\ HeightComparison);}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n\_pts;\ i\ ++)\{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ looking\_at;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ looking\_at\ =\ get<0>(sorted\_nodes[i]);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (looking\_at\ ==\ 0)\{\ \textcolor{comment}{//If\ the\ point\ we\ are\ looking\ at\ is\ the\ first\ point\ in\ the\ polygon,\ this\ requires\ special\ treament}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[1]))\ \&\&\ (get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[n\_pts-\/1])))\{\ \textcolor{comment}{//If\ point\ 0\ appears\ before\ point\ 1\ and\ the\ last\ point,\ then\ we\ make\ it\ it's\ own\ parent.}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ looking\_at;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[1]))\ \&\&\ (get<1>(sorted\_nodes[i])\ >\ get<1>(unsorted\_nodes[n\_pts-\/1])))\{\ \textcolor{comment}{//If\ point\ 0\ appears\ before\ point\ 1\ and\ after\ the\ last\ point,\ then\ we\ make\ the\ last\ points\ parent\ the\ parent\ of\ point\ 0.}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ get<2>(unsorted\_nodes[n\_pts-\/1]);}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ >\ get<1>(unsorted\_nodes[1]))\ \&\&\ (get<1>(sorted\_nodes[i])\ <\ get<1>(unsorted\_nodes[n\_pts-\/1])))\{\ \textcolor{comment}{//If\ point\ 0\ appears\ after\ point\ 1\ and\ before\ the\ last\ point,\ then\ we\ make\ the\ point\ 1s\ parent\ to\ as\ the\ parent\ of\ point\ 0.}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ get<2>(unsorted\_nodes[1]);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ >=\ get<1>(unsorted\_nodes[1]))\ \&\&\ (get<1>(sorted\_nodes[i])\ >=\ get<1>(unsorted\_nodes[n\_pts-\/1])))\{\ \textcolor{comment}{//If\ point\ 0\ appears\ after\ point\ 1\ and\ the\ last\ point,\ then\ we\ need\ to\ follow\ the\ elder\ rule.}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[n\_pts-\/1])])\ <=\ get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[1])]))\{\textcolor{comment}{//We\ make\ the\ point\ npts-\/1\ parent\ to\ as\ the\ parent\ of\ point\ 0\ and\ all\ the\ points\ connected\ to\ point\ 1,\ and\ add\ a\ point\ to\ the\ persistence\ diagram.}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ parent,\ old\_parent;}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parent\ =\ get<2>(unsorted\_nodes[n\_pts-\/1]);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ old\_parent\ =\ get<2>(unsorted\_nodes[1]);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ parent;}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::pair<double,double>\ pt\{get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[old\_parent])]),\ get<1>(unsorted\_nodes[looking\_at])\};\ \textcolor{comment}{//Add\ a\ point\ to\ the\ persistence\ diagram.}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pd.push\_back(pt);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =0;\ j\ <\ unsorted\_nodes.size();\ j++)\{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<2>(unsorted\_nodes[j])\ ==\ old\_parent)\{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[j])\ =\ parent;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[n\_pts-\/1])])\ >\ get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[1])]))\{\textcolor{comment}{//We\ make\ the\ point\ 1\ parent\ to\ as\ the\ parent\ of\ point\ 0\ and\ all\ the\ points\ connected\ to\ point\ n\_pts-\/1,\ and\ add\ a\ point\ to\ the\ persistence\ diagram.}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ parent,\ old\_parent;}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parent\ =\ get<2>(unsorted\_nodes[1]);}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ old\_parent\ =\ get<2>(unsorted\_nodes[n\_pts-\/1]);}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ parent;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::pair<double,double>\ pt\{get<1>(unsorted\_nodes[old\_parent]),\ get<1>(unsorted\_nodes[looking\_at])\};\ \textcolor{comment}{//Add\ a\ point\ to\ the\ persistence\ diagram.}}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pd.push\_back(pt);}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =0;\ j\ <\ unsorted\_nodes.size();\ j++)\{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<2>(unsorted\_nodes[j])\ ==\ old\_parent)\{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[j])\ =\ parent;}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (looking\_at\ ==\ n\_pts-\/1)\{\ \textcolor{comment}{//If\ the\ point\ we\ are\ looking\ at\ is\ the\ last\ point\ in\ the\ polygon,\ this\ requires\ special\ treament}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[0]))\ \&\&\ (get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[n\_pts-\/2])))\{\ \textcolor{comment}{//If\ point\ looking\_at\ appears\ before\ point\ looking\_at+1\ and\ point\ looking\_at-\/1,\ then\ we\ make\ it\ it's\ own\ parent.}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ looking\_at;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[0]))\ \&\&\ (get<1>(sorted\_nodes[i])\ >\ get<1>(unsorted\_nodes[n\_pts-\/2])))\{\ \textcolor{comment}{//If\ point\ looking\_at\ appears\ before\ point\ looking\_at+1\ and\ after\ point\ looking\_at-\/1,\ then\ we\ make\ it\ it's\ own\ parent.}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ get<2>(unsorted\_nodes[n\_pts-\/2]);}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ >\ get<1>(unsorted\_nodes[0]))\ \&\&\ (get<1>(sorted\_nodes[i])\ <\ get<1>(unsorted\_nodes[n\_pts-\/2])))\{\ \textcolor{comment}{//If\ point\ looking\_at\ appears\ after\ point\ looking\_at+1\ and\ before\ point\ looking\_at-\/1,\ then\ we\ make\ it\ it's\ own\ parent.}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ get<2>(unsorted\_nodes[0]);}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ >=\ get<1>(unsorted\_nodes[0]))\ \&\&\ (get<1>(sorted\_nodes[i])\ >=\ get<1>(unsorted\_nodes[n\_pts-\/2])))\{\ \textcolor{comment}{//If\ point\ looking\_at\ appears\ after\ point\ looking\_at+1\ and\ point\ looking\_at-\/1,\ then\ we\ follow\ the\ elder\ rule.}}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[looking\_at-\/1])])\ <=\ get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[0])]))\{\textcolor{comment}{//Check\ which\ neighbouring\ point\ has\ the\ older\ parent,\ in\ this\ case\ it\ is\ looking\_at-\/1,\ and\ so\ we\ take\ its\ parents.}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ parent;}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parent\ =\ get<2>(unsorted\_nodes[looking\_at-\/1]);}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ parent;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::pair<double,double>\ pt\{get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[0])]),\ get<1>(unsorted\_nodes[looking\_at])\};\ \textcolor{comment}{//Add\ a\ point\ to\ the\ persistence\ diagram.}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pd.push\_back(pt);}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ unsorted\_nodes.size();\ j++)\{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<2>(unsorted\_nodes[j])\ ==get<2>(unsorted\_nodes[0]))\{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[j])\ =\ parent;}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[looking\_at-\/1])])\ >\ get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[0])]))\{\textcolor{comment}{//Check\ which\ neighbouring\ point\ has\ the\ older\ parent,\ in\ this\ case\ it\ is\ looking\_at+1,\ and\ so\ we\ take\ its\ parents.}}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ parent,\ old\_parent;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parent\ =\ get<2>(unsorted\_nodes[0]);}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ old\_parent\ =\ get<2>(unsorted\_nodes[looking\_at-\/1]);}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ parent;}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::pair<double,double>\ pt\{get<1>(unsorted\_nodes[old\_parent]),\ get<1>(unsorted\_nodes[looking\_at])\};\ \textcolor{comment}{//Add\ a\ point\ to\ the\ persistence\ diagram.}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pd.push\_back(pt);}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =0;\ j\ <\ unsorted\_nodes.size();\ j++)\{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<2>(unsorted\_nodes[j])\ ==\ old\_parent)\{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[j])\ =\ parent;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//Any\ other\ point\ does\ not\ require\ special\ treatment}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[looking\_at+1]))\ \&\&\ (get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[looking\_at-\/1])))\{\ \textcolor{comment}{//If\ point\ looking\_at\ appears\ before\ point\ 1\ and\ the\ last\ point,\ then\ we\ make\ it\ it's\ own\ parent.}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ looking\_at;}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ <\ get<1>(unsorted\_nodes[looking\_at+1]))\ \&\&\ (get<1>(sorted\_nodes[i])\ >\ get<1>(unsorted\_nodes[looking\_at-\/1])))\{\ \textcolor{comment}{//If\ point\ looking\_at\ appears\ before\ point\ looking\_at+1\ and\ after\ point\ looking\_at-\/1,\ then\ we\ make\ point\ looking\_at+1s\ parent\ the\ parent\ of\ point\ looking\_at.}}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ get<2>(unsorted\_nodes[looking\_at-\/1]);}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ >\ get<1>(unsorted\_nodes[looking\_at+1]))\ \&\&\ (get<1>(sorted\_nodes[i])\ <\ get<1>(unsorted\_nodes[looking\_at-\/1])))\{\ \textcolor{comment}{//If\ point\ looking\_at\ appears\ after\ point\ looking\_at+1\ and\ before\ point\ looking\_at-\/,\ then\ we\ make\ the\ point\ looking\_at-\/1s\ parent\ to\ as\ the\ parent\ of\ point\ looking\_at.}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ get<2>(unsorted\_nodes[looking\_at+1]);}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\ (get<1>(unsorted\_nodes[looking\_at])\ >=\ get<1>(unsorted\_nodes[looking\_at+1]))\ \&\&\ (get<1>(sorted\_nodes[i])\ >=\ get<1>(unsorted\_nodes[looking\_at-\/1])))\{\ \textcolor{comment}{//If\ point\ looking\_at\ appears\ after\ point\ looking\_at+1\ and\ point\ looking\_at-\/1,\ then\ we\ check\ the\ elder\ rule.}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[looking\_at-\/1])])\ <=\ get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[looking\_at+1])]))\ \{\textcolor{comment}{//Check\ which\ neighbouring\ point\ has\ the\ older\ parent,\ in\ this\ case\ it\ is\ looking\_at-\/1,\ and\ so\ we\ take\ its\ parents.}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ parent,\ old\_parent;}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parent\ =\ get<2>(unsorted\_nodes[looking\_at-\/1]);}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ old\_parent\ =\ get<2>(unsorted\_nodes[looking\_at+1]);}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ parent;}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::pair<double,double>\ pt\{get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[looking\_at+1])]),\ get<1>(unsorted\_nodes[looking\_at])\};\ \textcolor{comment}{//Add\ a\ point\ to\ the\ persistence\ diagram.}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pd.push\_back(pt);}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ unsorted\_nodes.size();\ j++)\{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<2>(unsorted\_nodes[j])\ ==\ old\_parent)\{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[j])\ =\ parent;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[looking\_at-\/1])])\ >\ get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[looking\_at+1])]))\ \{\textcolor{comment}{//Check\ which\ neighbouring\ point\ has\ the\ older\ parent,\ in\ this\ case\ it\ is\ looking\_at+1,\ and\ so\ we\ take\ its\ parents.}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ parent,\ old\_parent;}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parent\ =\ get<2>(unsorted\_nodes[looking\_at+1]);}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ old\_parent\ =\ get<2>(unsorted\_nodes[looking\_at-\/1]);}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[looking\_at])\ =\ parent;}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::pair<double,double>\ pt\{get<1>(unsorted\_nodes[get<2>(unsorted\_nodes[looking\_at-\/1])]),\ get<1>(unsorted\_nodes[looking\_at])\};\ \textcolor{comment}{//Add\ a\ point\ to\ the\ persistence\ diagram.}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pd.push\_back(pt);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =0;\ j\ <\ unsorted\_nodes.size();\ j++)\{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (get<2>(unsorted\_nodes[j])\ ==\ old\_parent)\{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ get<2>(unsorted\_nodes[j])\ =\ parent;}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00208\ \ \ \ \ \};}
+\DoxyCodeLine{00209\ \};}
+\DoxyCodeLine{00210\ \}\ \textcolor{comment}{//end\ namespace\ correa}}
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
