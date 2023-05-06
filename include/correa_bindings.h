@@ -27,7 +27,7 @@
 #include <cstdlib>
 #include <limits>
 #include <assert.h>
-#include <algorithm>\
+#include <algorithm>
 
 /*================================================================================================
  Definitions for multi-threading
@@ -342,10 +342,10 @@ namespace correa{
 				return WillmoreDistance(p1, p2);
 			};
 
-			double PyCurvOTDistance(PyPolygon& poly1, PyPolygon& poly2) {
+			double PyCurveOTDistance(PyPolygon& poly1, PyPolygon& poly2) {
 				Polygon p1 = poly1.polygon();
 				Polygon p2 = poly2.polygon();
-				return CurvOTDistance(p1, p2);
+				return CurveOTDistance(p1, p2);
 			}
 
 			double WassersteinDistance(Polygon& poly1, Polygon& poly2, int q=2) {
@@ -385,7 +385,7 @@ namespace correa{
 
 			double CurveOTDistance(Polygon& poly1, Polygon& poly2) {
 				return curv.curvOT(poly1, poly2);
-			}
+			};
 
 			auto AllDistances(PyPolygon &poly1, PyPolygon& poly2,  int q=2, bool verbose = false){ 
 				Polygon p1 = poly1.polygon();
@@ -394,19 +394,20 @@ namespace correa{
 				PH0 f2(p2.vertices);
 				f1.Persistence();
 				f2.Persistence();
-				double dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurveOT;
-				dWasserstein = WassersteinDistance(p1, p2, q=2);
-				dFrechet = FrechetDistance(p1, p2);
-				dMax = MaxEllipseDistance(p1, p2);
-				dMin = MinEllipseDistance(p1, p2);
-				dLSQ = LSQEllipseDistance(p1, p2);
-				dWillmore = WillmoreDistance(p1, p2);
-				dCurveOT = CurveOTDistance(p1, p2);
+				//double dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurveOT;
+				double dWasserstein = WassersteinDistance(p1, p2, q=2);
+				double dFrechet = FrechetDistance(p1, p2);
+				double dMax = MaxEllipseDistance(p1, p2);
+				double dMin = MinEllipseDistance(p1, p2);
+				double dLSQ = LSQEllipseDistance(p1, p2);
+				double dWillmore = WillmoreDistance(p1, p2);
+				double dCurveOT = CurveOTDistance(p1, p2);
 				if (verbose) {
 					std::cerr << "The two polygons are:" << std::endl;
-					std::cerr << p1 << std::endl;
-					std::cerr << "and" << std::endl;
-					std::cerr << p2 << std::endl;
+					std::cerr << "Polygon 1:" << std::endl;
+					std::cerr << poly1 << std::endl;
+					std::cerr << "Polygon 2:" << std::endl;
+					std::cerr << poly2 << std::endl;
 					std::cerr << " and the distances between them are:" << std::endl;
 					std::cerr << "Wasserstein distance (q="<<q<<"):	" << std::setw(7) << std::fixed << std::setprecision(3) << dWasserstein << std::endl;
 					std::cerr << "Frechet distance:					"  << std::setw(7) << std::fixed << std::setprecision(3)<< dFrechet << std::endl;
@@ -417,8 +418,7 @@ namespace correa{
 					std::cerr << "Curve OT distance:	"  << std::setw(7) << std::fixed << std::setprecision(3)<< dCurveOT << std::endl;
 				}
 				return dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurveOT;
-			}
-			
+			};		
 	};
 
 

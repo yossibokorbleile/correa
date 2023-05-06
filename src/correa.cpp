@@ -40,7 +40,7 @@ NB_MODULE(_correa, m) {
         .def("FrechetDistance", &correa::ComparePolygons::PyFrechetDistance)
         .def("MaxEllipseDistance", &correa::ComparePolygons::PyMaxEllipseDistance)
         .def("MinEllipseDistance", &correa::ComparePolygons::PyMinEllipseDistance)
-        .def("LSQEllipseDistance", &corera::ComparePolygons::PyLSQEllipseDistance)
+        .def("LSQEllipseDistance", &correa::ComparePolygons::PyLSQEllipseDistance)
         .def("PyWillmoreDistance", &correa::ComparePolygons::PyWillmoreDistance)
         .def("PyCurveOTDistance", &correa::ComparePolygons::PyCurveOTDistance)
         .def("AllDistances", &correa::ComparePolygons::AllDistances);

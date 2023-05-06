@@ -70,6 +70,8 @@ class Curvature {
    =============================================================================================== */
 	/*!
 	* Calculate the Willmore energy of a polygon.
+	* @param polygon	Polygon object
+	* @return E 		Willmore energy
 	*/
   	double Curvature::Willmore(Polygon& polygon) {
 		Vector2D a, b, c;
@@ -176,6 +178,12 @@ class Curvature {
    =============================================================================================== */
 	/*!
 	* Build histogram of "curvature" for a polygon
+	* describe what it does?
+	* @param curve1 Polygon representing the first curve
+	* @param curve2 Polygon representing the second curve
+	* @param nhist
+	* @param x
+	* @param hist
 	*/
    void Curvature::curvHist(Polygon& polygon, int *nhist, double *x, double *hist) {
 
@@ -207,6 +215,8 @@ class Curvature {
    =============================================================================================== */
 	/*! 
 	* Calculate the Wasserstein distance between two historgrams of curvatures
+	* @param curve1 Polygon representing the first curve
+	* @param curve2 Polygon representing the second curve
 	*/
    double Curvature::histOT(Polygon& curve1, Polygon& curve2) {
 		int n1, n2;
