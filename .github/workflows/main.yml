@@ -15,9 +15,6 @@ permissions:
 
 jobs:
   deploy:
-    environment:
-      name: devel-test
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
