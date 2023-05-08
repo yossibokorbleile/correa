@@ -1,4 +1,7 @@
 # Correa 
+[![Build bindings](https://github.com/yossibokor/correa_private/actions/workflows/bindings.yml/badge.svg?branch=devel&event=push)](https://github.com/yossibokor/correa_private/actions/workflows/bindings.yml)
+[![Executables](https://github.com/yossibokor/correa_private/actions/workflows/executables.yml/badge.svg?branch=devel&event=push)](https://github.com/yossibokor/correa_private/actions/workflows/executables.yml)
+[![Documentation](https://github.com/yossibokor/correa_private/actions/workflows/documentation.yml/badge.svg?branch=devel&event=push)](https://github.com/yossibokor/correa_private/actions/workflows/documentation.yml)
 
 ## UNDER DEVELOPMENT
 
