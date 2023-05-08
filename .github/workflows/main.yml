@@ -47,8 +47,8 @@ jobs:
 
             # NOTE: If a boost version matching all requirements cannot be found,
             # this build step will fail
-    - name: Configure CMake
-      run: cmake -S . -B build -DCORREA_BUILD_PYTHON_BINDINGS=ON -DCORREA_BUILD_EXECUTABLES=ON
-      env:
+      - name: Configure CMake
+        run: cmake -S . -B build -DCORREA_BUILD_PYTHON_BINDINGS=ON -DCORREA_BUILD_EXECUTABLES=ON
+        env:
           BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
       
