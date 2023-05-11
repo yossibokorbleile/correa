@@ -6,7 +6,7 @@
  	Version: 1
 
 
- 	This file looks at option to compare two curves based on the curvatures of their vertices
+ 	This file looks at option to compare two curves based on the curvatures of their vertices.
 
  	It is based on the paper:
  		K. Crane, U. Pinkall, and P. Schroeder, "Robust fairing via conformal curvature flow"

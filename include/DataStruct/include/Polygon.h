@@ -25,6 +25,10 @@
  ==============================================================================================*/
 namespace correa {
 
+	/*!
+	* Polygon class
+	* Stores the polygon and calculates various information about it.
+	*/
   	class Polygon {	
 
 		public:
@@ -72,7 +76,9 @@ namespace correa {
  /* ===========================================================================================
  * Computes the area inside a curve using the shoelace formula
  ==============================================================================================*/
-//TODO: fix this, as it assume the curve is centered at (0,0)
+	/*!
+	* Calculates the area of polygon.
+	*/
 	double Polygon::area()
 	{
 		double surface = 0.0;
@@ -93,7 +99,9 @@ namespace correa {
  /* ===========================================================================================
  * Computes the length of a polygon
  ==============================================================================================*/
-
+	/*!
+	* Calculates the length of polygon.
+	*/
 	double Polygon::length()
 	{
 		double l = 0.0;
@@ -111,7 +119,9 @@ namespace correa {
  /* ===========================================================================================
  * Computes the length of boundary edges
  ==============================================================================================*/
-
+	/*!
+	* Calculates the length of boundary edges.
+	*/
 	void Polygon::boundaryLength0()
 	{
 		
@@ -131,7 +141,9 @@ namespace correa {
  /* ===========================================================================================
  * Computes the length of boundary edges
  ==============================================================================================*/
-
+	/*!
+	* Calculates the length of boundary edges.
+	*/
 	void Polygon::boundaryLength()
 	{
 		
@@ -151,7 +163,9 @@ namespace correa {
  /* ===========================================================================================
  * Distorsion in edge lengths
  ==============================================================================================*/
-
+	/*!
+	* Calculates the distorsion in edge lengths.
+	*/
 	void Polygon::distorsion() {
 		int n = vertices.size();
 		double err=0;
@@ -167,7 +181,12 @@ namespace correa {
  /* ===========================================================================================
  * Center and scale the polygon
  ==============================================================================================*/
-
+	/*!
+	* Center and rescale the polygon.
+	* Automatically recenters to the center of mass of the vertices.
+	* @param range
+	* @param iscale
+	*/
   	void Polygon::centerScale(double range, int iscale) {
 		Vector2D center, a;
 
@@ -205,7 +224,9 @@ namespace correa {
  /*********************************************************************************
   Copy Constructor
  *********************************************************************************/
-
+	/*!
+	* Copy constructor.
+	*/
   	Polygon::Polygon(Polygon& polygon) {
 
 		// initialize vertices and copy from input polygon

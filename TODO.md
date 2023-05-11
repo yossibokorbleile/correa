@@ -1,0 +1,35 @@
+# TO DO:
+
+which files still need documentation:
+- include 
+  - [] 2DShape.h
+  - [] Comp2dShapes.h
+  - [X] correa_bindings.h
+  - Curvature
+    - [X] Curvature.h 
+  - DataStruct
+    - [] Polygon.h - ask Patrice aboiut centerScale parameters
+    - [] PolygonBuilder.h - public done, as Patrice about rest
+    - [] Types.h
+    - [] Vector.h
+    - [] Vector2D.h
+    - [] Vertex.h
+  - InOut
+    - [] InOut.h
+    - [] MatInOut.h (query used)
+    - [] PDInOut.h (query used)
+  - Metrics
+    - [] Convex.h
+    - [] Ellipse.h
+    - [] Frechet.h
+  - OT1
+    - [] ConjGradOT.h
+    - [] OT1.h
+    - [] VectorOps.h
+  - PH0
+    - [] Component.h
+    - [] PH0.h
+- src
+  - [] 2DShape.cpp
+  - [] Comp2DShapes.cpp
+  - [] correa.cpp

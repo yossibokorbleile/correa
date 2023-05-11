@@ -24,6 +24,9 @@
  The MeshBuilder class
  ==============================================================================================*/
 namespace correa {
+	/*!
+	* Used to import and build polygon objects. Cleans the input file for an optimal representation
+	*/
   class PolygonBuilder {
 
 	public:
@@ -65,7 +68,7 @@ namespace correa {
 		bool diagonalie(Polygon& polygon, int I, int J, int *next_node);
 
 		bool in_cone(Polygon& polygon, int I, int J, int *prev_node,
-                int *next_node);
+				int *next_node);
 
 		// true if lines A:B and C:D intersect
 		bool intersect(Polygon& polygon, int A, int B, int C, int D);
@@ -81,77 +84,84 @@ namespace correa {
  * Generate the polygon
  *
  ==============================================================================================*/
+	/*!
+	* @param npoint 	number of input points
+	* @param Coord		reference to the imported coordinates
+	* @param polygon	the polygon you want to build
+	*/
+	bool PolygonBuilder::buildPolygon(int npoint, double *Coord, Polygon& polygon)
+	{
 
-  bool PolygonBuilder::buildPolygon(int npoint, double *Coord, Polygon& polygon)
-  {
+		// Preallocate polygon elements
+		polygon.vertices.clear(); 
+		polygon.vertices.reserve(npoint); 
 
-	// Preallocate polygon elements
-	polygon.vertices.clear(); 
-	polygon.vertices.reserve(npoint); 
+		// create and insert vertices
+		std::vector<VertexIter> indexToVertex(npoint);
 
-	// create and insert vertices
-	std::vector<VertexIter> indexToVertex(npoint);
+		double area = 0.0;
 
-	double area = 0.0;
-
-	int im1 = npoint-1;
-	for(int i = 0; i < npoint; i++) {
-		area += Coord[2*im1] * Coord[2*i+1] - Coord[2*i] * Coord[2*im1+1];
-		im1 = i;
-	}
-	area *= 0.5;
-
-	if(area >0) {
+		int im1 = npoint-1;
 		for(int i = 0; i < npoint; i++) {
-			VertexIter v = polygon.vertices.insert(polygon.vertices.end(), Vertex());
-			v->position.x = Coord[2*i];
-			v->position.y = Coord[2*i+1];
-			indexToVertex[i] = v;
+			area += Coord[2*im1] * Coord[2*i+1] - Coord[2*i] * Coord[2*im1+1];
+			im1 = i;
+		}
+		area *= 0.5;
+
+		if(area >0) {
+			for(int i = 0; i < npoint; i++) {
+				VertexIter v = polygon.vertices.insert(polygon.vertices.end(), Vertex());
+				v->position.x = Coord[2*i];
+				v->position.y = Coord[2*i+1];
+				indexToVertex[i] = v;
+			}
+
+
+		} else {
+			for(int i = 0; i < npoint; i++) {
+				VertexIter v = polygon.vertices.insert(polygon.vertices.end(), Vertex());
+				v->position.x = Coord[2*(npoint-1-i)];
+				v->position.y = Coord[2*(npoint-1-i)+1];
+				indexToVertex[i] = v;
+			}
 		}
 
 
-	} else {
-		for(int i = 0; i < npoint; i++) {
-			VertexIter v = polygon.vertices.insert(polygon.vertices.end(), Vertex());
-			v->position.x = Coord[2*(npoint-1-i)];
-			v->position.y = Coord[2*(npoint-1-i)+1];
-			indexToVertex[i] = v;
+
+		VertexIter v;
+		im1 = npoint-1;
+		for(int i = 0; i < npoint-1; i++) {
+			v = indexToVertex[i];
+			v->prev = indexToVertex[im1];
+			v->next = indexToVertex[i+1];
+			im1 = i;
 		}
+		v = indexToVertex[npoint-1];
+		v->prev = indexToVertex[npoint-2];
+		v->next = indexToVertex[0];
+
+		// index elements
+		indexElements(polygon);
+
+		return true;
+
 	}
-
-
-
-	VertexIter v;
-	im1 = npoint-1;
-	for(int i = 0; i < npoint-1; i++) {
-		v = indexToVertex[i];
-		v->prev = indexToVertex[im1];
-		v->next = indexToVertex[i+1];
-		im1 = i;
-	}
-	v = indexToVertex[npoint-1];
-	v->prev = indexToVertex[npoint-2];
-	v->next = indexToVertex[0];
-
-	// index elements
-	indexElements(polygon);
-
-	return true;
-
-  }
 
 /* ===========================================================================================
  * Index all elements in a Mesh2D data structure
  ==============================================================================================*/
+	/*!
+	* index the elements of a polygon
+	* @param polygon
+	*/
+	void PolygonBuilder::indexElements(Polygon& polygon)
+	{
+		int index = 0;
+		for (VertexIter v = polygon.vertices.begin(); v != polygon.vertices.end(); v++) {
+			v->index = index++;
+		}
 
-  void PolygonBuilder::indexElements(Polygon& polygon)
-  {
-	int index = 0;
-	for (VertexIter v = polygon.vertices.begin(); v != polygon.vertices.end(); v++) {
-		v->index = index++;
 	}
-
-  }
 
 /* ===========================================================================================
  * Computes the angle (in degree) between three points:
@@ -163,19 +173,25 @@ namespace correa {
  *   IB ------IC
  *
  ==============================================================================================*/
+	/*!
+	* given 3 points A, B, C compute the angle between the vectors AB and BC
+	* @param A 	Vector2D representing point A
+	* @param B	Vector2D representing point B
+	* @param C	Vector2D representing point C
+	* @return 	the angle in radians
+	*/
+	double PolygonBuilder::angle_degree(Vector2D A, Vector2D B, Vector2D C)
+	{
+		Vector2D u,v;
 
-  double PolygonBuilder::angle_degree(Vector2D A, Vector2D B, Vector2D C)
-  {
-	Vector2D u,v;
+		u = A-B; u.normalize();
+		v = C-B; v.normalize();
 
-	u = A-B; u.normalize();
-	v = C-B; v.normalize();
+		double angle = std::acos(std::max(-1.0, std::min(1.0, dot(u, v))));
 
-	double angle = std::acos(std::max(-1.0, std::min(1.0, dot(u, v))));
+		return angle*180./M_PI;
 
-	return angle*180./M_PI;
-
-  }
+	}
 
 /* ===========================================================================================
  * Computes the signed area of a triangle defined by three points:
@@ -188,16 +204,24 @@ namespace correa {
  *
  ==============================================================================================*/
 
-  double PolygonBuilder::triangle_area(Polygon& polygon, int ia, int ib, int ic)
-  {
-	Vector2D A = polygon.vertices[ia].position;
-	Vector2D B = polygon.vertices[ib].position;
-	Vector2D C = polygon.vertices[ic].position;
+	/*!
+	* calculate the signed area of the triangle between three vertices A, B, C of a polygon
+	* @param polygon 	the polygon from which we take the vertices
+	* @param ia 		index of vertex A of the triangle
+	* @param ib 		index of vertex B of the triangle
+	* @param ic			index of vertex C of the triangle
+	* @return 			signed area of the triangle defined by the 3 points
+	*/
+	double PolygonBuilder::triangle_area(Polygon& polygon, int ia, int ib, int ic)
+	{
+		Vector2D A = polygon.vertices[ia].position;
+		Vector2D B = polygon.vertices[ib].position;
+		Vector2D C = polygon.vertices[ic].position;
 
-	double value = (B.x-A.x)*(C.y-A.y) - (C.x-A.x)*(B.y-A.y);
+		double value = (B.x-A.x)*(C.y-A.y) - (C.x-A.x)*(B.y-A.y);
 
-	return 0.5*value;
-  }
+		return 0.5*value;
+	}
 	
 	
 /* ===========================================================================================
@@ -206,150 +230,171 @@ namespace correa {
  * Note:
  *	The points must be (numerically) collinear.
  ==============================================================================================*/
+	/*!
+	* given 3 vertices A, B, C, from polygon, test if C is between A and B
+	* @param polygon 	the polygon containing the vertices
+	* @param ia 		index of A in polygon
+	* @param ib 		index of B in polygon
+	* @param ic			index of C in polygon
+	* @return 			True if A, B, C are collinear and C is between A and B, false otherwise
+	*/	
+	bool PolygonBuilder::between(Polygon& polygon, int ia, int ib, int ic)
+	{
 
-  bool PolygonBuilder::between(Polygon& polygon, int ia, int ib, int ic)
-  {
+		Vector2D A = polygon.vertices[ia].position;
+		Vector2D B = polygon.vertices[ib].position;
+		Vector2D C = polygon.vertices[ic].position;
 
-	Vector2D A = polygon.vertices[ia].position;
-	Vector2D B = polygon.vertices[ib].position;
-	Vector2D C = polygon.vertices[ic].position;
+		bool value;
+		double xmax, xmin, ymax, ymin;
 
-	bool value;
-	double xmax, xmin, ymax, ymin;
+		if(! collinear(polygon, ia, ib, ic)) {
+			value = false;
+		} else if (std::abs(A.y - B.y) < std::abs(A.x-B.x)) {
+			xmax = std::max(A.x, B.x);
+			xmin = std::min(A.x, B.x);
+			value = (xmin <= C.x) && (C.x <= xmax);
+		} else {
+			ymax = std::max(A.y, B.y);
+			ymin = std::min(A.y, B.y);
+			value = (ymin <= C.y) && (C.y <= ymax);
+		}
 
-	if(! collinear(polygon, ia, ib, ic)) {
-		value = false;
-	} else if (std::abs(A.y - B.y) < std::abs(A.x-B.x)) {
-		xmax = std::max(A.x, B.x);
-		xmin = std::min(A.x, B.x);
-		value = (xmin <= C.x) && (C.x <= xmax);
-	} else {
-		ymax = std::max(A.y, B.y);
-		ymin = std::min(A.y, B.y);
-		value = (ymin <= C.y) && (C.y <= ymax);
+		return value;
 	}
-
-	return value;
-  }
 
 /* ===========================================================================================
  * returns a measure of collinearity for 3 points
  *
  * See John Burkardt's code for a discussion of the implementation
  ==============================================================================================*/
-
-  bool PolygonBuilder::collinear(Polygon& polygon, int ia, int ib, int ic)
-  {
-
-	Vector2D A = polygon.vertices[ia].position;
-	Vector2D B = polygon.vertices[ib].position;
-	Vector2D C = polygon.vertices[ic].position;
-
-	double eps = 2.220446049250313E-016;
-
-	double area = triangle_area(polygon, ia, ib, ic);
-
-	double side_ab_sq = (A.x-B.x)*(A.x-B.x) + (A.y-B.y)*(A.y-B.y);
-	double side_bc_sq = (B.x-C.x)*(B.x-C.x) + (B.y-C.y)*(B.y-C.y);
-	double side_ca_sq = (C.x-A.x)*(C.x-A.x) + (C.y-A.y)*(C.y-A.y);
-
-	double size_max_sq = std::max(side_ab_sq, std::max(side_bc_sq, side_ca_sq));
-
-	bool value;
-
-	if(size_max_sq <= eps) {
-		value = true;
-	} else if(2.0*std::abs(area) <= eps*size_max_sq) {
-		value = true;
-	} else {
-		value = false;
-	}
-
-	return value;
-  }
-
-/* ===========================================================================================
- * check if a segment is a proper diagonal
- *
- ==============================================================================================*/
-
-  bool PolygonBuilder::diagonal(Polygon& polygon, int I, int J, int *prev_node,
-		int *next_node)
-  {
-
-  	bool value1 = in_cone(polygon, I, J, prev_node, next_node);
-  	bool value2 = in_cone(polygon, J, I, prev_node, next_node);
-	bool value3 = diagonalie(polygon, I, J, next_node);
-
-	bool value = value1 && value2 && value3;
-
-	return value;
-  }
-
-/* ===========================================================================================
- * check if a segment is a proper diagonal
- *
- ==============================================================================================*/
-
-  bool PolygonBuilder::diagonalie(Polygon& polygon, int I, int J, int *next_node)
-  {
-
-	int first = I;
-	int j = first;
-	int jp1 = next_node[first];
-
-	bool value = true;
-
-	while (1)
+	/*!
+	* Test collinearity of three points A, B, C in a polygon
+	* @param polygon	polygon containing the points
+	* @param ia 		index of point A in polygon
+	* @param ib 		index of point B in polygon
+	* @param iv 		index of point C in polygon
+	* @param ia 		index of point A in polygon
+	* @return 			true if colinear, false otherwise
+	*/
+	bool PolygonBuilder::collinear(Polygon& polygon, int ia, int ib, int ic)
 	{
-		// Skip any edge that includes vertex I or J
 
-		if(j== I || j == J || jp1 == I || jp1 == J) {
+		Vector2D A = polygon.vertices[ia].position;
+		Vector2D B = polygon.vertices[ib].position;
+		Vector2D C = polygon.vertices[ic].position;
+
+		double eps = 2.220446049250313E-016;
+
+		double area = triangle_area(polygon, ia, ib, ic);
+
+		double side_ab_sq = (A.x-B.x)*(A.x-B.x) + (A.y-B.y)*(A.y-B.y);
+		double side_bc_sq = (B.x-C.x)*(B.x-C.x) + (B.y-C.y)*(B.y-C.y);
+		double side_ca_sq = (C.x-A.x)*(C.x-A.x) + (C.y-A.y)*(C.y-A.y);
+
+		double size_max_sq = std::max(side_ab_sq, std::max(side_bc_sq, side_ca_sq));
+
+		bool value;
+
+		if(size_max_sq <= eps) {
+			value = true;
+		} else if(2.0*std::abs(area) <= eps*size_max_sq) {
+			value = true;
 		} else {
-			bool value2 = intersect(polygon, I, J, j, jp1);
-			if(value2) {
-				value = false;
-				break;
-			}
+			value = false;
 		}
-		j = jp1;
-		jp1 = next_node[j];
 
-		if(j==first) break;
+		return value;
 	}
 
-	return value;
+/* ===========================================================================================
+ * check if a segment is a proper diagonal
+ *
+ ==============================================================================================*/
+	/*!
+	* Check is a sefment is a proper diagonal
+	*/
+	bool PolygonBuilder::diagonal(Polygon& polygon, int I, int J, int *prev_node,
+			int *next_node)
+	{
+
+		bool value1 = in_cone(polygon, I, J, prev_node, next_node);
+		bool value2 = in_cone(polygon, J, I, prev_node, next_node);
+		bool value3 = diagonalie(polygon, I, J, next_node);
+
+		bool value = value1 && value2 && value3;
+
+		return value;
   }
+
+/* ===========================================================================================
+ * check if a segment is a proper diagonal
+ *
+ ==============================================================================================*/
+	/*!
+	* Check is a sefment is a proper diagonal
+	*/
+	bool PolygonBuilder::diagonalie(Polygon& polygon, int I, int J, int *next_node)
+	{
+
+		int first = I;
+		int j = first;
+		int jp1 = next_node[first];
+
+		bool value = true;
+
+		while (1)
+		{
+			// Skip any edge that includes vertex I or J
+
+			if(j== I || j == J || jp1 == I || jp1 == J) {
+			} else {
+				bool value2 = intersect(polygon, I, J, j, jp1);
+				if(value2) {
+					value = false;
+					break;
+				}
+			}
+			j = jp1;
+			jp1 = next_node[j];
+
+			if(j==first) break;
+		}
+
+		return value;
+	}
 
 /* ===========================================================================================
  * true if the diagonal I:J is strictly internal
  *
  ==============================================================================================*/
+	/*!
+ 	* Check if the diagonal I:J is strictly internal
+	*/
+	bool PolygonBuilder::in_cone(Polygon& polygon, int I, int J, int *prev_node,
+					int *next_node)
+	{
 
-  bool PolygonBuilder::in_cone(Polygon& polygon, int I, int J, int *prev_node,
-                int *next_node)
-  {
+		int IM1 = prev_node[I];
+		int IP1 = next_node[I];
 
-	int IM1 = prev_node[I];
-	int IP1 = next_node[I];
+		double t1 = triangle_area(polygon, I, IP1, IM1);
+		double t2, t3;
+		bool value;
 
-	double t1 = triangle_area(polygon, I, IP1, IM1);
-	double t2, t3;
-	bool value;
+		if(0.0 <= t1) {
+			t2 = triangle_area(polygon, I, J, IM1);
+			t3 = triangle_area(polygon, J, I, IP1);
+			value = (0.0 < t2) && (0.0<t3);
+		} else {
+			t2 = triangle_area(polygon, I, J, IP1);
+			t3 = triangle_area(polygon, J, I, IM1);
+			value = (0.0 <= t2) && (0.0<=t3);
+			value = !value;
+		}
 
-	if(0.0 <= t1) {
-		t2 = triangle_area(polygon, I, J, IM1);
-		t3 = triangle_area(polygon, J, I, IP1);
-		value = (0.0 < t2) && (0.0<t3);
-	} else {
-		t2 = triangle_area(polygon, I, J, IP1);
-		t3 = triangle_area(polygon, J, I, IM1);
-		value = (0.0 <= t2) && (0.0<=t3);
-		value = !value;
+		return value;
 	}
-
-	return value;
-  }
 
 /* ===========================================================================================
  * true if lines A:B and C:D intersect
@@ -421,81 +466,86 @@ namespace correa {
  *       the first edge listed is always an internal diagonal
  *
  ==============================================================================================*/
-
-  bool PolygonBuilder::triangulatePolygon(Polygon& polygon, int *ntrig, int *triangle)
-  {
-
-	int Npoint = polygon.vertices.size();
-
-	// We must have at least 3 vertices
-	if(Npoint < 3) {
-		return false;
-	}
-
-	int *prev_node = new int[Npoint];
-	int *next_node = new int[Npoint];
-
-	int ip = 0;
-	prev_node[ip] = Npoint-1;
-	next_node[ip] = ip + 1;
-
-	for(int i = 1; i < Npoint-1; i++) {
-		prev_node[i] = i-1; 
-		next_node[i] = i+1; 
-	}
-
-	ip = Npoint-1;
-	prev_node[ip] = ip - 1;
-	next_node[ip] = 0;
-
-	bool *ear = new bool[Npoint];
-
-	for(int i = 0; i < Npoint; i++) {
-		ear[i] = diagonal(polygon, prev_node[i], next_node[i], prev_node, next_node);
-	}
-
-	int Ntrig = 0;
-
-	int i2 = 0;
-	int i0, i1, i3, i4;
-
-	while(Ntrig < Npoint-3)
+	/*!
+	* generate a triangulation of a polygon
+	* @param polygon 	the polygon you want to triangulate
+	* @param ntrig 		where to store the number of triangles
+	* @param triangle 	where to store the triangles
+	*/
+	bool PolygonBuilder::triangulatePolygon(Polygon& polygon, int *ntrig, int *triangle)
 	{
-		if(ear[i2]) {
-			i3 = next_node[i2];
-			i4 = next_node[i3];
-			i1 = prev_node[i2];
-			i0 = prev_node[i1];
 
-			next_node[i1] = i3;
-			prev_node[i3] = i1;
+		int Npoint = polygon.vertices.size();
 
-			ear[i1] = diagonal(polygon, i0, i3, prev_node, next_node);
-			ear[i3] = diagonal(polygon, i1, i4, prev_node, next_node);
-
-			triangle[0+3*Ntrig] = i3;
-			triangle[1+3*Ntrig] = i1;
-			triangle[2+3*Ntrig] = i2;
-			Ntrig++;
+		// We must have at least 3 vertices
+		if(Npoint < 3) {
+			return false;
 		}
 
-		i2 = next_node[i2];
+		int *prev_node = new int[Npoint];
+		int *next_node = new int[Npoint];
+
+		int ip = 0;
+		prev_node[ip] = Npoint-1;
+		next_node[ip] = ip + 1;
+
+		for(int i = 1; i < Npoint-1; i++) {
+			prev_node[i] = i-1; 
+			next_node[i] = i+1; 
+		}
+
+		ip = Npoint-1;
+		prev_node[ip] = ip - 1;
+		next_node[ip] = 0;
+
+		bool *ear = new bool[Npoint];
+
+		for(int i = 0; i < Npoint; i++) {
+			ear[i] = diagonal(polygon, prev_node[i], next_node[i], prev_node, next_node);
+		}
+
+		int Ntrig = 0;
+
+		int i2 = 0;
+		int i0, i1, i3, i4;
+
+		while(Ntrig < Npoint-3)
+		{
+			if(ear[i2]) {
+				i3 = next_node[i2];
+				i4 = next_node[i3];
+				i1 = prev_node[i2];
+				i0 = prev_node[i1];
+
+				next_node[i1] = i3;
+				prev_node[i3] = i1;
+
+				ear[i1] = diagonal(polygon, i0, i3, prev_node, next_node);
+				ear[i3] = diagonal(polygon, i1, i4, prev_node, next_node);
+
+				triangle[0+3*Ntrig] = i3;
+				triangle[1+3*Ntrig] = i1;
+				triangle[2+3*Ntrig] = i2;
+				Ntrig++;
+			}
+
+			i2 = next_node[i2];
+		}
+
+		i3 = next_node[i2];
+		i1 = prev_node[i2];
+
+		triangle[0+3*Ntrig] = i3;
+		triangle[1+3*Ntrig] = i1;
+		triangle[2+3*Ntrig] = i2;
+		Ntrig++;
+
+		delete [] ear; delete [] next_node; delete [] prev_node;
+
+		*ntrig = Ntrig;
+
+		return true;
 	}
-
-	i3 = next_node[i2];
-	i1 = prev_node[i2];
-
-	triangle[0+3*Ntrig] = i3;
-	triangle[1+3*Ntrig] = i1;
-	triangle[2+3*Ntrig] = i2;
-	Ntrig++;
-
-	delete [] ear; delete [] next_node; delete [] prev_node;
-
-	*ntrig = Ntrig;
-
-	return true;
-  }
 
 /* ===========================================================================================
  * clean up polygon: 
@@ -503,132 +553,142 @@ namespace correa {
  *	- if a vertex I has angle 0, remove I
  *
  ==============================================================================================*/
+	/*!
+	* clean the points of the polygon, to remove unneccesary ones
+	* @param Np	 the number of points
+	* @param coord	the coordinates to clean
+	*/
+	void PolygonBuilder::clean_points(int* Np, double *coord)
+	{
 
-  void PolygonBuilder::clean_points(int* Np, double *coord)
-  {
+		int Npoint = *Np;
+		int Npoint2;
 
-	int Npoint = *Np;
-	int Npoint2;
+		std::vector<Vector2D> polygon;
 
-	std::vector<Vector2D> polygon;
+		int nchanges = 0;
+		double angle_tol = 1.e-4;
+		double angle;
+		int im1, ip1;
 
-	int nchanges = 0;
-	double angle_tol = 1.e-4;
-	double angle;
-	int im1, ip1;
+		std::cout << std::endl;
+		std::cout << "Initial number of points in polygon      : " << Npoint << std::endl;
 
-	std::cout << std::endl;
-	std::cout << "Initial number of points in polygon      : " << Npoint << std::endl;
+		do {
 
-	do {
+			nchanges = 0;
+			polygon.clear();
 
-		nchanges = 0;
-		polygon.clear();
-
-		im1 = Npoint-1;
-		for(int i = 0; i < Npoint; i++) {
-			if(coord[2*i] != coord[2*im1] || coord[2*i+1] != coord[2*im1+1]) {
-				Vector2D v;
-				v.x = coord[2*i]; v.y = coord[2*i+1];
-				polygon.push_back(v);
-			} else {
-				nchanges++;
+			im1 = Npoint-1;
+			for(int i = 0; i < Npoint; i++) {
+				if(coord[2*i] != coord[2*im1] || coord[2*i+1] != coord[2*im1+1]) {
+					Vector2D v;
+					v.x = coord[2*i]; v.y = coord[2*i+1];
+					polygon.push_back(v);
+				} else {
+					nchanges++;
+				}
+				im1 = i;
 			}
-			im1 = i;
-		}
 
-		Npoint2 = polygon.size();
+			Npoint2 = polygon.size();
 
-		im1 = Npoint2-1;
-		Npoint = 0;
-		for(int i = 0; i < Npoint2; i++) {
-			ip1 = (i+1) %Npoint2;
+			im1 = Npoint2-1;
+			Npoint = 0;
+			for(int i = 0; i < Npoint2; i++) {
+				ip1 = (i+1) %Npoint2;
 
-			angle = angle_degree(polygon[im1], polygon[i], polygon[ip1]);
+				angle = angle_degree(polygon[im1], polygon[i], polygon[ip1]);
 
-			if(std::abs(angle) <= angle_tol || std::abs(angle-180) <= angle_tol ) {
-				nchanges++;
-			} else {
-				coord[2*Npoint] = polygon[i].x;
-				coord[2*Npoint+1] = polygon[i].y;
-				Npoint++;
+				if(std::abs(angle) <= angle_tol || std::abs(angle-180) <= angle_tol ) {
+					nchanges++;
+				} else {
+					coord[2*Npoint] = polygon[i].x;
+					coord[2*Npoint+1] = polygon[i].y;
+					Npoint++;
+				}
+				im1 = i;
 			}
-			im1 = i;
-		}
 
-	} while (nchanges !=0);
+		} while (nchanges !=0);
 
-	*Np = Npoint;
-	std::cout << "Number of points in polygon after cleanup: " << Npoint << std::endl;
-	std::cout << std::endl;
+		*Np = Npoint;
+		std::cout << "Number of points in polygon after cleanup: " << Npoint << std::endl;
+		std::cout << std::endl;
 
-  }
+	}
 
 /* ===========================================================================================
  * Get list of boundary edges
  ==============================================================================================*/
-
-  int PolygonBuilder::boundaryEdges(Polygon& polygon)
-  {
-	int idx1, idx2;
-	for (VertexIter v = polygon.vertices.begin(); v != polygon.vertices.end(); v++)
+	/*!
+	* get a list of boundary edges
+	* @param polygon
+	*/
+	int PolygonBuilder::boundaryEdges(Polygon& polygon)
 	{
-		idx1 = v->index;
-		idx2 = v->next->index;
-		polygon.edges.push_back(std::make_pair(idx1, idx2));
+		int idx1, idx2;
+		for (VertexIter v = polygon.vertices.begin(); v != polygon.vertices.end(); v++)
+		{
+			idx1 = v->index;
+			idx2 = v->next->index;
+			polygon.edges.push_back(std::make_pair(idx1, idx2));
+		}
+
+		int nedges = polygon.edges.size();
+
+		return nedges;
+
 	}
-
-	int nedges = polygon.edges.size();
-
-	return nedges;
-
-  }
 
 /* ===========================================================================================
  * Get list of edges in triangulation
  ==============================================================================================*/
 
-  int PolygonBuilder::trigEdges(Polygon& polygon, int ntrig, int *indices)
-  {
-	int npoints = polygon.vertices.size();
+	/*!
+	* trigEd
+	*/
+	int PolygonBuilder::trigEdges(Polygon& polygon, int ntrig, int *indices)
+  	{
+		int npoints = polygon.vertices.size();
 
-	std::vector<std::set<int> > data;
+		std::vector<std::set<int> > data;
 
-	data.resize(npoints);
+		data.resize(npoints);
 
-	// build table
-	for (int it = 0; it < ntrig; it++) {
-		int i = indices[3*it];
-		int j = indices[3*it+1];
-		int k = indices[3*it+2];
+		// build table
+		for (int it = 0; it < ntrig; it++) {
+			int i = indices[3*it];
+			int j = indices[3*it+1];
+			int k = indices[3*it+2];
 
-		if(i<j) {
-			data[i].insert(j);
-		} else {
-			data[j].insert(i);
+			if(i<j) {
+				data[i].insert(j);
+			} else {
+				data[j].insert(i);
+			}
+			if(i<k) {
+				data[i].insert(k);
+			} else {
+				data[k].insert(i);
+			}
+			if(j<k) {
+				data[j].insert(k);
+			} else {
+				data[k].insert(j);
+			}
 		}
-		if(i<k) {
-			data[i].insert(k);
-		} else {
-			data[k].insert(i);
+
+		for(int i = 0; i < npoints; i++) {
+			for (std::set<int>::iterator it = data[i].begin(); it != data[i].end(); it++) {
+				polygon.edges.push_back(std::make_pair(i, *it));
+			}
 		}
-		if(j<k) {
-			data[j].insert(k);
-		} else {
-			data[k].insert(j);
-		}
-	}
 
-	for(int i = 0; i < npoints; i++) {
-		for (std::set<int>::iterator it = data[i].begin(); it != data[i].end(); it++) {
-			polygon.edges.push_back(std::make_pair(i, *it));
-		}
-	}
+		int nedges = polygon.edges.size();
 
-	int nedges = polygon.edges.size();
+		return nedges;
 
-	return nedges;
-
-  }
+  	}
 } //end namespace correa	
 #endif

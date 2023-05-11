@@ -120,6 +120,9 @@ namespace correa{
 		return polygon;
 	}
 
+	/*!
+	* Expose polygons to python
+	*/
 	class PyPolygon{
 		using PersistenceDiagram = std::vector<std::pair<double,double>>;
 		private:
@@ -161,22 +164,37 @@ namespace correa{
 			//auto polygon() {
 			//	return polygon;
 			//}
+			/*!
+			* @return persistence diagram of the radial function from the center.
+			*/
 			auto persistence_diagram() {
 				
 				return persistence_diagram_;
 			}
+			/*!
+			* @return number of vertices in the polygon
+			*/
 			int size() {
 				return polygon.size();
 			}
 
+			/*!
+			* @return length of the polygon
+			*/
 			double length() {
 				return polygon.length();
 			}
 
+			/*!
+			* @return length of the polygon
+			*/
 			double area() {
 				return polygon.area();
 			}
 
+			/*!
+			* @return std::vector<std::vector<double>> of vertices of the polygon
+			*/
 			auto vertices() {
 				//std::cerr << "there are " << polygon.vertices.size() << " vertices in this polygon" << std::endl;
 				std::vector<std::vector<double>> vertices;
@@ -189,65 +207,113 @@ namespace correa{
 				return vertices;
 			}
 
+			/*!
+			* @return parameters (major axis, minor axis, ratio) of the maximum inscribed ellipse
+			*/
 			auto ellipse_max() {
 				//std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
 				return ellipse_max_;
 			}
 
+			/*!
+			* @return major axis of maximum inscribed ellipse
+			*/
 			auto ellipse_max_a() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<0>(ellipse_max_);
 			}
+
+			/*!
+			* @return minor axis of maximum inscribed ellipse
+			*/
 			auto ellipse_max_b() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<1>(ellipse_max_);
 			}
+
+			/*!
+			* @return ratio of maximum inscribed ellipse
+			*/
 			auto ellipse_max_ratio() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<2>(ellipse_max_);
 			}
-		   
+		
+			/*!
+			* @return parameters (major axis, minor axis, ratio) of the minimum inscribing ellipse
+			*/
 		   auto ellipse_min() {
 				//std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
 				return ellipse_min_;
 			}
 
+			/*!
+			* @return major axis of minimum inscribing ellipse
+			*/
 			auto ellipse_min_a() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<0>(ellipse_min_);
 			}
+
+			/*!
+			* @return minor axis of minimum inscribing ellipse
+			*/
 			auto ellipse_min_b() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<1>(ellipse_min_);
 			}
+
+			/*!
+			* @return ratio axis of minimum inscribing ellipse
+			*/			
 			auto ellipse_min_ratio() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<2>(ellipse_min_);
 			}
 
+			/*!
+			* @return parameters (major axis, minor axis, ratio) of the least squared ellipse
+			*/
 			auto ellipse_lsq() {
 				//std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
 				return ellipse_lsq_;
 			}
 
+			/*!
+			* @return major axis of least square ellipse
+			*/
 			auto ellipse_lsq_a() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<0>(ellipse_lsq_);
 			};
+
+			/*!
+			* @return minor axis of least square ellipse
+			*/
 			auto ellipse_lsq_b() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<1>(ellipse_lsq_);
 			};
+
+			/*!
+			* @return ratio axis of least square ellipse
+			*/
 			auto ellipse_lsq_ratio() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<2>(ellipse_lsq_);
 			};
 
+			/*!
+			* @return Willmore energy of the polygon
+			*/
 			auto willmore() {
 				//std::cerr << "willmore enegery is: " << willmore_ << "." << std::endl;
 				return willmore_;
 			};
 
+			/*!
+			* print information about the polygon
+			*/
 			friend ostream &operator<<( ostream &out, PyPolygon &P ) { 
 				out <<  "====================================\n";
 				out << "Displaying Polygon Information:     \n";
@@ -265,15 +331,18 @@ namespace correa{
 				}
 				return out;            
 			};
+			friend std::tuple<double, double, double, double, double, double, double> compare_polygons(PyPolygon poly1, PyPolygon poly2);
 	};  
 
  
-/*!
-* wrapper to compare pairs of polygons.
-* 
-* Has a variety of methods to calculate the distances between a pair of polygons. 
-*/
-	auto compare_polygons(PyPolygon poly1, PyPolygon poly2){ //}, int q=2, bool verbose=false) {
+		/*!
+		* wrapper to compare pairs of polygons.
+		* 
+		* Has a variety of methods to calculate the distances between a pair of polygons. 
+		*
+		* Prints their comparisons
+		*/
+		std::tuple<double, double, double, double, double, double, double> compare_polygons(PyPolygon poly1, PyPolygon poly2){ //}, int q=2, bool verbose=false) {
 		bool verbose = true;
 		int q =2;
 		Frechet frechet;
@@ -306,11 +375,13 @@ namespace correa{
 			std::cerr << "Willmore distance:	"  << std::setw(7) << std::fixed << dWillmore << std::endl;
 			std::cerr << "Curve OT distance:	"  << std::setw(7) << std::fixed << dCurvOT << std::endl;
 		}
-		return 0;// dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurvOT;
+		return {dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurvOT};
 	};		
 
 
-
+	/*!
+	* print the information about a PyPolygon
+	*/
 	void print_polygon(PyPolygon P) {
 		std::cerr << P << std::endl;
 	}
