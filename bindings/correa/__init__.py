@@ -34,5 +34,29 @@ def plot_polygon(p : _correa.PyPolygon):
 def polygon_properties(p : _correa.PyPolygon):
 	print_polygon(p)
 
-def compare_polygons(poly1, poly2):#, q=2, verbose=False):
-	return _correa.compare_polygons(poly1, poly2)#, q=q, verbose=verbose)
+def compare_polygons(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon, q=2, verbose=False):
+	return _correa.compare_polygons(poly1, poly2, q, verbose)
+
+def curv_ot_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	return _correa.curv_ot_distance(poly1, poly2)
+
+def frechet_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	return _correa.frechet_distance(poly1, poly2)
+
+def max_ellipse_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	return _correa.max_ellipse_distance(poly1 , poly2)
+
+def min_ellipse_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	return _correa.min_ellipse_distance(poly1, poly2)
+
+def lsq_ellipse_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	return _correa.lsq_ellipse_distance(poly1, poly2)
+
+def wasserstein_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon, q=2):
+	return _correa.wasserstein_distance(poly1, poly2, q)
+
+def willmore_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	return _correa.willmore_distance(poly1, poly2)
+
+
+

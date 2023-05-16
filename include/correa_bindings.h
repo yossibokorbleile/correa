@@ -331,20 +331,32 @@ namespace correa{
 				}
 				return out;            
 			};
-			friend std::tuple<double, double, double, double, double, double, double> compare_polygons(PyPolygon poly1, PyPolygon poly2);
+			friend std::vector<double> compare_polygons(PyPolygon poly1, PyPolygon poly2);
+
+			friend double wasserstein_distance(PyPolygon poly1, PyPolygon poly2, int q);
+
+			friend double frechet_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double max_ellipse_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double min_ellipse_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double lsq_ellipse_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double willmore_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double curv_ot_distance(PyPolygon poly1, PyPolygon poly2);
 	};  
 
  
-		/*!
-		* wrapper to compare pairs of polygons.
-		* 
-		* Has a variety of methods to calculate the distances between a pair of polygons. 
-		*
-		* Prints their comparisons
-		*/
-		std::tuple<double, double, double, double, double, double, double> compare_polygons(PyPolygon poly1, PyPolygon poly2){ //}, int q=2, bool verbose=false) {
-		bool verbose = true;
-		int q =2;
+	/*!
+	* wrapper to compare pairs of polygons.
+	* 
+	* Has a variety of methods to calculate the distances between a pair of polygons. 
+	*
+	* Prints their comparisons
+	*/
+	std::vector<double> compare_polygons(PyPolygon poly1, PyPolygon poly2, int q, bool verbose) {
 		Frechet frechet;
 		Ellipse ellipse;
 		Curvature curv;
@@ -361,30 +373,69 @@ namespace correa{
 		double dWillmore = std::abs(curv.Willmore(poly1.polygon) - curv.Willmore(poly2.polygon));
 		double dCurvOT = curv.curvOT(poly1.polygon, poly2.polygon);
 		if (verbose) {
+			int digit = floor (log10 (q)) + 1;
 			std::cerr << "The two polygons are:" << std::endl;
 			std::cerr << "Polygon 1:" << std::endl;
 			std::cerr << poly1 << std::endl;
 			std::cerr << "Polygon 2:" << std::endl;
 			std::cerr << poly2 << std::endl;
-			std::cerr << " and the distances between them are:" << std::endl;
-			std::cerr << "Wasserstein distance (q="<<q<<"):	" << std::setw(7) << std::fixed  << dWasserstein << std::endl;
-			std::cerr << "Frechet distance:					"  << std::setw(7) << std::fixed << dFrechet << std::endl;
-			std::cerr << "Max Ellipse distance:	"  << std::setw(7) << std::fixed << dMax << std::endl;
-			std::cerr << "Min Ellipse distance:	"  << std::setw(7) << std::fixed << dMin << std::endl;
-			std::cerr << "LSQ Ellipse distance:	"  << std::setw(7) << std::fixed << dLSQ << std::endl;
-			std::cerr << "Willmore distance:	"  << std::setw(7) << std::fixed << dWillmore << std::endl;
-			std::cerr << "Curve OT distance:	"  << std::setw(7) << std::fixed << dCurvOT << std::endl;
+			std::cerr << "and the distances between them are:" << std::endl;
+			std::cerr << "Wasserstein distance (q="<<q<<"):" << std::setw(10) << std::fixed  << dWasserstein << std::endl;
+			std::cerr << "Frechet distance:"  << std::setw(19+digit) << std::fixed << dFrechet << std::endl;
+			std::cerr << "Max Ellipse distance:"  << std::setw(14+digit) << std::fixed << dMax << std::endl;
+			std::cerr << "Min Ellipse distance:"  << std::setw(14+digit) << std::fixed << dMin << std::endl;
+			std::cerr << "LSQ Ellipse distance:"  << std::setw(14+digit) << std::fixed << dLSQ << std::endl;
+			std::cerr << "Willmore distance:"  << std::setw(17+digit) << std::fixed << dWillmore << std::endl;
+			std::cerr << "Curv OT distance:"  << std::setw(18+digit) << std::fixed << dCurvOT << std::endl;
 		}
 		return {dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurvOT};
 	};		
 
+	double wasserstein_distance(PyPolygon poly1, PyPolygon poly2, int q) {
+		const std::vector<std::pair<double,double>> pd1 = poly1.persistence_diagram();
+		const std::vector<std::pair<double,double>> pd2 = poly2.persistence_diagram();
+		return  hera_wasserstein_distance(pd1, pd2, q=q);
+	};
+
+	double frechet_distance(PyPolygon poly1, PyPolygon poly2) {
+		Frechet frechet;
+		return frechet.dFD(poly1.polygon, poly2.polygon);
+	};
+
+	double max_ellipse_distance(PyPolygon poly1, PyPolygon poly2) {
+		Ellipse ellipse;
+		double a1_M, b1_M, a2_M, b2_M;
+		return ellipse.dEllipseMax(poly1.polygon, poly2.polygon, &a1_M, &b1_M, &a2_M, &b2_M);
+	};
+
+	double min_ellipse_distance(PyPolygon poly1, PyPolygon poly2) {
+		Ellipse ellipse;
+		double a1_m, b1_m, a2_m, b2_m;
+		return ellipse.dEllipseMin(poly1.polygon, poly2.polygon, &a1_m, &b1_m, &a2_m, &b2_m);
+	};
+
+	double lsq_ellipse_distance(PyPolygon poly1, PyPolygon poly2) { 
+		Ellipse ellipse;
+		double a1_lsq, b1_lsq, a2_lsq, b2_lsq;
+		return ellipse.dEllipseLSQ(poly1.polygon, poly2.polygon, &a1_lsq, &b1_lsq, &a2_lsq, &b2_lsq);
+	};
+
+	double willmore_distance(PyPolygon poly1, PyPolygon poly2) {
+		Curvature curv;
+		return  std::abs(curv.Willmore(poly1.polygon) - curv.Willmore(poly2.polygon));
+	};
+		
+	double curv_ot_distance(PyPolygon poly1, PyPolygon poly2) {
+		Curvature curv;
+		return curv.curvOT(poly1.polygon, poly2.polygon);
+	};
 
 	/*!
 	* print the information about a PyPolygon
 	*/
 	void print_polygon(PyPolygon P) {
 		std::cerr << P << std::endl;
-	}
+	};
 }
 
 
