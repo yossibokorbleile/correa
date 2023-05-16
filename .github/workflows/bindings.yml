@@ -61,9 +61,9 @@ jobs:
               # REQUIRED: Specify the required boost version
               # A list of supported versions can be found here:
               # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-              boost_version: 1.78.0.beta1
+              boost_version: 1.80.10
               # OPTIONAL: Specify a platform version
-              platform_version: 10.15
+              platform_version: 12
               # OPTIONAL: Specify a custom install location
               boost_install_dir: /home/runner/boost
               # OPTIONAL: Specify a toolset
