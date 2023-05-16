@@ -11,6 +11,9 @@ from matplotlib import pyplot as plt
 def create_polygon(path_file : str):
 	return _correa.PyPolygon(path_file)
 
+def create_polygon_focal_point(polygon_path : str, focal_point):
+	return _correa.PyPolygon(polygon_path, focal_point)
+
 
 def print_polygon(p) :
 	_correa.print_polygon(p)

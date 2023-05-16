@@ -28,7 +28,7 @@
 #include <limits>
 #include <assert.h>
 #include <algorithm>
-
+#include <nanobind/stl/pair.h>
 /*================================================================================================
  Definitions for multi-threading
 ================================================================================================== */
@@ -52,6 +52,7 @@ pthread_t threads[NUM_THREADS];
 #include "Component.h"
 #include "hera/wasserstein.h"
 #include "Frechet.h"
+#include "Vector2D.h"
 
 namespace correa{   
 
@@ -99,6 +100,49 @@ namespace correa{
 		X = nullptr;
 
 		inout.read(path_to_vertices , &ndim, &npoint, &X);
+		std::string line;
+   		double val;
+		std::vector<double> focal_;
+   		std::ifstream in(path_to_focal_point);
+
+   		while (getline(in, line)){
+				size_t start_pos = 0;
+				while ((start_pos = line.find(",", start_pos)) != std::string::npos)
+				{
+					line.replace(start_pos, 1, " ");
+					start_pos += 1; // Handles case where 'to' is a substring of 'from'
+				}
+				istringstream iss(line);
+				while (iss >> val){
+					focal_.push_back(val);
+			};
+		};
+		Vector2D focal(focal_[0], focal_[1]);
+		pbuilder.clean_points(&npoint, X);
+		pbuilder.buildPolygon(npoint, X, polygon);
+
+		polygon.shift(focal);
+
+		// Center polygon
+		int iscale = 0;
+		double range = 100;
+		polygon.centerScale(range,iscale);
+		return polygon;
+	}
+
+	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point) {
+
+		PolygonBuilder pbuilder;
+		Polygon polygon;
+		INOUT inout; 
+		int ndim;
+		int npoint;
+
+		double *X;
+		X = nullptr;
+
+		inout.read(path_to_vertices , &ndim, &npoint, &X);
+		Vector2D focal (focal_point[0], focal_point[1]); 
 		pbuilder.clean_points(&npoint, X);
 		pbuilder.buildPolygon(npoint, X, polygon);
 
@@ -120,6 +164,10 @@ namespace correa{
 		return polygon;
 	}
 
+	auto load_polygon(std::string path_to_vertices, std::vector<double> path_to_focal) {
+		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal);
+		return polygon;
+	}
 	/*!
 	* Expose polygons to python
 	*/
@@ -156,6 +204,54 @@ namespace correa{
 				willmore_ = curv.Willmore(polygon);
 				PH0 f(polygon.vertices);
 				f.Persistence();
+				persistence_diagram_ = persistence_diagram();
+			}
+
+			PyPolygon(std::string file_path, std::string focal_path) {
+				polygon = load_polygon(file_path, focal_path);
+				Ellipse ellipse;
+				Curvature curv;
+				double a, b; 
+				ellipse.EllipseMin(polygon, &a, &b);
+				std::get<0>(ellipse_min_)= a;
+				std::get<1>(ellipse_min_) = b;
+				std::get<2>(ellipse_min_)= a/b;
+				ellipse.EllipseMax(polygon, &a, &b);
+				std::get<0>(ellipse_max_)= a;
+				std::get<1>(ellipse_max_) = b;
+				std::get<2>(ellipse_max_)= a/b;
+				ellipse.EllipseLSQ(polygon, &a, &b);
+				std::get<0>(ellipse_lsq_)= a;
+				std::get<1>(ellipse_lsq_) = b;
+				std::get<2>(ellipse_lsq_)= a/b;
+
+				willmore_ = curv.Willmore(polygon);
+				PH0 f(polygon.vertices);
+				f.Persistence();
+				persistence_diagram_ = f.persistence_diagram();
+			}
+
+			PyPolygon(std::string file_path, std::vector<double> focal_point) {
+				polygon = load_polygon(file_path, focal_point);
+				Ellipse ellipse;
+				Curvature curv;
+				double a, b; 
+				ellipse.EllipseMin(polygon, &a, &b);
+				std::get<0>(ellipse_min_)= a;
+				std::get<1>(ellipse_min_) = b;
+				std::get<2>(ellipse_min_)= a/b;
+				ellipse.EllipseMax(polygon, &a, &b);
+				std::get<0>(ellipse_max_)= a;
+				std::get<1>(ellipse_max_) = b;
+				std::get<2>(ellipse_max_)= a/b;
+				ellipse.EllipseLSQ(polygon, &a, &b);
+				std::get<0>(ellipse_lsq_)= a;
+				std::get<1>(ellipse_lsq_) = b;
+				std::get<2>(ellipse_lsq_)= a/b;
+
+				willmore_ = curv.Willmore(polygon);
+				PH0 f(polygon.vertices);
+				f.Persistence();
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
@@ -167,10 +263,16 @@ namespace correa{
 			/*!
 			* @return persistence diagram of the radial function from the center.
 			*/
-			auto persistence_diagram() {
-				
+			PersistenceDiagram persistence_diagram() {
 				return persistence_diagram_;
 			}
+
+			/*!
+			* @return persistence diagram of the radial function from the center in a format for Python.
+			*/
+			//std::vector<std:: persistence_diagram() {
+			//	return persistence_diagram_;
+			//}
 			/*!
 			* @return number of vertices in the polygon
 			*/

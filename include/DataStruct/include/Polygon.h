@@ -66,7 +66,6 @@ namespace correa {
 				std::cout << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
 			};
 
-
 			int size() {
 				return vertices.size();
 			};
