@@ -35,4 +35,4 @@ jobs:
         with:
             source-dir: .
             build-dir: ./build
-            args: -DCORREA_BUILD_PYTHON_BINDINGS=ON -DCORREA_BUILD_EXECUTABLES
+            args: -DCORREA_BUILD_PYTHON_BINDINGS=ON -DCORREA_BUILD_EXECUTABLES=ON
