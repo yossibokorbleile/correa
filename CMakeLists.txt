@@ -15,6 +15,9 @@ option(CORREA_BUILD_PYTHON_BINDINGS "build python bindings" ON)
 # Boost
 find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
+find_package(BLAS)
+find_package(LAPACK)
+
 
 message("CORREA_BUILD_PYTHON_BINDINGS is ${CORREA_BUILD_PYTHON_BINDINGS}")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
@@ -39,6 +42,6 @@ if(CORREA_BUILD_PYTHON_BINDINGS)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/nanobind)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bindings)
 	nanobind_add_module(_correa src/correa.cpp)
-	target_link_libraries(_correa PRIVATE ${libraries} ${lapackblas_libraries} hera)
+	target_link_libraries(_correa PRIVATE ${libraries} ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} her)
 	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bindings/correa/__init__.py DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/correa)
 endif()
