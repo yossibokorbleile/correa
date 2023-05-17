@@ -1,12 +1,11 @@
 /*
- 	CorreaBindings.h
+ 	correa_bindings.h
 
  	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
 				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
  	Date: April 2023
 	Version: 1
 */
-
 
 #ifndef _CORREABINDINGS_H_
 #define _CORREABINDINGS_H_
@@ -28,8 +27,8 @@
 #include <cstdlib>
 #include <limits>
 #include <assert.h>
-#include <algorithm>\
-
+#include <algorithm>
+#include <nanobind/stl/pair.h>
 /*================================================================================================
  Definitions for multi-threading
 ================================================================================================== */
@@ -53,6 +52,7 @@ pthread_t threads[NUM_THREADS];
 #include "Component.h"
 #include "hera/wasserstein.h"
 #include "Frechet.h"
+#include "Vector2D.h"
 
 namespace correa{   
 
@@ -69,7 +69,7 @@ namespace correa{
 	auto initialise_polygon(std::string path_to_vertices) {
 
 		PolygonBuilder pbuilder;
-		Polygon poly;
+		Polygon polygon;
 		INOUT inout; 
 		int ndim;
 		int npoint;
@@ -79,19 +79,19 @@ namespace correa{
 
 		inout.read(path_to_vertices, &ndim, &npoint, &X);
 		pbuilder.clean_points(&npoint, X);
-		pbuilder.buildPolygon(npoint, X, poly);
-
+		pbuilder.buildPolygon(npoint, X, polygon);
+		
 		// Center polygon
 		int iscale = 0;
 		double range = 100;
-		poly.centerScale(range,iscale);
-		return poly;
+		polygon.centerScale(range,iscale);
+		return polygon;
 	} 
 
 	auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point) {
 
 		PolygonBuilder pbuilder;
-		Polygon poly;
+		Polygon polygon;
 		INOUT inout; 
 		int ndim;
 		int npoint;
@@ -100,45 +100,80 @@ namespace correa{
 		X = nullptr;
 
 		inout.read(path_to_vertices , &ndim, &npoint, &X);
+		std::string line;
+   		double val;
+		std::vector<double> focal_;
+   		std::ifstream in(path_to_focal_point);
+
+   		while (getline(in, line)){
+				size_t start_pos = 0;
+				while ((start_pos = line.find(",", start_pos)) != std::string::npos)
+				{
+					line.replace(start_pos, 1, " ");
+					start_pos += 1; // Handles case where 'to' is a substring of 'from'
+				}
+				istringstream iss(line);
+				while (iss >> val){
+					focal_.push_back(val);
+			};
+		};
+		Vector2D focal(focal_[0], focal_[1]);
 		pbuilder.clean_points(&npoint, X);
-		pbuilder.buildPolygon(npoint, X, poly);
+		pbuilder.buildPolygon(npoint, X, polygon);
+
+		polygon.shift(focal);
 
 		// Center polygon
 		int iscale = 0;
 		double range = 100;
-		poly.centerScale(range,iscale);
-		return poly;
+		polygon.centerScale(range,iscale);
+		return polygon;
+	}
+
+	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point) {
+
+		PolygonBuilder pbuilder;
+		Polygon polygon;
+		INOUT inout; 
+		int ndim;
+		int npoint;
+
+		double *X;
+		X = nullptr;
+
+		inout.read(path_to_vertices , &ndim, &npoint, &X);
+		Vector2D focal (focal_point[0], focal_point[1]); 
+		pbuilder.clean_points(&npoint, X);
+		pbuilder.buildPolygon(npoint, X, polygon);
+		polygon.shift(focal);
+		// Center polygon
+		int iscale = 0;
+		double range = 100;
+		polygon.centerScale(range,iscale);
+		return polygon;
 	}
 
 
 	 auto load_polygon(std::string file_path) {
-		Polygon poly = initialise_polygon(file_path);
-		return poly;
+		Polygon polygon = initialise_polygon(file_path);
+		return polygon;
 	}
 
 	auto load_polygon(std::string path_to_vertices, std::string path_to_focal) {
-		Polygon poly = initialise_polygon(path_to_vertices, path_to_focal);
-		return poly;
+		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal);
+		return polygon;
 	}
- 
-	/*auto wasserstein_distance(std::vector<std::pair<double,double>> diagram_1, std::vector<std::pair<double,double>> diagram_2, double wasserstein_power, double delta) {
-		hera::AuctionParams<double> params;
-		params.max_num_phases = 800;
-		params.wasserstein_power = wasserstein_power;
-		params.delta = delta;
-		params.internal_p = wasserstein_power;
 
-		auto res = hera::wasserstein_cost_detailed(diagram_1, diagram_2, params);
-
-		std::cout << "Relative error: " << res.final_relative_error << std::endl;
-
-		return res.distance;
-	}*/
-
+	auto load_polygon(std::string path_to_vertices, std::vector<double> focal) {
+		Polygon polygon = initialise_polygon(path_to_vertices, focal);
+		return polygon;
+	}
+	/*!
+	* Expose polygons to python
+	*/
 	class PyPolygon{
 		using PersistenceDiagram = std::vector<std::pair<double,double>>;
 		private:
-			Polygon poly;
 			std::tuple<double, double, double> ellipse_min_;
 			std::tuple<double, double, double> ellipse_max_;
 			std::tuple<double, double, double> ellipse_lsq_;
@@ -147,123 +182,240 @@ namespace correa{
 
 
 		public:
-
+			Polygon polygon;
 			PyPolygon(std::string file_path) {
-				poly = load_polygon(file_path);
+				polygon = load_polygon(file_path);
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
-				ellipse.EllipseMin(poly, &a, &b);
+				ellipse.EllipseMin(polygon, &a, &b);
 				std::get<0>(ellipse_min_)= a;
 				std::get<1>(ellipse_min_) = b;
 				std::get<2>(ellipse_min_)= a/b;
-				ellipse.EllipseMax(poly, &a, &b);
+				ellipse.EllipseMax(polygon, &a, &b);
 				std::get<0>(ellipse_max_)= a;
 				std::get<1>(ellipse_max_) = b;
 				std::get<2>(ellipse_max_)= a/b;
-				ellipse.EllipseLSQ(poly, &a, &b);
+				ellipse.EllipseLSQ(polygon, &a, &b);
 				std::get<0>(ellipse_lsq_)= a;
 				std::get<1>(ellipse_lsq_) = b;
 				std::get<2>(ellipse_lsq_)= a/b;
 
-				willmore_ = curv.Willmore(poly);
-				PH0 f(poly.vertices);
+				willmore_ = curv.Willmore(polygon);
+				PH0 f(polygon.vertices);
+				f.Persistence();
+				persistence_diagram_ = f.persistence_diagram();
+			}
+
+			PyPolygon(std::string file_path, std::string focal_path) {
+				polygon = load_polygon(file_path, focal_path);
+				Ellipse ellipse;
+				Curvature curv;
+				double a, b; 
+				ellipse.EllipseMin(polygon, &a, &b);
+				std::get<0>(ellipse_min_)= a;
+				std::get<1>(ellipse_min_) = b;
+				std::get<2>(ellipse_min_)= a/b;
+				ellipse.EllipseMax(polygon, &a, &b);
+				std::get<0>(ellipse_max_)= a;
+				std::get<1>(ellipse_max_) = b;
+				std::get<2>(ellipse_max_)= a/b;
+				ellipse.EllipseLSQ(polygon, &a, &b);
+				std::get<0>(ellipse_lsq_)= a;
+				std::get<1>(ellipse_lsq_) = b;
+				std::get<2>(ellipse_lsq_)= a/b;
+
+				willmore_ = curv.Willmore(polygon);
+				PH0 f(polygon.vertices);
+				f.Persistence();
+				persistence_diagram_ = f.persistence_diagram();
+			}
+
+			PyPolygon(std::string file_path, std::vector<double> focal_point) {
+				polygon = load_polygon(file_path, focal_point);
+				Ellipse ellipse;
+				Curvature curv;
+				double a, b; 
+				ellipse.EllipseMin(polygon, &a, &b);
+				std::get<0>(ellipse_min_)= a;
+				std::get<1>(ellipse_min_) = b;
+				std::get<2>(ellipse_min_)= a/b;
+				ellipse.EllipseMax(polygon, &a, &b);
+				std::get<0>(ellipse_max_)= a;
+				std::get<1>(ellipse_max_) = b;
+				std::get<2>(ellipse_max_)= a/b;
+				ellipse.EllipseLSQ(polygon, &a, &b);
+				std::get<0>(ellipse_lsq_)= a;
+				std::get<1>(ellipse_lsq_) = b;
+				std::get<2>(ellipse_lsq_)= a/b;
+
+				willmore_ = curv.Willmore(polygon);
+				PH0 f(polygon.vertices);
 				f.Persistence();
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
 			//std::vector<std::vector<double>> vertices();
 
-			auto polygon() {
-				return poly;
-			}
-			auto persistence_diagram() {
-				
+			//auto polygon() {
+			//	return polygon;
+			//}
+			/*!
+			* @return persistence diagram of the radial function from the center.
+			*/
+			PersistenceDiagram persistence_diagram() {
 				return persistence_diagram_;
 			}
+
+			/*!
+			* @return persistence diagram of the radial function from the center in a format for Python.
+			*/
+			//std::vector<std:: persistence_diagram() {
+			//	return persistence_diagram_;
+			//}
+			/*!
+			* @return number of vertices in the polygon
+			*/
 			int size() {
-				return poly.size();
+				return polygon.size();
 			}
 
+			/*!
+			* @return length of the polygon
+			*/
 			double length() {
-				return poly.length();
+				return polygon.length();
 			}
 
+			/*!
+			* @return length of the polygon
+			*/
 			double area() {
-				return poly.area();
+				return polygon.area();
 			}
 
+			/*!
+			* @return std::vector<std::vector<double>> of vertices of the polygon
+			*/
 			auto vertices() {
-				//std::cerr << "there are " << poly.vertices.size() << " vertices in this polygon" << std::endl;
+				//std::cerr << "there are " << polygon.vertices.size() << " vertices in this polygon" << std::endl;
 				std::vector<std::vector<double>> vertices;
-				for (int i = 0; i < poly.vertices.size(); i++) {
+				for (int i = 0; i < polygon.vertices.size(); i++) {
 					std::vector<double> vert_i;
-					vert_i.push_back(poly.vertices[i].position.x);
-					vert_i.push_back(poly.vertices[i].position.y);
+					vert_i.push_back(polygon.vertices[i].position.x);
+					vert_i.push_back(polygon.vertices[i].position.y);
 					vertices.push_back(vert_i);
 				}
 				return vertices;
 			}
 
+			/*!
+			* @return parameters (major axis, minor axis, ratio) of the maximum inscribed ellipse
+			*/
 			auto ellipse_max() {
 				//std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
 				return ellipse_max_;
 			}
 
+			/*!
+			* @return major axis of maximum inscribed ellipse
+			*/
 			auto ellipse_max_a() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<0>(ellipse_max_);
 			}
+
+			/*!
+			* @return minor axis of maximum inscribed ellipse
+			*/
 			auto ellipse_max_b() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<1>(ellipse_max_);
 			}
+
+			/*!
+			* @return ratio of maximum inscribed ellipse
+			*/
 			auto ellipse_max_ratio() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<2>(ellipse_max_);
 			}
-		   
+		
+			/*!
+			* @return parameters (major axis, minor axis, ratio) of the minimum inscribing ellipse
+			*/
 		   auto ellipse_min() {
 				//std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
 				return ellipse_min_;
 			}
 
+			/*!
+			* @return major axis of minimum inscribing ellipse
+			*/
 			auto ellipse_min_a() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<0>(ellipse_min_);
 			}
+
+			/*!
+			* @return minor axis of minimum inscribing ellipse
+			*/
 			auto ellipse_min_b() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<1>(ellipse_min_);
 			}
+
+			/*!
+			* @return ratio axis of minimum inscribing ellipse
+			*/			
 			auto ellipse_min_ratio() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<2>(ellipse_min_);
 			}
 
+			/*!
+			* @return parameters (major axis, minor axis, ratio) of the least squared ellipse
+			*/
 			auto ellipse_lsq() {
 				//std::cerr << "ellipse_min_ is: (" << ellipse_min_[0] << ", " << ellipse_min_[1] << ", " << ellipse_min_[2] << ")." << std::endl;
 				return ellipse_lsq_;
 			}
 
+			/*!
+			* @return major axis of least square ellipse
+			*/
 			auto ellipse_lsq_a() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<0>(ellipse_lsq_);
 			};
+
+			/*!
+			* @return minor axis of least square ellipse
+			*/
 			auto ellipse_lsq_b() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<1>(ellipse_lsq_);
 			};
+
+			/*!
+			* @return ratio axis of least square ellipse
+			*/
 			auto ellipse_lsq_ratio() {
 				//std::cerr << "ellipse_max_ is: (" << ellipse_max_[0] << ", " << ellipse_max_[1] << ", " << ellipse_max_[2] << ")." << std::endl;
 				return std::get<2>(ellipse_lsq_);
 			};
 
+			/*!
+			* @return Willmore energy of the polygon
+			*/
 			auto willmore() {
 				//std::cerr << "willmore enegery is: " << willmore_ << "." << std::endl;
 				return willmore_;
 			};
 
+			/*!
+			* print information about the polygon
+			*/
 			friend ostream &operator<<( ostream &out, PyPolygon &P ) { 
 				out <<  "====================================\n";
 				out << "Displaying Polygon Information:     \n";
@@ -281,115 +433,111 @@ namespace correa{
 				}
 				return out;            
 			};
+			friend std::vector<double> compare_polygons(PyPolygon poly1, PyPolygon poly2);
+
+			friend double wasserstein_distance(PyPolygon poly1, PyPolygon poly2, int q);
+
+			friend double frechet_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double max_ellipse_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double min_ellipse_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double lsq_ellipse_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double willmore_distance(PyPolygon poly1, PyPolygon poly2);
+
+			friend double curv_ot_distance(PyPolygon poly1, PyPolygon poly2);
 	};  
 
  
+	/*!
+	* wrapper to compare pairs of polygons.
+	* 
+	* Has a variety of methods to calculate the distances between a pair of polygons. 
+	*
+	* Prints their comparisons
+	*/
+	std::vector<double> compare_polygons(PyPolygon poly1, PyPolygon poly2, int q, bool verbose) {
+		Frechet frechet;
+		Ellipse ellipse;
+		Curvature curv;
+		const std::vector<std::pair<double,double>> pd1 = poly1.persistence_diagram();
+		const std::vector<std::pair<double,double>> pd2 = poly2.persistence_diagram();
+		double dWasserstein = hera_wasserstein_distance(pd1, pd2, q=q);
+		double dFrechet = frechet.dFD(poly1.polygon, poly2.polygon);
+		double a1_M, b1_M, a2_M, b2_M;
+		double dMax = ellipse.dEllipseMax(poly1.polygon, poly2.polygon, &a1_M, &b1_M, &a2_M, &b2_M);
+		double a1_m, b1_m, a2_m, b2_m;
+		double dMin = ellipse.dEllipseMin(poly1.polygon, poly2.polygon, &a1_m, &b1_m, &a2_m, &b2_m);
+		double a1_lsq, b1_lsq, a2_lsq, b2_lsq;
+		double dLSQ = ellipse.dEllipseLSQ(poly1.polygon, poly2.polygon, &a1_lsq, &b1_lsq, &a2_lsq, &b2_lsq);
+		double dWillmore = std::abs(curv.Willmore(poly1.polygon) - curv.Willmore(poly2.polygon));
+		double dCurvOT = curv.curvOT(poly1.polygon, poly2.polygon);
+		if (verbose) {
+			int digit = floor (log10 (q)) + 1;
+			std::cerr << "The two polygons are:" << std::endl;
+			std::cerr << "Polygon 1:" << std::endl;
+			std::cerr << poly1 << std::endl;
+			std::cerr << "Polygon 2:" << std::endl;
+			std::cerr << poly2 << std::endl;
+			std::cerr << "and the distances between them are:" << std::endl;
+			std::cerr << "Wasserstein distance (q="<<q<<"):" << std::setw(10) << std::fixed  << dWasserstein << std::endl;
+			std::cerr << "Frechet distance:"  << std::setw(19+digit) << std::fixed << dFrechet << std::endl;
+			std::cerr << "Max Ellipse distance:"  << std::setw(14+digit) << std::fixed << dMax << std::endl;
+			std::cerr << "Min Ellipse distance:"  << std::setw(14+digit) << std::fixed << dMin << std::endl;
+			std::cerr << "LSQ Ellipse distance:"  << std::setw(14+digit) << std::fixed << dLSQ << std::endl;
+			std::cerr << "Willmore distance:"  << std::setw(17+digit) << std::fixed << dWillmore << std::endl;
+			std::cerr << "Curv OT distance:"  << std::setw(18+digit) << std::fixed << dCurvOT << std::endl;
+		}
+		return {dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurvOT};
+	};		
 
-	class ComparePolygons {
-
-		private:
-			Frechet frechet;
-			Ellipse ellipse;
-			Curvature curv;
-		
-		public:
-
-			ComparePolygons(){};
-			/*ComparePolygons(std::string path_p1, std::string path_p2){
-				Polygon poly1 = load_polygon(path_p1);
-				Polygon poly2 = load_polygon(path_p2);
-			};*/
-
-			double PyWassersteinDistance(PyPolygon& poly1, PyPolygon& poly2, int q=2) {
-				const std::vector<std::pair<double,double>> pd1 = poly1.persistence_diagram();
-				const std::vector<std::pair<double,double>> pd2 = poly2.persistence_diagram();
-				return hera_wasserstein_distance(pd1, pd2, q=q);
-			};
-
-			double PyFrechetDistance(PyPolygon& poly1, PyPolygon& poly2) {
-				Polygon p1 = poly1.polygon();
-				Polygon p2 = poly2.polygon();
-				return  FrechetDistance(p1, p2);
-			};
-
-			double PyMaxEllipseDistance(PyPolygon& poly1, PyPolygon& poly2) {
-				Polygon p1 = poly1.polygon();
-				Polygon p2 = poly2.polygon();
-				double a1_M, b1_M, a2_M, b2_M;
-				return MaxEllipseDistance(p1, p2);
-			};
-
-			double PyMinEllipseDistance(PyPolygon& poly1, PyPolygon& poly2) {
-				Polygon p1 = poly1.polygon();
-				Polygon p2 = poly2.polygon();
-				double a1_m, b1_m, a2_m, b2_m;
-				return MinEllipseDistance(p1, p2);
-			};
-
-			double PyLSQEllipseDistance(PyPolygon& poly1, PyPolygon& poly2) {
-				Polygon p1 = poly1.polygon();
-				Polygon p2 = poly2.polygon();
-				double a1_lsq, b1_lsq, a2_lsq, b2_lsq;
-				return LSQEllipseDistance(p1, p2);
-			};
-
-			double PyWillmoreDistance(PyPolygon& poly1, PyPolygon& poly2) {
-				Polygon p1 = poly1.polygon();
-				Polygon p2 = poly2.polygon();
-				return WillmoreDistance(p1, p2);
-			};
-
-			double PyCurvOTDistance(PyPolygon& poly1, PyPolygon& poly2) {
-				Polygon p1 = poly1.polygon();
-				Polygon p2 = poly2.polygon();
-				return CurvOTDistance(p1, p2);
-			}
-
-			double WassersteinDistance(Polygon& poly1, Polygon& poly2, int q=2) {
-				PH0 f1(poly1.vertices);
-				PH0 f2(poly2.vertices);
-				f1.Persistence();
-				f2.Persistence();
-				const std::vector<std::pair<double,double>> pd1 = f1.persistence_diagram();
-				const std::vector<std::pair<double,double>> pd2 = f2.persistence_diagram();
-				return hera_wasserstein_distance(pd1, pd2, q=q);
-			};
-
-			double FrechetDistance(Polygon& poly1, Polygon& poly2) {
-				return  frechet.dFD(poly1, poly2);
-			};
-
-			double MaxEllipseDistance(Polygon& poly1, Polygon& poly2) {
-				double a1_M, b1_M, a2_M, b2_M;
-				return ellipse.dEllipseMax(poly1, poly2, &a1_M, &b1_M, &a2_M, &b2_M);
-			};
-
-			double MinEllipseDistance(Polygon& poly1, Polygon& poly2) {
-				double a1_m, b1_m, a2_m, b2_m;
-				return ellipse.dEllipseMin(poly1, poly2, &a1_m, &b1_m, &a2_m, &b2_m);
-			};
-
-			double LSQEllipseDistance(Polygon& poly1, Polygon& poly2) {
-				double a1_lsq, b1_lsq, a2_lsq, b2_lsq;
-				return ellipse.dEllipseLSQ(poly1, poly2, &a1_lsq, &b1_lsq, &a2_lsq, &b2_lsq);
-			};
-
-			double WillmoreDistance(Polygon& poly1, Polygon& poly2) {
-				double willmore1 = curv.Willmore(poly1);
-				double willmore2 = curv.Willmore(poly2);
-				return std::abs(willmore1 - willmore2);
-			};
-
-			double CurvOTDistance(Polygon& poly1, Polygon& poly2) {
-				return curv.curvOT(poly1, poly2);
-			}
-			
+	double wasserstein_distance(PyPolygon poly1, PyPolygon poly2, int q) {
+		const std::vector<std::pair<double,double>> pd1 = poly1.persistence_diagram();
+		const std::vector<std::pair<double,double>> pd2 = poly2.persistence_diagram();
+		return  hera_wasserstein_distance(pd1, pd2, q=q);
 	};
 
+	double frechet_distance(PyPolygon poly1, PyPolygon poly2) {
+		Frechet frechet;
+		return frechet.dFD(poly1.polygon, poly2.polygon);
+	};
 
+	double max_ellipse_distance(PyPolygon poly1, PyPolygon poly2) {
+		Ellipse ellipse;
+		double a1_M, b1_M, a2_M, b2_M;
+		return ellipse.dEllipseMax(poly1.polygon, poly2.polygon, &a1_M, &b1_M, &a2_M, &b2_M);
+	};
+
+	double min_ellipse_distance(PyPolygon poly1, PyPolygon poly2) {
+		Ellipse ellipse;
+		double a1_m, b1_m, a2_m, b2_m;
+		return ellipse.dEllipseMin(poly1.polygon, poly2.polygon, &a1_m, &b1_m, &a2_m, &b2_m);
+	};
+
+	double lsq_ellipse_distance(PyPolygon poly1, PyPolygon poly2) { 
+		Ellipse ellipse;
+		double a1_lsq, b1_lsq, a2_lsq, b2_lsq;
+		return ellipse.dEllipseLSQ(poly1.polygon, poly2.polygon, &a1_lsq, &b1_lsq, &a2_lsq, &b2_lsq);
+	};
+
+	double willmore_distance(PyPolygon poly1, PyPolygon poly2) {
+		Curvature curv;
+		return  std::abs(curv.Willmore(poly1.polygon) - curv.Willmore(poly2.polygon));
+	};
+		
+	double curv_ot_distance(PyPolygon poly1, PyPolygon poly2) {
+		Curvature curv;
+		return curv.curvOT(poly1.polygon, poly2.polygon);
+	};
+
+	/*!
+	* print the information about a PyPolygon
+	*/
 	void print_polygon(PyPolygon P) {
-		std::cout << P << std::endl;
-	}
+		std::cerr << P << std::endl;
+	};
 }
 
 

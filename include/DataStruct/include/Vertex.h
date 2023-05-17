@@ -48,7 +48,18 @@ namespace correa {
 		//returns the distance form the origin
 		double height();
 
-  };
+		double x() {
+			return position.x;
+		};
+
+		double y() {
+			return position.y;
+		};
+
+		void shift(double c_x, double c_y) {
+			position = Vector2D(x()-c_x, y() - c_y);
+		}
+  }; 
 
 /*********************************************************************************
   Constructor
@@ -90,7 +101,7 @@ namespace correa {
 	angle = std::atan2(val1, val2);
 
 	return angle;
-  }
+  };
 
 /* Height of the vertex */
 double Vertex::height(){

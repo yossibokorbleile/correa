@@ -61,6 +61,26 @@ int main(int argc, char **argv)
 	X1 = nullptr;
 	inout.read(INfile1, &ndim, &npoint1, &X1);
 
+	std::vector<double> focal_1;
+   	std::ifstream in1(INfocal1);
+   	std::string line;
+   	double val;
+
+   	while (getline(in1, line)){
+			size_t start_pos = 0;
+			while ((start_pos = line.find(",", start_pos)) != std::string::npos)
+			{
+				line.replace(start_pos, 1, " ");
+				start_pos += 1; // Handles case where 'to' is a substring of 'from'
+			}
+       		istringstream iss(line);
+       		while (iss >> val){
+				std::cout << "val is " << val << std::endl;
+          		focal_1.push_back(val);
+   		};
+	};
+	Vector2D focal1(focal_1[0], focal_1[1])
+
 /*	==========================================================================================
 	Store polygon1 as a polygon
 	========================================================================================== */
@@ -68,6 +88,8 @@ int main(int argc, char **argv)
 	Polygon polygon1;
 	pbuilder.clean_points(&npoint1, X1);
 	pbuilder.buildPolygon(npoint1, X1, polygon1);
+
+	polygon1.shift(focal1);
 
 	// Center polygon
 	int iscale = 0;
@@ -84,6 +106,24 @@ int main(int argc, char **argv)
 	X2 = nullptr;
 	inout.read(INfile2, &ndim, &npoint2, &X2);
 
+	std::vector<double> focal_2;
+   	std::ifstream in2(INfocal2);
+
+   	while (getline(in2, line)){
+			size_t start_pos = 0;
+			while ((start_pos = line.find(",", start_pos)) != std::string::npos)
+			{
+				line.replace(start_pos, 1, " ");
+				start_pos += 1; // Handles case where 'to' is a substring of 'from'
+			}
+       		istringstream iss(line);
+       		while (iss >> val){
+				std::cout << "val is " << val << std::endl;
+          		focal_2.push_back(val);
+   		};
+	};
+	Vector2D focal2(focal_2[0], focal_2[1])
+
 /*	==========================================================================================
 	Store polygon2 as a polygon
 	========================================================================================== */
@@ -92,6 +132,7 @@ int main(int argc, char **argv)
 	pbuilder.clean_points(&npoint2, X2);
 	pbuilder.buildPolygon(npoint2, X2, polygon2);
 
+	polygon2.shift(focal2);
 	// Center polygon
 	iscale = 0;
 	range = 100;

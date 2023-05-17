@@ -1,15 +1,17 @@
 /*
  	Correa.cpp
 
- 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
-				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
+ 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
+				Yossi Bokor Bleile, Department of Mathematical Sciences, Aalborg University, Aalborg
  	Date: April 2023
 	Version: 1
 */
 
 /*!
-* @file _correa,cppp
+* @file _correa.cpp
 * @brief create bindings for Correa.
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
 */
 
 #include <iostream>
@@ -23,8 +25,13 @@ namespace nb = nanobind;
 
 
 NB_MODULE(_correa, m) {
+	/*!
+	* Bind PyPolygon
+	*/
     nb::class_<correa::PyPolygon>(m, "PyPolygon")
         .def(nb::init<const std::string &>())
+		.def(nb::init<const std::string &, const std::string&>())
+		.def(nb::init<const std::string &, const std::vector<double>>())
         //.def("extractVertices", &correa::PyPolygon::extractVertices)
         .def("vertices", &correa::PyPolygon::vertices)
         .def("ellipse_min", &correa::PyPolygon::ellipse_min)
@@ -34,12 +41,14 @@ NB_MODULE(_correa, m) {
         .def("size", &correa::PyPolygon::size)
         .def("persistence_diagram", &correa::PyPolygon::persistence_diagram);
 
-    nb::class_<correa::ComparePolygons>(m, "ComparePolygons")
-        .def(nb::init<>())
-        .def("WassersteinDistance", &correa::ComparePolygons::WassersteinDistance)
-        .def("FrechetDistance", &correa::ComparePolygons::FrechetDistance);
-    //m.def("load_polygon", &correa::load_polygon);
+    m.def("compare_polygons", &correa::compare_polygons);
+	m.def("curv_ot_distance", &correa::curv_ot_distance);
+	m.def("frechet_distance", &correa::frechet_distance);
+	m.def("max_ellipse_distance", &correa::max_ellipse_distance);
+	m.def("min_ellipse_distance", &correa::min_ellipse_distance);
+	m.def("lsq_ellipse_distance", &correa::lsq_ellipse_distance);
     m.def("print_polygon", &correa::print_polygon);
-
+	m.def("wasserstein_distance", &correa::wasserstein_distance);
+	m.def("willmore_distance", &correa::willmore_distance);
 }
 
