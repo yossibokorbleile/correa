@@ -1,8 +1,8 @@
 ##
 #@file Correa 
 
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../build', '_correa'))
+#import sys, os
+#sys.path.append(os.path.join(os.path.dirname(__file__), '../build', '_correa'))
 import _correa
 
 from matplotlib import pyplot as plt
