@@ -59,11 +59,14 @@ namespace correa {
 
 			void distorsion();
 
-			void shift(Vector2D center) {
-				for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
-					v->position -= center;
+			void shift(Vector2D center, bool verbose = false) {
+				for(int v = 0; v < vertices.size(); v++) {
+					if (verbose) std::cerr << "v was: (" << vertices[v].x() << ", " << vertices[v].y() << ")";
+					vertices[v].shift(center.x, center.y);
+					if (verbose) std::cerr << "v is now: (" << vertices[v].x() << ", " << vertices[v].y() << ")" << std::endl;
+
 				};
-				std::cout << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
+				if (verbose) std::cerr << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
 			};
 
 			int size() {

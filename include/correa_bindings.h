@@ -145,7 +145,7 @@ namespace correa{
 		Vector2D focal (focal_point[0], focal_point[1]); 
 		pbuilder.clean_points(&npoint, X);
 		pbuilder.buildPolygon(npoint, X, polygon);
-
+		polygon.shift(focal);
 		// Center polygon
 		int iscale = 0;
 		double range = 100;
@@ -164,8 +164,8 @@ namespace correa{
 		return polygon;
 	}
 
-	auto load_polygon(std::string path_to_vertices, std::vector<double> path_to_focal) {
-		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal);
+	auto load_polygon(std::string path_to_vertices, std::vector<double> focal) {
+		Polygon polygon = initialise_polygon(path_to_vertices, focal);
 		return polygon;
 	}
 	/*!
@@ -204,7 +204,7 @@ namespace correa{
 				willmore_ = curv.Willmore(polygon);
 				PH0 f(polygon.vertices);
 				f.Persistence();
-				persistence_diagram_ = persistence_diagram();
+				persistence_diagram_ = f.persistence_diagram();
 			}
 
 			PyPolygon(std::string file_path, std::string focal_path) {
