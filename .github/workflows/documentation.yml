@@ -27,3 +27,13 @@ jobs:
           doxyfile-path: "./Doxyfile" # default is ./Doxyfile
             # Working directory
           working-directory: "." # default is .
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: './docs/html/'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
