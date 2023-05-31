@@ -14,7 +14,7 @@ Correa is released under the [BSD 3-Clause License](md_LICENSE.html), which you 
 
 ## Installation
 
-First clone the [repository](https://github.com/yossibokor/correa) and ensure you have [CMake](https://cmake.org/), [BLAS](https://www.netlib.org/blas/) and [LAPACK](https://www.netlib.org/lapack/) installed.
+First clone the [repository](https://github.com/yossibokor/correa) with recursive submodules, and ensure you have [CMake](https://cmake.org/), [BLAS](https://www.netlib.org/blas/) and [LAPACK](https://www.netlib.org/lapack/) installed.
 
 Then, use [cmake](https://cmake.org/) from the directory to build Correa with the options you would like. The options are
 - `CORREA_BUILD_EXECUTABLES` (default OFF)
@@ -23,7 +23,7 @@ Then, use [cmake](https://cmake.org/) from the directory to build Correa with th
 
 To build the Python bindings:
 ```bash
-git clone https://github.com/yossibokor/correa.git
+git clone --recurse-submodules https://github.com/yossibokor/correa.git
 cd correa
 cmake -S . -B build
 cd build
