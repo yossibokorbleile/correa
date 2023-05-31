@@ -3,7 +3,8 @@
 [![Executables](https://github.com/yossibokor/correa/actions/workflows/executables.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/executables.yml)
 [![Documentation](https://github.com/yossibokor/correa/actions/workflows/documentation.yml/badge.svg?branch=master&event=push)](https://github.com/yossibokor/correa/actions/workflows/documentation.yml)
 
-## UNDER DEVELOPMENT: This is a public beta. Please use [issues](https://github.com/yossibokor/correa/issues) to report any bugs
+## UNDER DEVELOPMENT: This is a public beta. 
+Please use [issues](https://github.com/yossibokor/correa/issues) to report any bugs
 
 Correa is a C++ library, you can choose to build Python bindings and/or executables. 
 
@@ -32,4 +33,5 @@ make
 
 and then ether launch python from `.../correa/build` or add `.../correa/build` to your `PYTHONPATH`.
 
-## UDER DEVELOPMENT: This is a public beta. Please use [issues](https://github.com/yossibokor/correa/issues) to report any bugs.
+## UDER DEVELOPMENT: This is a public beta. 
+Please use [issues](https://github.com/yossibokor/correa/issues) to report any bugs.
