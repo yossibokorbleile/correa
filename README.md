@@ -1,6 +1,6 @@
 # Correa 
-[![Build bindings](https://github.com/yossibokor/correa/actions/workflows/bindings.yml/badge.svg?branch=master&event=push)](https://github.com/yossibokor/correa/actions/workflows/bindings.yml)
-[![Executables](https://github.com/yossibokor/correa/actions/workflows/executables.yml/badge.svg?branch=master&event=push)](https://github.com/yossibokor/correa/actions/workflows/executables.yml)
+[![Build bindings](https://github.com/yossibokor/correa/actions/workflows/bindings.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/bindings.yml)
+[![Executables](https://github.com/yossibokor/correa/actions/workflows/executables.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/executables.yml)
 [![Documentation](https://github.com/yossibokor/correa/actions/workflows/documentation.yml/badge.svg?branch=master&event=push)](https://github.com/yossibokor/correa/actions/workflows/documentation.yml)
 
 ## UNDER DEVELOPMENT
