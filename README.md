@@ -1,7 +1,9 @@
 # Correa 
+[![Build bindings](https://github.com/yossibokor/correa/actions/workflows/bindings.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/bindings.yml)
+[![Executables](https://github.com/yossibokor/correa/actions/workflows/executables.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/executables.yml)
+[![Documentation](https://github.com/yossibokor/correa/actions/workflows/documentation.yml/badge.svg?branch=master&event=push)](https://github.com/yossibokor/correa/actions/workflows/documentation.yml)
 
-
-## UNDER DEVELOPMENT
+## UNDER DEVELOPMENT: This is a public beta. Please use issues to report any bugs
 
 Correa is a C++ library, you can choose to build Python bindings and/or executables. 
 
@@ -9,5 +11,25 @@ Correa is a C++ library, you can choose to build Python bindings and/or executab
 
 Correa is released under the [BSD 3-Clause License](md_LICENSE.html), which you should have received a copy of.
 
-## UDER DEVELOPMENT
-### Once development and documentation is ready, a beta release will be made. Expected Q4 2023.
+
+## Installation
+
+First clone the [repository](https://github.com/yossibokor/correa) and ensure you have (CMake)[https://cmake.org/], [BLAS](https://www.netlib.org/blas/) and [LAPACK](https://www.netlib.org/lapack/) installed.
+
+Then, use (cmake)[https://cmake.org/] from the directory to build Correa with the options you would like. The options are
+- `CORREA_BUILD_EXECUTABLES` (default OFF)
+- `CORREA_BUILD_PYTHON_BINDINGS` (default ON)
+
+
+To build the Python bindings:
+```bash
+git clone https://github.com/yossibokor/correa.git
+cd correa
+cmake -S . -B build
+cd build
+make
+```
+
+and then ether launch python from `.../correa/build` or add `.../correa/build` to your `PYTHONPATH`.
+
+## UDER DEVELOPMENT: This is a public beta. Please use issues to report any bugs.
