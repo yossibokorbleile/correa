@@ -79,7 +79,7 @@ int main(int argc, char **argv)
           		focal_1.push_back(val);
    		};
 	};
-	Vector2D focal1(focal_1[0], focal_1[1])
+	Vector2D focal1(focal_1[0], focal_1[1]);
 
 /*	==========================================================================================
 	Store polygon1 as a polygon
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
           		focal_2.push_back(val);
    		};
 	};
-	Vector2D focal2(focal_2[0], focal_2[1])
+	Vector2D focal2(focal_2[0], focal_2[1]);
 
 /*	==========================================================================================
 	Store polygon2 as a polygon
