@@ -1,0 +1,70 @@
+name: Executables
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["master"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  deploy-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+            submodules: recursive
+      
+      - name: Install boost
+        uses: MarkusJx/install-boost@v2.4.1
+        id: install-boost
+        with:
+            # REQUIRED: Specify the required boost version
+            # A list of supported versions can be found here:
+            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+            boost_version: 1.78.0
+            # OPTIONAL: Specify a platform version
+            platform_version: 20.04
+            # OPTIONAL: Specify a custom install location
+            boost_install_dir: /home/runner/boost
+            # OPTIONAL: Specify a toolset
+            toolset: gcc
+            # OPTIONAL: Specify an architecture
+            arch: x86
+
+            # NOTE: If a boost version matching all requirements cannot be found,
+            # this build step will fail
+      - name: Configure CMake
+        run: cmake -S . -B build -DCORREA_BUILD_EXECUTABLES=ON
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+      
+  deploy-macos:
+      runs-on: macos-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+              submodules: recursive
+
+        - name: Install boost
+          uses: MarkusJx/install-boost@v2.4.1
+          id: install-boost
+          with:
+              # REQUIRED: Specify the required boost version
+              # A list of supported versions can be found here:
+              # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+              boost_version: 1.81.0
+              platform_version: 12
+              
+        - name: Configure CMake
+          run: cmake -S . -B build -DCORREA_BUILD_EXECUTABLES=ON
+          env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
