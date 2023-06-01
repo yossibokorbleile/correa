@@ -1,12 +1,37 @@
 # Correa 
-[![Build bindings](https://github.com/yossibokor/correa_private/actions/workflows/bindings.yml/badge.svg?branch=devel&event=push)](https://github.com/yossibokor/correa_private/actions/workflows/bindings.yml)
-[![Executables](https://github.com/yossibokor/correa_private/actions/workflows/executables.yml/badge.svg?branch=devel&event=push)](https://github.com/yossibokor/correa_private/actions/workflows/executables.yml)
-[![Documentation](https://github.com/yossibokor/correa_private/actions/workflows/documentation.yml/badge.svg?branch=devel&event=push)](https://github.com/yossibokor/correa_private/actions/workflows/documentation.yml)
-## UNDER DEVELOPMENT
+[![Build bindings](https://github.com/yossibokor/correa/actions/workflows/bindings.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/bindings.yml)
+[![Executables](https://github.com/yossibokor/correa/actions/workflows/executables.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/executables.yml)
+[![Documentation](https://github.com/yossibokor/correa/actions/workflows/documentation.yml/badge.svg?branch=master&event=push)](https://github.com/yossibokor/correa/actions/workflows/documentation.yml)
+
+## UNDER DEVELOPMENT: This is a public beta. 
+Please use [issues](https://github.com/yossibokor/correa/issues) to report any bugs
 
 Correa is a C++ library, you can choose to build Python bindings and/or executables. 
 
-It is licensed under [BSD 3-Clause "New" or "Revised" License](md__l_i_c_e_n_s_e.html), and you should have received a copy of the license file.
+### License
 
-## UDER DEVELOPMENT
-### Once development and documentation is ready, a beta release will be made. Expected Q4 2023.
+Correa is released under the [BSD 3-Clause License](md_LICENSE.html), which you should have received a copy of.
+
+
+## Installation
+
+First clone the [repository](https://github.com/yossibokor/correa) with recursive submodules, and ensure you have [CMake](https://cmake.org/), [BLAS](https://www.netlib.org/blas/) and [LAPACK](https://www.netlib.org/lapack/) installed.
+
+Then, use [cmake](https://cmake.org/) from the directory to build Correa with the options you would like. The options are
+- `CORREA_BUILD_EXECUTABLES` (default OFF)
+- `CORREA_BUILD_PYTHON_BINDINGS` (default ON)
+
+
+To build the Python bindings:
+```bash
+git clone --recurse-submodules https://github.com/yossibokor/correa.git
+cd correa
+cmake -S . -B build
+cd build
+make
+```
+
+and then ether launch python from `.../correa/build` or add `.../correa/build` to your `PYTHONPATH`.
+
+## UDER DEVELOPMENT: This is a public beta. 
+Please use [issues](https://github.com/yossibokor/correa/issues) to report any bugs.
