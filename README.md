@@ -33,5 +33,5 @@ make
 
 and then ether launch python from `.../correa/build` or add `.../correa/build` to your `PYTHONPATH`.
 
-## UDER DEVELOPMENT: This is a public beta. 
+## UNDER DEVELOPMENT: This is a public beta. 
 Please use [issues](https://github.com/yossibokor/correa/issues) to report any bugs.

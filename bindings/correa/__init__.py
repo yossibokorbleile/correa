@@ -28,7 +28,7 @@ def create_polygon_focal_point(poly_path : str, focal_point):
 
 def print_polygon(poly) :
 	"""!	Print information about the polygon.
-			@param polygon	the polygon you want information about.
+			@param poly		the polygon you want information about.
 	"""
 	_correa.print_polygon(poly)
 
@@ -63,22 +63,57 @@ def compare_polygons(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon, q=2, 
 	return _correa.compare_polygons(poly1, poly2, q, verbose)
 
 def curv_ot_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	"""!	Given two polygons (poly1, poly2), calculate the curv_ot distance between them.
+			@param poly1 	first polygon to compare.
+			@param poly2	second polygon to compare.
+			@return 		distance.
+	"""
 	return _correa.curv_ot_distance(poly1, poly2)
 
 def frechet_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	"""!	Given two polygons (poly1, poly2), calculate the frechet distance between them.
+			@param poly1 	first polygon to compare.
+			@param poly2	second polygon to compare.
+			@return 		distance.
+	"""
 	return _correa.frechet_distance(poly1, poly2)
 
 def max_ellipse_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	"""!	Given two polygons (poly1, poly2), calculate the max ellipse distance between them.
+			@param poly1 	first polygon to compare.
+			@param poly2	second polygon to compare.
+			@return 		distance.
+	"""
 	return _correa.max_ellipse_distance(poly1 , poly2)
 
 def min_ellipse_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	"""!	Given two polygons (poly1, poly2), calculate the min ellipse distance between them.
+			@param poly1 	first polygon to compare.
+			@param poly2	second polygon to compare.
+			@return 		distance.
+	"""
 	return _correa.min_ellipse_distance(poly1, poly2)
 
 def lsq_ellipse_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	"""!	Given two polygons (poly1, poly2), calculate the least square ellipse distance between them.
+			@param poly1 	first polygon to compare.
+			@param poly2	second polygon to compare.
+			@return 		distance.
+	"""
 	return _correa.lsq_ellipse_distance(poly1, poly2)
 
 def wasserstein_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon, q=2):
+	"""!	Given two polygons (poly1, poly2), calculate the wasserstein distance between them via their persistence diagrams.
+			@param poly1 	first polygon to compare.
+			@param poly2	second polygon to compare.
+			@return 		distance.
+	"""
 	return _correa.wasserstein_distance(poly1, poly2, q)
 
 def willmore_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
+	"""!	Given two polygons (poly1, poly2), calculate the willmore distance between them.
+			@param poly1 	first polygon to compare.
+			@param poly2	second polygon to compare.
+			@return 		distance.
+	"""
 	return _correa.willmore_distance(poly1, poly2)
