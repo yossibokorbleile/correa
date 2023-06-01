@@ -938,6 +938,7 @@ WARN_LOGFILE           =
 
 INPUT                  =    README.md\
                             LICENSE.md\
+							DISTANCES.md\
                             bindings/correa/\
                             include/\
                             src/

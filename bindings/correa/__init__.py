@@ -7,9 +7,6 @@ import _correa
 
 from matplotlib import pyplot as plt
 
-
-
-
 def create_polygon(poly_path : str):
 	"""! 	Read a polygon from file. This will recenter the polygon to the center of mass of the vertices, so be careful.
 			@param poly_path 	path to the file you want to read in.
