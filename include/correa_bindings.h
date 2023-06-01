@@ -7,6 +7,14 @@
 	Version: 1
 */
 
+/*!
+* @file correa_bindgins.h
+* @brief create bindings for Correa.
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
+*/
+
+
 #ifndef _CORREABINDINGS_H_
 #define _CORREABINDINGS_H_
 
@@ -56,6 +64,13 @@ pthread_t threads[NUM_THREADS];
 
 namespace correa{   
 
+	/*!
+	* Caculate the Wasserstein distance between two persistence diagrams using Hera.
+	* @param pd1 first persistence diagram
+	* @param pd2 second persistence diagram 
+	* @param q	the qth power to use, default is 2
+	* @return 	qth wasserstein distance between the two persistence diagrams
+	*/
 	auto hera_wasserstein_distance(const std::vector<std::pair<double,double>> pd1, const std::vector<std::pair<double,double>> pd2, int q = 2) {
 		hera::AuctionParams<double> hera_params;
 		hera_params.max_num_phases = 800;

@@ -1,25 +1,43 @@
-##
-#@file Correa 
+"""Correa 
 
-#import sys, os
-#sys.path.append(os.path.join(os.path.dirname(__file__), '../build', '_correa'))
+Documentation for the Python functions in Correa.
+"""
+
 import _correa
 
 from matplotlib import pyplot as plt
 
 
-def create_polygon(path_file : str):
-	return _correa.PyPolygon(path_file)
-
-def create_polygon_focal_point(polygon_path : str, focal_point):
-	return _correa.PyPolygon(polygon_path, focal_point)
 
 
-def print_polygon(p) :
-	_correa.print_polygon(p)
+def create_polygon(poly_path : str):
+	"""! 	Read a polygon from file. This will recenter the polygon to the center of mass of the vertices, so be careful.
+			@param poly_path 	path to the file you want to read in.
+			@return 			PyPolygon object.	
+	"""
+	return _correa.PyPolygon(polygon_path)
 
-def plot_polygon(p : _correa.PyPolygon):
-	verts = p.vertices()
+def create_polygon_focal_point(poly_path : str, focal_point):
+	"""! 	Read a polygon from file, and specify a focal point.
+			@param polygon_path 	path to the file containing the polygon.
+			@param focal_point		either a path to the file containing the focal point, or a list with the coordinates.
+			@return 	PyPolygon object
+	"""
+	return _correa.PyPolygon(poly_path, focal_point)
+
+
+def print_polygon(poly) :
+	"""!	Print information about the polygon.
+			@param polygon	the polygon you want information about.
+	"""
+	_correa.print_polygon(poly)
+
+def plot_polygon(poly : _correa.PyPolygon):
+	"""!	Plot a polygon.
+			@param poly the polygon you want to plot.
+			@return 	a matplotlib.pyplot figure.
+	"""
+	verts = poly.vertices()
 	x = []
 	y = []
 	for i in range(len(verts)):
@@ -33,11 +51,15 @@ def plot_polygon(p : _correa.PyPolygon):
 	ax.set_title('Polygon')
 	fig.show()
 	return fig
-	
-def polygon_properties(p : _correa.PyPolygon):
-	print_polygon(p)
 
 def compare_polygons(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon, q=2, verbose=False):
+	"""!	Given two polygons (poly1, poly2), compare them.
+			@param poly1 	first polygon to compare.
+			@param poly2	second polygon to compare.
+			@param q		q for the Wasserstein distance,.
+			@param verbose	setting for verbose output.
+			@return 		dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurvOT.
+	"""
 	return _correa.compare_polygons(poly1, poly2, q, verbose)
 
 def curv_ot_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
@@ -60,6 +82,3 @@ def wasserstein_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon, q
 
 def willmore_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
 	return _correa.willmore_distance(poly1, poly2)
-
-
-

@@ -9,7 +9,7 @@
 
 /*!
 * @file _correa.cpp
-* @brief create bindings for Correa.
+* @brief expose bindings for Correa.
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
 */
