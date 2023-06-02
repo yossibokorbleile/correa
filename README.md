@@ -2,10 +2,14 @@
 [![Build bindings](https://github.com/yossibokor/correa/actions/workflows/bindings.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/bindings.yml)
 [![Executables](https://github.com/yossibokor/correa/actions/workflows/executables.yml/badge.svg?branch=master)](https://github.com/yossibokor/correa/actions/workflows/executables.yml)
 [![Documentation](https://github.com/yossibokor/correa/actions/workflows/documentation.yml/badge.svg?branch=master&event=push)](https://github.com/yossibokor/correa/actions/workflows/documentation.yml)
+[![DOI](https://zenodo.org/badge/609015232.svg)](https://zenodo.org/badge/latestdoi/609015232)
 
 ## UNDER DEVELOPMENT: This is a public beta. 
 
 Correa is a C++ library, you can choose to build Python bindings and/or executables. It is a package for analysing simple closed curves in $\mathbb{R}^2$ using a variety of tools from geometry and topology. In particular, it calculates the persistent homology of the radial growth function from a focal point in the interior of the curve. This focal point can be determined automatically or be specified by the user. As the curves are simple and closed, we avoid any infinite life persistence points and retain information about the *size* of the curve by pairing the birth of the essential $0$-cycle with the birth of the essential $1$-cycle in the $0^{th}$ persistent diagram. We assume the curves are represented by ordered lists of points, with a straight line connecting any two consecutive points. We also assume that the first point is the last point, and so this should not be repeated in the file.
+
+If you use this software in your research, please cite it as:
+Bokor Bleile, Y., Koehl, P., 'Correa', https://zenodo.org/badge/latestdoi/609015232, 2023.
 
 ### License
 
