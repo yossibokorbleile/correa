@@ -12,11 +12,11 @@ def create_polygon(poly_path : str):
 			@param poly_path 	path to the file you want to read in.
 			@return 			PyPolygon object.	
 	"""
-	return _correa.PyPolygon(polygon_path)
+	return _correa.PyPolygon(poly_path)
 
 def create_polygon_focal_point(poly_path : str, focal_point):
 	"""! 	Read a polygon from file, and specify a focal point.
-			@param polygon_path 	path to the file containing the polygon.
+			@param poly_path 	path to the file containing the polygon.
 			@param focal_point		either a path to the file containing the focal point, or a list with the coordinates.
 			@return 	PyPolygon object
 	"""
