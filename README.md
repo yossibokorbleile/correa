@@ -42,7 +42,7 @@ Once installed, you can load import a polygon from file using either `correa.cre
 ```python
 poly = correa.create_polygon(".../correa/exmaples/contour1.csv")
 ```
-and if you want to specify the focal point, use `correa.reate_polygon_focal_point`:
+and if you want to specify the focal point, use `correa.create_polygon_focal_point`:
 ```python
 poly = correa.create_polygon_focal_point(".../correa/exmaples/contour1.csv", focal_point)
 ```
