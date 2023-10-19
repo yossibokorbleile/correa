@@ -1,12 +1,12 @@
-
-/*
- 	Comp2DShapes.cpp
-
- 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
-				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
- 	Date: April 2023
-	Version: 1
+/*!
+* @file	Comp2DShapes.cpp
+* @brief compare 2 polygons with automatic focal points 
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
+* @date April 2023
+* @version 1
 */
+
 
 /*!
 * @file Comp2DShapes.cpp

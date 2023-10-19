@@ -2,8 +2,8 @@
 
 which files still need documentation:
 - include 
-  - [] 2DShape.h
-  - [] Comp2dShapes.h
+  - [X] 2DShape.h
+  - [X] Comp2dShapes.h
   - [X] correa_bindings.h
   - Curvature
     - [X] Curvature.h 
@@ -28,7 +28,8 @@ which files still need documentation:
     - [] VectorOps.h
   - PH0
     - [] Component.h
-    - [] PH0.h
+    - [X] PH0.h
+    - [X] Persistence.h
 - src
   - [] 2DShape.cpp
   - [] Comp2DShapes.cpp

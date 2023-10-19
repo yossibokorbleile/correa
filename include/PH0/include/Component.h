@@ -1,10 +1,10 @@
-/*
- 	Component.h
-
- 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
-				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
- 	Date: April 2023
-	Version: 1
+/*!
+* @file PersistenceDiagram.h
+* @brief define classes needed for peristence diagrams, including persistence points
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
+* @date April 2023
+* @version 1
 */
 
 

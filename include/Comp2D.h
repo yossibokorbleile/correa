@@ -1,10 +1,10 @@
-/* ===============================================================================================
-   Comp2DShapes.h
-
-   Author:  Patrice Koehl & Yossi Bokor Bleile
-   Date:    April 4, 2023
-   Version: 1
-   =============================================================================================== */
+/*!
+* @file Comp2D.h
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
+* @date April 2023
+* @version 1
+*/
 
 #ifndef _COMP2D_H_
 #define _COMP2D_H_

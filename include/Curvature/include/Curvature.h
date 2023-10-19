@@ -1,18 +1,9 @@
-/*
- 	Curvature.h
-
- 	Author: Patrice Koehl, Department of Computer Science, University of California, Davis
-	Date: October 2021
- 	Version: 1
-
-
- 	This file looks at option to compare two curves based on the curvatures of their vertices.
-
- 	It is based on the paper:
- 		K. Crane, U. Pinkall, and P. Schroeder, "Robust fairing via conformal curvature flow"
-       	ACM Transactions on Graphics, Vol. 32, No. 4 (2013).
- 	and on the code SpinXform_OpenGL from Keenan Crane (available at:
-		https://www.cs.cmu.edu/~kmcrane/index.html#code
+/*!
+* @file	Curvature.h
+* @brief  	This file looks at option to compare two curves based on the curvatures of their vertices. It is based on the paper: K. Crane, U. Pinkall, and P. Schroeder, "Robust fairing via conformal curvature flow", ACM Transactions on Graphics, Vol. 32, No. 4 (2013), and on the code SpinXform_OpenGL from Keenan Crane (available at: https://www.cs.cmu.edu/~kmcrane/index.html#code)
+* @author Patrice Koehl
+* @date October 2021
+* @version 1
 */
 
 

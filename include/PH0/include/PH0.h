@@ -1,10 +1,10 @@
-/*
- 	PH0.h
-
- 	Authors: Patrice Koehl, Department of Computer Science, University of California, Davis
-				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
- 	Date: April 2023
-	Version: 1
+/*!
+* @file PH0.h
+* @brief functions to compute dimension 0 persistent homology of polygon.
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
+* @date April 2023
+* @version 1
 */
 
 #ifndef _PH0_H
@@ -17,13 +17,12 @@
 #include "Vertex.h"
 #include "Polygon.h"
 #include "Component.h"
-//#include "hera/common/diagram_point.h"
-//.#include "hera/wasserstein.h"
 #include <utility>
 using namespace std;
 
 /* Lets do the the persistent homology in dimension 0 now */
 namespace correa {
+/* Class to compute the persistent homology in dimension 0. */
 class PH0{
 	using PersistenceDiagram = std::vector<std::pair<double,double> >;
 
@@ -34,9 +33,9 @@ class PH0{
 
 	public:
 
-		int n_pts;
+		int n_pts; // Number of nodes in the polygon
 
-		PH0(vector<pair<int, double> > x);
+		PH0(vector<pair<int, double> > x); // Construct from a vector pairs, where the pair is of the form <int index, double height>. 
 		PH0(vector<Vertex> points);
 		void AddNode(pair<int, double>& y);
 		void Persistence();

@@ -1,17 +1,10 @@
-/*
- 	Frechet.h
-
- 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
-				  Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
- 	Date: April 2023
-	Version: 1
-
-  This file implements the discrete Frechet distance for comparing two polygonal curves
-
-  Implementation based on:
-    Eiter, Thomas; Mannila, Heikki (1994), Computing discrete Fréchet distance
-    Tech. Report CD-TR 94/64, Christian Doppler Laboratory for Expert Systems, TU Vienna, Austria.
-    LGPL licensing
+/*!
+* @file 	Frechet.h
+* @brief This file implements the discrete Frechet distance for comparing two polygonal curves. Implementation based on: Eiter, Thomas; Mannila, Heikki (1994), Computing discrete Fréchet distance, Tech. Report CD-TR 94/64, Christian Doppler Laboratory for Expert Systems, TU Vienna, Austria. LGPL licensing
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
+* @date April 2023
+* @version 1
 */
 
 

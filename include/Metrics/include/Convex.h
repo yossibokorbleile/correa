@@ -1,10 +1,10 @@
-/*
- 	Convex.h
-
- 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
-				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
- 	Date: April 2023
-	Version: 1
+/*!
+* @file Convex.h
+* @brief compute convex hulls
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
+* @date April 2023
+* @version 1
 */
 
 

@@ -1,12 +1,10 @@
-/*
- 	Comp2DShape.h
-
- 	Authors: 	Patrice Koehl, Department of Computer Science, University of California, Davis
-				Yossi Bokor Bleile, Department of Mathematical Sciences, University of Aalborg, Aalborg
- 	Date: April 2023
-	Version: 1
+/*!
+* @file Comp2DShapes.h
+* @author Patrice Koehl
+* @author Yossi Bokor Bleile
+* @date April 2023
+* @version 1
 */
-
 #ifndef _COMP2DSHAPES_H_
 #define _COMP2DSHAPES_H_
 
