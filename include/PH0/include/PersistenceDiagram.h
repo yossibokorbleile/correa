@@ -5,6 +5,7 @@
 * @author Yossi Bokor Bleile
 * @date January 2022
 * @version 1
+* @copyright BSD 3-Clause License.
 */
 
 #ifndef _PERSISTENCEDIAGRAM_H_

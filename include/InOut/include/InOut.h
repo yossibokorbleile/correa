@@ -5,6 +5,7 @@
 * @author Yossi Bokor Bleile
 * @date April 2023
 * @version 1
+* @copyright BSD 3-Clause License.
 */
 
 #ifndef _INOUT_H_

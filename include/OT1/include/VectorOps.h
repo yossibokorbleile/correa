@@ -4,6 +4,7 @@
 * @author Patrice Koehl
 * @date 11/12/2018
 * @version 1
+* @copyright BSD 3-Clause License.
 */
 
 #ifndef _VECTOROPS_H_

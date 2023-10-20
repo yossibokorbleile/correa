@@ -1,10 +1,12 @@
 /*!
 * @file	2DShape.cpp
 * @brief extract infromation about a polygon
+* @details Given a polygon stored in a file, calculate the following information about the polygon: length, area, sphericity, maximum volume inscribed ellipse, minimum volume inscribing ellipse, least square ellipse, Willmore energy, and the dimension 0 persistence diagram with essential pairing of the essential 0-cycle and essential 1-cycle.
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
 * @date April 2023
 * @version 1
+* @copyright BSD 3-Clause License.
 */
 
 

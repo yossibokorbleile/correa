@@ -4,6 +4,7 @@
 * @author Yossi Bokor Bleile
 * @date April 2023
 * @version 1
+* @copyright BSD 3-Clause License.
 */
 #ifndef _COMP2DSHAPESFOCAL_H_
 #define _COMP2DSHAPESFOCAL_H_

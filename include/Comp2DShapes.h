@@ -3,6 +3,7 @@
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
 * @date April 2023
+* @copyright BSD 3-Clause License.
 * @version 1
 */
 #ifndef _COMP2DSHAPES_H_

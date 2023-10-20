@@ -4,6 +4,7 @@
 * @author Patrice Koehl
 * @date October 2021
 * @version 1
+* @copyright BSD 3-Clause License.
 */
 
 
