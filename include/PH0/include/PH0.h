@@ -25,7 +25,7 @@ using namespace std;
 namespace correa {
 /* Class to compute the persistent homology in dimension 0. */
 class PH0{
-	using PersistenceDiagram = std::vector<std::pair<double,double> >;
+	using PersistenceDiagram = std::vector<std::pair<double,double>>;
 
 	private:
 		vector<std::tuple<int, double, int> > unsorted_nodes;
@@ -86,13 +86,17 @@ void PH0::AddNode(pair<int, double>& y){
 
 /* Compare the heights of two nodes */
 bool HeightComparison(tuple<int, double>& x, tuple<int, double>& y){
-	return (get<1>(x)< get<1>(y));
+	if (get<1>(x)  == get<1>(y)) {
+		return 1;
+	} else {
+		return (get<1>(x) < get<1>(y));
+	};
 };
 
 
 /* Obtain the components and their birth/death times */
 void PH0::Persistence(){
-	vector<tuple<int, double> > sorted_nodes;
+	vector<tuple<int, double>> sorted_nodes;
 	for (int i = 0; i < n_pts; i++){
 		tuple<int, double> x;
 		get<0>(x) = get<0>(unsorted_nodes[i]);

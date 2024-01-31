@@ -58,15 +58,7 @@ namespace correa {
 
 			void distorsion();
 
-			void shift(Vector2D center, bool verbose = false) {
-				for(int v = 0; v < vertices.size(); v++) {
-					if (verbose) std::cerr << "v was: (" << vertices[v].x() << ", " << vertices[v].y() << ")";
-					vertices[v].shift(center.x, center.y);
-					if (verbose) std::cerr << "v is now: (" << vertices[v].x() << ", " << vertices[v].y() << ")" << std::endl;
-
-				};
-				if (verbose) std::cerr << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
-			};
+			void shift(Vector2D center, bool verbose);
 
 			int size() {
 				return vertices.size();
@@ -216,7 +208,18 @@ namespace correa {
 			void distorsion();
 	}
 
+ /* ===========================================================================================
+ * Shift the polygon
+ ==============================================================================================*/
+void Polygon::shift(Vector2D center, bool verbose = false) {
+				for(int v = 0; v < vertices.size(); v++) {
+					if (verbose) std::cerr << "v was: (" << vertices[v].x() << ", " << vertices[v].y() << ")";
+					vertices[v].shift(center.x, center.y);
+					if (verbose) std::cerr << "v is now: (" << vertices[v].x() << ", " << vertices[v].y() << ")" << std::endl;
 
+				};
+				/*if (verbose)*/ std::cerr << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
+			};
  /* ===========================================================================================
  * Constructor
  ==============================================================================================*/
