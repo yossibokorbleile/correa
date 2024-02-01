@@ -73,8 +73,3 @@ dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurvOT
 ```
 
 Please use [issues](https://github.com/yossibokor/correa/issues) to report any bugs.
-
-
-## Applications
-
-The arXiv preprint ['Persistence diagrams as morphological signatures of cells: A method to measure and compare cells within a population'](https://arxiv.org/abs/2310.20644) used Correa.
