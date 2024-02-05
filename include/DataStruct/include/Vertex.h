@@ -16,6 +16,7 @@
 #define VERTEX_H
 
 #include "Types.h"
+#include "Vector2D.h"
 
 /*********************************************************************************
   Vertex class
@@ -57,7 +58,7 @@ namespace correa {
 		};
 
 		void shift(double c_x, double c_y) {
-			position = Vector2D(x()-c_x, y() - c_y);
+			position -= Vector2D(c_x, c_y);
 		}
   }; 
 

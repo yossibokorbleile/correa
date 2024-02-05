@@ -17,7 +17,7 @@
 #include <tuple>
 #include "Vertex.h"
 #include "Polygon.h"
-#include "Component.h"
+//#include "Component.h"
 #include <utility>
 using namespace std;
 
@@ -25,29 +25,23 @@ using namespace std;
 namespace correa {
 /* Class to compute the persistent homology in dimension 0. */
 class PH0{
-	using PersistenceDiagram = std::vector<std::pair<double,double> >;
+	using PersistenceDiagram = std::vector<std::pair<double,double>>;
 
 	private:
 		vector<std::tuple<int, double, int> > unsorted_nodes;
-		vector<Comp> comps;
+		//vector<Comp> comps;
 		PersistenceDiagram pd;
 
 	public:
 
 		int n_pts; // Number of nodes in the polygon
 
-		PH0(vector<pair<int, double> > x); // Construct from a vector pairs, where the pair is of the form <int index, double height>. 
+		PH0(vector<pair<int, double>> x); // Construct from a vector pairs, where the pair is of the form <int index, double height>. 
 		PH0(vector<Vertex> points);
 		void AddNode(pair<int, double>& y);
 		void Persistence();
-		PersistenceDiagram persistence_diagram() {
-			return pd;
-		};
-		void printPD() {
-			for (int i = 0; i < pd.size(); i++) {
-				std::cout << "(" << get<0>(pd[i]) << ", " << get<1>(pd[i]) << ")" << std::endl;
-			}
-		}
+		PersistenceDiagram persistence_diagram();
+		void printPD();
 
 };
 
@@ -86,7 +80,11 @@ void PH0::AddNode(pair<int, double>& y){
 
 /* Compare the heights of two nodes */
 bool HeightComparison(tuple<int, double>& x, tuple<int, double>& y){
-	return (get<1>(x)< get<1>(y));
+	//if (get<1>(x) == get<1>(y)) {
+	//	return true;
+	//} else {
+		return (get<1>(x)< get<1>(y));
+	//};
 };
 
 
@@ -206,6 +204,19 @@ void PH0::Persistence(){
 			};
 		};
 	};
+};	
+
+// Return the persistence diagram.
+vector<std::pair<double, double>> PH0::persistence_diagram() {
+	return pd;
 };
+
+// Print the persistence diagram
+void PH0::printPD() {
+	for (int i = 0; i < pd.size(); i++) {
+		std::cout << "(" << get<0>(pd[i]) << ", " << get<1>(pd[i]) << ")" << std::endl;		
+		}	
+};
+
 } //end namespace correa
 #endif

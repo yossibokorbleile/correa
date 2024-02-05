@@ -78,7 +78,6 @@ namespace correa{
 	};
 	// construct a polygon with focal point center of mass of the vertices supplied
 	auto initialise_polygon(std::string path_to_vertices) {
-
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -100,7 +99,6 @@ namespace correa{
 	} 
 
 	auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point) {
-
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -131,18 +129,12 @@ namespace correa{
 		Vector2D focal(focal_[0], focal_[1]);
 		pbuilder.clean_points(&npoint, X);
 		pbuilder.buildPolygon(npoint, X, polygon);
-
+		// Shift polygon to focal point
 		polygon.shift(focal);
-
-		// Center polygon
-		int iscale = 0;
-		double range = 100;
-		polygon.centerScale(range,iscale);
 		return polygon;
 	}
 
 	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point) {
-
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -154,13 +146,11 @@ namespace correa{
 
 		inout.read(path_to_vertices , &ndim, &npoint, &X);
 		Vector2D focal (focal_point[0], focal_point[1]); 
+		std::cout << "focal is (" << focal.x << ", " << focal.y << ")." << std::endl;
 		pbuilder.clean_points(&npoint, X);
 		pbuilder.buildPolygon(npoint, X, polygon);
+		// Shift polygon to focal point
 		polygon.shift(focal);
-		// Center polygon
-		int iscale = 0;
-		double range = 100;
-		polygon.centerScale(range,iscale);
 		return polygon;
 	}
 
@@ -179,6 +169,7 @@ namespace correa{
 		Polygon polygon = initialise_polygon(path_to_vertices, focal);
 		return polygon;
 	}
+
 	/*!
 	* Expose polygons to python
 	*/
@@ -440,7 +431,7 @@ namespace correa{
 				out << "Wilmore energy:                     " << P.willmore() << "\n";
 				out << "Persistence diagram: number of points:     " << P.persistence_diagram().size() << "\n";
 				for (int i = 0; i < P.persistence_diagram().size(); i++) {
-					out << "( " << P.persistence_diagram()[i].first << ", " << P.persistence_diagram()[i].second << ")" << std::endl;
+					out << "(" << P.persistence_diagram()[i].first << ", " << P.persistence_diagram()[i].second << ")" << std::endl;
 				}
 				return out;            
 			};
