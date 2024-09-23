@@ -18,7 +18,7 @@
 
 #include "Types.h"
 #include "Vertex.h"
-
+#include "Vector2D.h"
 /* ===========================================================================================
  * Class for polygon
  ==============================================================================================*/
@@ -64,6 +64,14 @@ namespace correa {
 				return vertices.size();
 			};
 
+			void labelPolygon(const double EPSILON);
+
+			double signedDistanceToOutline(const Vector2D& point);
+
+			Vector2D calculateCentroid();
+
+		private:
+			Vector2D label;
 	};
 
  /* ===========================================================================================
@@ -269,6 +277,72 @@ void Polygon::shift(Vector2D center, bool verbose = false) {
 		for(int i = 0; i < nedges; i++) {
 			edges.push_back(polygon.edges[i]);
 		}
+	}
+	/*!
+	* Computes the signed distance from a point to the polygon outline.
+	* Positive distance indicates the point is outside the polygon,
+	* negative distance indicates the point is inside the polygon.
+	* @param point The point to compute the distance from.
+	* @return The signed distance to the polygon outline.
+	*/
+	double Polygon::signedDistanceToOutline(const Vector2D& point) const {
+		double minDistance = std::numeric_limits<double>::max();
+		bool isInside = false;
+		
+		for (size_t i = 0; i < vertices.size(); ++i) {
+			const Vector2D& v1 = vertices[i].position;
+			const Vector2D& v2 = vertices[(i + 1) % vertices.size()].position;
+			
+			// Compute the distance to the edge
+			Vector2D edge = v2 - v1;
+			Vector2D pointToV1 = point - v1;
+			double t = pointToV1.dot(edge) / edge.dot(edge);
+			t = std::max(0.0, std::min(1.0, t));
+			Vector2D closestPoint = v1 + edge * t;
+			double distance = (point - closestPoint).norm();
+			
+			minDistance = std::min(minDistance, distance);
+			
+			// Check if the point is inside the polygon (ray casting algorithm)
+			if (((v1.y > point.y) != (v2.y > point.y)) &&
+				(point.x < (v2.x - v1.x) * (point.y - v1.y) / (v2.y - v1.y) + v1.x)) {
+				isInside = !isInside;
+			}
+		}
+		
+		return isInside ? -minDistance : minDistance;
+	}
+
+
+	
+	void Polygon::labelPolygon(const double EPSILON = 1e-10) {
+		Vector2D centroid = calculateCentroid();
+		double minDist = signedDistanceToOutline(centroid);
+		Vector2D bestPoint = centroid;
+
+		std::vector<Vector2D> queue;
+		queue.push_back(centroid);
+
+		while (!queue.empty()) {
+			Vector2D point = queue.back();
+			queue.pop_back();
+
+			double dist = signedDistanceToOutline(point);
+			if (dist > minDist) {
+				minDist = dist;
+				bestPoint = point;
+			}
+
+			if (dist > minDist + EPSILON) {
+				double cellSize = dist / std::sqrt(2);
+				queue.push_back(Vector2D(point.x - cellSize, point.y - cellSize));
+				queue.push_back(Vector2D(point.x + cellSize, point.y - cellSize));
+				queue.push_back(Vector2D(point.x - cellSize, point.y + cellSize));
+				queue.push_back(Vector2D(point.x + cellSize, point.y + cellSize));
+			}
+		}
+
+		label = bestPoint;
 	}
 } //end namespace correa
 #endif

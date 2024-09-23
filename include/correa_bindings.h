@@ -90,6 +90,7 @@ namespace correa{
 		inout.read(path_to_vertices, &ndim, &npoint, &X);
 		pbuilder.clean_points(&npoint, X);
 		pbuilder.buildPolygon(npoint, X, polygon);
+		polygon.labelPolygon(polygon);
 		
 		// Center polygon
 		int iscale = 0;
