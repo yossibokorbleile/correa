@@ -46,6 +46,8 @@ namespace correa {
 		// List triangle edges
 		int trigEdges(Polygon& polygon, int ntrig, int *indices);
 
+		void labelPolygon(Polygon& polygon);
+
 	private:
 
 		// index all elements in a polygon structure
