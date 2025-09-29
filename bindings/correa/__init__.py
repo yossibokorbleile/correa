@@ -7,20 +7,20 @@ import _correa
 
 from matplotlib import pyplot as plt
 
-def create_polygon(poly_path : str):
+def create_polygon(poly_path : str, clean_points = True):
 	"""! 	Read a polygon from file. This will recenter the polygon to the center of mass of the vertices, so be careful.
 			@param poly_path 	path to the file you want to read in.
 			@return 			PyPolygon object.	
 	"""
-	return _correa.PyPolygon(poly_path)
+	return _correa.PyPolygon(poly_path, clean_points)
 
-def create_polygon_focal_point(poly_path : str, focal_point):
+def create_polygon_focal_point(poly_path : str, focal_point, clean_points = True):
 	"""! 	Read a polygon from file, and specify a focal point.
 			@param poly_path 	path to the file containing the polygon.
 			@param focal_point		either a path to the file containing the focal point, or a list with the coordinates.
 			@return 	PyPolygon object
 	"""
-	return _correa.PyPolygon(poly_path, focal_point)
+	return _correa.PyPolygon(poly_path, focal_point, clean_points)
 
 
 def print_polygon(poly) :

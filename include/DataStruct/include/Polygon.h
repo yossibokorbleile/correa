@@ -221,9 +221,10 @@ namespace correa {
  * Shift the polygon
  ==============================================================================================*/
 
-void Polygon::shift(Vector2D center, bool verbose = false) {
+void Polygon::shift(Vector2D center, bool verbose = true) {
 	for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
 		v->position -= center;
+		if (verbose) std::cout << "v was: (" << v->position.x << ", " << v->position.y << ")";
 	};
 	std::cout << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
 	/*for(int v = 0; v < vertices.size(); v++) {

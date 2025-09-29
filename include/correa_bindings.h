@@ -77,7 +77,7 @@ namespace correa{
 		return w_q_dist;
 	};
 	// construct a polygon with focal point center of mass of the vertices supplied
-	auto initialise_polygon(std::string path_to_vertices) {
+	auto initialise_polygon(std::string path_to_vertices, bool clean_points) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -88,7 +88,13 @@ namespace correa{
 		X = nullptr;
 
 		inout.read(path_to_vertices, &ndim, &npoint, &X);
-		pbuilder.clean_points(&npoint, X);
+		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		if (clean_points) {
+			pbuilder.clean_points(&npoint, X);
+		} else {
+			std::cout << "No cleaning of points" << std::endl;
+		
+		}
 		pbuilder.buildPolygon(npoint, X, polygon);
 		// polygon.labelPolygon(polygon);
 		
@@ -99,7 +105,7 @@ namespace correa{
 		return polygon;
 	} 
 
-	auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point) {
+	auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point, bool clean_points) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -128,14 +134,20 @@ namespace correa{
 			};
 		};
 		Vector2D focal(focal_[0], focal_[1]);
-		pbuilder.clean_points(&npoint, X);
+		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		if (clean_points) {
+			pbuilder.clean_points(&npoint, X);
+		} else {
+			std::cout << "No cleaning of points" << std::endl;
+		
+		}
 		pbuilder.buildPolygon(npoint, X, polygon);
 		// Shift polygon to focal point
 		polygon.shift(focal);
 		return polygon;
 	}
 
-	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point) {
+	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point, bool clean_points) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -148,26 +160,33 @@ namespace correa{
 		inout.read(path_to_vertices , &ndim, &npoint, &X);
 		Vector2D focal (focal_point[0], focal_point[1]); 
 		std::cout << "focal is (" << focal.x << ", " << focal.y << ")." << std::endl;
-		pbuilder.clean_points(&npoint, X);
+		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		if (clean_points) {
+			pbuilder.clean_points(&npoint, X);
+		} else {
+			std::cout << "No cleaning of points, so we still have " << npoint << " points" << std::endl;
+		}
+		
 		pbuilder.buildPolygon(npoint, X, polygon);
+		std::cout << "build the polygon with " << npoint << " points" << std::endl;
 		// Shift polygon to focal point
 		polygon.shift(focal);
 		return polygon;
 	}
 
 
-	 auto load_polygon(std::string file_path) {
-		Polygon polygon = initialise_polygon(file_path);
+	 auto load_polygon(std::string file_path, bool clean_points) {
+		Polygon polygon = initialise_polygon(file_path, clean_points);
 		return polygon;
 	}
 
-	auto load_polygon(std::string path_to_vertices, std::string path_to_focal) {
-		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal);
+	auto load_polygon(std::string path_to_vertices, std::string path_to_focal, bool clean_points) {
+		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal, clean_points);
 		return polygon;
 	}
 
-	auto load_polygon(std::string path_to_vertices, std::vector<double> focal) {
-		Polygon polygon = initialise_polygon(path_to_vertices, focal);
+	auto load_polygon(std::string path_to_vertices, std::vector<double> focal, bool clean_points) {
+		Polygon polygon = initialise_polygon(path_to_vertices, focal, clean_points);
 		return polygon;
 	}
 
@@ -186,8 +205,8 @@ namespace correa{
 
 		public:
 			Polygon polygon;
-			PyPolygon(std::string file_path) {
-				polygon = load_polygon(file_path);
+			PyPolygon(std::string file_path, bool clean_points) {
+				polygon = load_polygon(file_path, clean_points);
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
@@ -210,8 +229,8 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, std::string focal_path) {
-				polygon = load_polygon(file_path, focal_path);
+			PyPolygon(std::string file_path, std::string focal_path, bool clean_points) {
+				polygon = load_polygon(file_path, focal_path, clean_points);
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
@@ -234,8 +253,8 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, std::vector<double> focal_point) {
-				polygon = load_polygon(file_path, focal_point);
+			PyPolygon(std::string file_path, std::vector<double> focal_point, bool clean_points) {
+				polygon = load_polygon(file_path, focal_point, clean_points);
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
