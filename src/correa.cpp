@@ -22,9 +22,11 @@ NB_MODULE(_correa, m) {
 	* Bind PyPolygon
 	*/
     nb::class_<correa::PyPolygon>(m, "PyPolygon")
-        .def(nb::init<const std::string , const bool&>())
-		.def(nb::init<const std::string &, const std::string&, const bool&>())
-		.def(nb::init<const std::string &, const std::vector<double>, const bool&>())
+        .def(nb::init<const std::string , const bool&, const bool&>())
+		.def(nb::init<const std::string &, const std::string&, const bool&, const bool&>())
+		.def(nb::init<const std::string &, const std::vector<double>, const bool&, const bool&>())
+		.def(nb::init<const bool&, const std::string &,  const std::vector<double>, const bool&>())
+		.def(nb::init<const bool&, const std::string &,  const std::vector<double>, const bool&>())
         //.def("extractVertices", &correa::PyPolygon::extractVertices)
         .def("vertices", &correa::PyPolygon::vertices)
         .def("ellipse_min_a", &correa::PyPolygon::ellipse_min_a)

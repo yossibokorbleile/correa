@@ -53,6 +53,10 @@ namespace correa {
 			// Center and scale the polygon
 			void centerScale(double range, int iscale);
 
+			// Center and scale the polygon by area
+			void centerScaleArea();
+
+
 			void boundaryLength0();
 			void boundaryLength();
 
@@ -216,12 +220,46 @@ namespace correa {
 			void distorsion();
 	}
 
+/* ===========================================================================================
+ * Center and scale by area of the polygon
+ ==============================================================================================*/
+	/*!
+	* Center and rescale the polygon.
+	* Automatically recenters to the center of mass of the vertices.
+	*/
+  	void Polygon::centerScaleArea() {
+		Vector2D center, a;
+
+		center[0] = 0; center[1] = 0;
+		for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
+			center += v->position;
+		}
+		center /= vertices.size();
+		double r=0;
+
+		for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
+			v->position -= center;
+	//		a = v->position;
+	//		r = std::max(r, a.norm());
+		}
+
+		double scale = sqrt(100/area());
+		std::cout << "scale is " << scale << std::endl;
+		for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
+			v->position *= scale;	
+		}
+	
+			void boundaryLength0();
+			void boundaryLength();
+			void distorsion();
+	}
+
 
   /* ===========================================================================================
  * Shift the polygon
  ==============================================================================================*/
 
-void Polygon::shift(Vector2D center, bool verbose = true) {
+void Polygon::shift(Vector2D center, bool verbose = false) {
 	for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
 		v->position -= center;
 		if (verbose) std::cout << "v was: (" << v->position.x << ", " << v->position.y << ")";

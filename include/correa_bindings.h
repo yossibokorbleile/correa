@@ -77,7 +77,7 @@ namespace correa{
 		return w_q_dist;
 	};
 	// construct a polygon with focal point center of mass of the vertices supplied
-	auto initialise_polygon(std::string path_to_vertices, bool clean_points) {
+	auto initialise_polygon(std::string path_to_vertices, bool clean_points, bool scale_by_area) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -99,13 +99,17 @@ namespace correa{
 		// polygon.labelPolygon(polygon);
 		
 		// Center polygon
-		int iscale = 0;
+		if (scale_by_area) {
+			polygon.centerScaleArea();
+		} else {
+			double iscale = 0;
 		double range = 100;
-		polygon.centerScale(range,iscale);
+			polygon.centerScale(range,iscale);
+		}
 		return polygon;
 	} 
 
-	auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point, bool clean_points) {
+	auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point, bool clean_points, bool scale_by_area) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -144,10 +148,17 @@ namespace correa{
 		pbuilder.buildPolygon(npoint, X, polygon);
 		// Shift polygon to focal point
 		polygon.shift(focal);
+		if (scale_by_area) {
+			polygon.centerScaleArea();
+		} else {
+			double iscale = 0;
+			double range = 100;
+			polygon.centerScale(range,iscale);
+		}
 		return polygon;
 	}
 
-	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point, bool clean_points) {
+	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point, bool clean_points, bool scale_by_area) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -171,22 +182,29 @@ namespace correa{
 		std::cout << "build the polygon with " << npoint << " points" << std::endl;
 		// Shift polygon to focal point
 		polygon.shift(focal);
+		if (scale_by_area) {
+			polygon.centerScaleArea();
+		} else {
+			double iscale = 0;
+			double range = 100;
+			polygon.centerScale(range,iscale);
+		}
 		return polygon;
 	}
 
 
-	 auto load_polygon(std::string file_path, bool clean_points) {
-		Polygon polygon = initialise_polygon(file_path, clean_points);
+	 auto load_polygon(std::string file_path, bool clean_points, bool scale_by_area) {
+		Polygon polygon = initialise_polygon(file_path, clean_points, scale_by_area);
 		return polygon;
 	}
 
-	auto load_polygon(std::string path_to_vertices, std::string path_to_focal, bool clean_points) {
-		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal, clean_points);
+	auto load_polygon(std::string path_to_vertices, std::string path_to_focal, bool clean_points, bool scale_by_area) {
+		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal, clean_points, scale_by_area);
 		return polygon;
 	}
 
-	auto load_polygon(std::string path_to_vertices, std::vector<double> focal, bool clean_points) {
-		Polygon polygon = initialise_polygon(path_to_vertices, focal, clean_points);
+	auto load_polygon(std::string path_to_vertices, std::vector<double> focal, bool clean_points, bool scale_by_area) {
+		Polygon polygon = initialise_polygon(path_to_vertices, focal, clean_points, scale_by_area);
 		return polygon;
 	}
 
@@ -205,8 +223,17 @@ namespace correa{
 
 		public:
 			Polygon polygon;
-			PyPolygon(std::string file_path, bool clean_points) {
-				polygon = load_polygon(file_path, clean_points);
+			PyPolygon(bool test, std::string file_path, std::vector<double> focal_point, bool scale_by_area) {
+				polygon = load_polygon(file_path, focal_point, test, scale_by_area);
+				std::cout << "polygon loaded with test " << test << std::endl;
+				PH0 f(polygon.vertices);
+				f.Persistence();
+				std::cout << "persistence diagram calculated" << std::endl;
+				persistence_diagram_ = f.persistence_diagram();
+			}
+
+			PyPolygon(std::string file_path, bool clean_points, bool scale_by_area) {
+				polygon = load_polygon(file_path, clean_points, scale_by_area);
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
@@ -229,8 +256,8 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, std::string focal_path, bool clean_points) {
-				polygon = load_polygon(file_path, focal_path, clean_points);
+			PyPolygon(std::string file_path, std::string focal_path, bool clean_points, bool scale_by_area) {
+				polygon = load_polygon(file_path, focal_path, clean_points, scale_by_area);
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
@@ -253,8 +280,8 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, std::vector<double> focal_point, bool clean_points) {
-				polygon = load_polygon(file_path, focal_point, clean_points);
+			PyPolygon(std::string file_path, std::vector<double> focal_point, bool clean_points, bool scale_by_area) {
+				polygon = load_polygon(file_path, focal_point, clean_points, scale_by_area);
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
