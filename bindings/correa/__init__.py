@@ -7,20 +7,20 @@ import _correa
 import pandas
 import plotly.express as px
 
-def create_polygon(poly_path : str, clean_points = True, scale_by_area : bool = False):
+def create_polygon(poly_path : str, clean_points = True, scale_by_area : bool = False, convert_to_microns_factor = 1.0):
 	"""! 	Read a polygon from file. This will recenter the polygon to the center of mass of the vertices, so be careful.
 			@param poly_path 	path to the file you want to read in.
 			@return 			PyPolygon object.	
 	"""
-	return _correa.PyPolygon(poly_path, clean_points, scale_by_area)
+	return _correa.PyPolygon(poly_path, clean_points, scale_by_area, convert_to_microns_factor=1.0)
 
-def create_polygon_focal_point(poly_path : str, focal_point, clean_points = True, scale_by_area : bool = False):
+def create_polygon_focal_point(poly_path : str, focal_point, clean_points = True, scale_by_area : bool = False, convert_to_microns_factor = None):
 	"""! 	Read a polygon from file, and specify a focal point.
 			@param poly_path 	path to the file containing the polygon.
 			@param focal_point		either a path to the file containing the focal point, or a list with the coordinates.
 			@return 	PyPolygon object
 	"""
-	return _correa.PyPolygon(poly_path, focal_point, clean_points, scale_by_area)
+	return _correa.PyPolygon(poly_path, focal_point, clean_points, scale_by_area, convert_to_microns_factor=1.0)
 
 
 def print_polygon(poly) :
@@ -125,20 +125,22 @@ def plot_persistence_diagram(poly : _correa.PyPolygon):
 	# fig.show()
 	return fig
 
-def only_persistence_polygon(poly_path : str, focal_point : list[float], clean_points : bool, scale_by_area : bool):
+def only_persistence_polygon(poly_path : str, focal_point : list[float], clean_points : bool, scale_by_area : bool, convert_to_microns_factor : float = 1.0):
 	"""!	Given a polygon, calculate the persistence diagram.
 			@param poly_path 	path to the file containing the polygon.
 			@param focal_point		either a path to the file containing the focal point, or a list with the coordinates.
 			@param clean_points		whether to clean the points.
+			@param scale_by_area	whether to scale by area.
+			@param convert_to_microns_factor	scale factor for pixel to micrometer conversion.
 			@return 		persistence diagram.
 	"""
-	return _correa.PyPolygon(clean_points, poly_path, focal_point, scale_by_area)
+	return _correa.PyPolygon(clean_points, poly_path, focal_point, scale_by_area, convert_to_microns_factor)
 
-def test_sensitivity_polygon(poly_path : str, focal_point : list[float], scale_by_area : bool = False):
+def test_sensitivity_polygon(poly_path : str, focal_point : list[float], scale_by_area : bool = False, convert_to_microns_factor : float = 1.0):
 	print("loading polygon")
-	c_clean = _correa.PyPolygon(True, poly_path, focal_point, scale_by_area)
+	c_clean = _correa.PyPolygon(True, poly_path, focal_point, scale_by_area, convert_to_microns_factor)
 	print("polygon loaded")
-	c_no_clean = _correa.PyPolygon(False, poly_path, focal_point, scale_by_area)
+	c_no_clean = _correa.PyPolygon(False, poly_path, focal_point, scale_by_area, convert_to_microns_factor)
 	print("polygon loaded")
 	diff = _correa.wasserstein_distance(c_no_clean, c_clean, 2)
 	print("persistence diagram calculated")
