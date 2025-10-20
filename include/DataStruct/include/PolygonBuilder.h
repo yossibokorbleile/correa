@@ -48,6 +48,8 @@ namespace correa {
 
 		void labelPolygon(Polygon& polygon);
 
+		void convertPixelsToMicrometers(Polygon& polygon, double scale);
+
 	private:
 
 		// index all elements in a polygon structure
@@ -692,5 +694,13 @@ namespace correa {
 		return nedges;
 
   	}
+
+	void PolygonBuilder::convertPixelsToMicrometers(Polygon& polygon, double scale)
+	{
+		for(VertexIter v = polygon.vertices.begin(); v != polygon.vertices.end(); v++) {
+			v->position.x *= scale;
+			v->position.y *= scale;
+		}
+	}
 } //end namespace correa	
 #endif

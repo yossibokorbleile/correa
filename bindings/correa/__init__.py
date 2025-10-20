@@ -6,6 +6,7 @@ Documentation for the Python functions in Correa.
 import _correa
 import pandas
 import plotly.express as px
+
 def create_polygon(poly_path : str, clean_points = True, scale_by_area : bool = False):
 	"""! 	Read a polygon from file. This will recenter the polygon to the center of mass of the vertices, so be careful.
 			@param poly_path 	path to the file you want to read in.

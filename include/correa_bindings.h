@@ -463,6 +463,20 @@ namespace correa{
 			};
 
 			/*!
+			* Convert polygon coordinates from pixels to micrometers using the given scale factor
+			* @param scale the scale factor to convert pixels to micrometers
+			*/
+			void convertPixelsToMicrometers(double scale) {
+				PolygonBuilder pbuilder;
+				pbuilder.convertPixelsToMicrometers(polygon, scale);
+				
+				// Recompute persistence diagram after coordinate conversion
+				PH0 f(polygon.vertices);
+				f.Persistence();
+				persistence_diagram_ = f.persistence_diagram();
+			};
+
+			/*!
 			* print information about the polygon
 			*/
 			friend ostream &operator<<( ostream &out, PyPolygon &P ) { 

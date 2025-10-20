@@ -42,7 +42,8 @@ NB_MODULE(_correa, m) {
 		.def("ellipse_lsq_ratio", &correa::PyPolygon::ellipse_lsq_ratio)
         .def("willmore", &correa::PyPolygon::willmore)
         .def("size", &correa::PyPolygon::size)
-        .def("persistence_diagram", &correa::PyPolygon::persistence_diagram);
+        .def("persistence_diagram", &correa::PyPolygon::persistence_diagram)
+        .def("convertPixelsToMicrometers", &correa::PyPolygon::convertPixelsToMicrometers);
 
     m.def("compare_polygons", &correa::compare_polygons);
 	m.def("curv_ot_distance", &correa::curv_ot_distance);
