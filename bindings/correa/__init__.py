@@ -7,21 +7,20 @@ import _correa
 import pandas
 import plotly.express as px
 
-def create_polygon(poly_path : str, clean_points = True, scale_by_area : bool = False, convert_to_microns_factor = 1.0):
+def create_polygon(poly_path : str, clean_points : bool= True, scale_by_area : bool = False, convert_to_microns_factor: float = 1.0):
 	"""! 	Read a polygon from file. This will recenter the polygon to the center of mass of the vertices, so be careful.
 			@param poly_path 	path to the file you want to read in.
 			@return 			PyPolygon object.	
 	"""
-	return _correa.PyPolygon(poly_path, clean_points, scale_by_area, convert_to_microns_factor=1.0)
+	return _correa.PyPolygon(poly_path, clean_points, scale_by_area, convert_to_microns_factor)
 
-def create_polygon_focal_point(poly_path : str, focal_point, clean_points = True, scale_by_area : bool = False, convert_to_microns_factor = None):
+def create_polygon_focal_point(poly_path : str, focal_point : list[float], clean_points : bool= True, scale_by_area : bool = False, convert_to_microns_factor : float= 1.0):
 	"""! 	Read a polygon from file, and specify a focal point.
 			@param poly_path 	path to the file containing the polygon.
 			@param focal_point		either a path to the file containing the focal point, or a list with the coordinates.
 			@return 	PyPolygon object
 	"""
-	return _correa.PyPolygon(poly_path, focal_point, clean_points, scale_by_area, convert_to_microns_factor=1.0)
-
+	return _correa.PyPolygon(poly_path, focal_point, clean_points, scale_by_area, convert_to_microns_factor)
 
 def print_polygon(poly) :
 	"""!	Print information about the polygon.

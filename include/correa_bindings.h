@@ -164,7 +164,7 @@ namespace correa{
 		return polygon;
 	}
 
-	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor = 1.0) {
+	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -204,7 +204,7 @@ namespace correa{
 		return polygon;
 	}
 
-	auto load_polygon(std::string path_to_vertices, std::string path_to_focal, bool clean_points, bool scale_by_area, double convert_to_microns_factor = 1.0) {
+	auto load_polygon(std::string path_to_vertices, std::string path_to_focal, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal, clean_points, scale_by_area, convert_to_microns_factor);
 		return polygon;
 	}
@@ -229,12 +229,8 @@ namespace correa{
 
 		public:
 			Polygon polygon;
-			PyPolygon(bool test, std::string file_path, std::vector<double> focal_point, bool scale_by_area, double convert_to_microns_factor = 1.0) {
+			PyPolygon(bool test, std::string file_path, std::vector<double> focal_point, bool scale_by_area, double convert_to_microns_factor) {
 				polygon = load_polygon(file_path, focal_point, test, scale_by_area, convert_to_microns_factor);
-				// if (convert_to_microns_factor != 1.0) {
-				// 	PolygonBuilder pbuilder;
-				// 	pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
-				// }
 				std::cout << "polygon loaded with test " << test << std::endl;
 				PH0 f(polygon.vertices);
 				f.Persistence();
@@ -242,8 +238,9 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, bool clean_points, bool scale_by_area, double convert_to_microns_factor = 1.0) {
-				polygon = load_polygon(file_path, clean_points, scale_by_area);
+			PyPolygon(std::string file_path, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
+				polygon = load_polygon(file_path, clean_points, scale_by_area, convert_to_microns_factor);
+				
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
@@ -266,7 +263,7 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, std::string focal_path, bool clean_points, bool scale_by_area, double convert_to_microns_factor = 1.0) {
+			PyPolygon(std::string file_path, std::string focal_path, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 				polygon = load_polygon(file_path, focal_path, clean_points, scale_by_area, convert_to_microns_factor);
 				Ellipse ellipse;
 				Curvature curv;
@@ -290,7 +287,7 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, std::vector<double> focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor = 1.0) {
+			PyPolygon(std::string file_path, std::vector<double> focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 				polygon = load_polygon(file_path, focal_point, clean_points, scale_by_area, convert_to_microns_factor);
 				if (convert_to_microns_factor != 1.0) {
 					PolygonBuilder pbuilder;
