@@ -97,6 +97,8 @@ namespace correa{
 		}
 		pbuilder.buildPolygon(npoint, X, polygon);
 		// polygon.labelPolygon(polygon);
+		polygon.originalArea_ = polygon.area();
+
 		if (convert_to_microns_factor != 1.0) {
 			pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
 		}
@@ -151,6 +153,7 @@ namespace correa{
 		
 		// Shift polygon to focal point
 		polygon.shift(focal);
+		polygon.originalArea_ = polygon.area();
 		if (convert_to_microns_factor != 1.0) {
 			pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
 		}
@@ -188,6 +191,7 @@ namespace correa{
 		std::cout << "build the polygon with " << npoint << " points" << std::endl;
 		// Shift polygon to focal point
 		polygon.shift(focal);
+		polygon.originalArea_ = polygon.area();
 		if (scale_by_area) {
 			polygon.centerScaleArea();
 		} else {
@@ -225,7 +229,9 @@ namespace correa{
 			std::tuple<double, double, double> ellipse_lsq_;
 			double willmore_;
 			PersistenceDiagram  persistence_diagram_;
-
+			double area() {
+				return polygon.area();
+			}
 
 		public:
 			Polygon polygon;
@@ -486,6 +492,13 @@ namespace correa{
 				f.Persistence();
 				persistence_diagram_ = f.persistence_diagram();
 			};
+
+			/*!
+			* @return original area of the polygon
+			*/
+			auto originalArea() {
+				return polygon.originalArea();
+			}
 
 			/*!
 			* print information about the polygon

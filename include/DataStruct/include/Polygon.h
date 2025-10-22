@@ -41,11 +41,15 @@ namespace correa {
 			std::vector<double > bdLength0;
 			std::vector<double > bdLength;
 			double distorsion_; 
+			double originalArea_;
 
 			std::vector<std::pair<int, int> > edges;
 
 			// area of the polygon
 			double area();
+
+			// unscaled area of the polygon
+			double originalArea();
 
 			// area of the polygon
 			double length();
@@ -99,6 +103,15 @@ namespace correa {
 
 
 		return surface;
+	}
+
+	/*
+	*
+	* @return the unscaled area of the polygon
+	*/
+	double Polygon::originalArea()
+	{
+		return originalArea_;
 	}
 
  /* ===========================================================================================
@@ -252,6 +265,8 @@ namespace correa {
 			void boundaryLength0();
 			void boundaryLength();
 			void distorsion();
+		double currentArea = area();
+		assert(std::abs(currentArea - 100.0) < 1e-10 && "Area should be 100 after scaling");
 	}
 
 
