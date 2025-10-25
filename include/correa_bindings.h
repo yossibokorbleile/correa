@@ -229,9 +229,6 @@ namespace correa{
 			std::tuple<double, double, double> ellipse_lsq_;
 			double willmore_;
 			PersistenceDiagram  persistence_diagram_;
-			double area() {
-				return polygon.area();
-			}
 
 		public:
 			Polygon polygon;
