@@ -60,6 +60,9 @@ namespace correa {
 			// Center and scale the polygon by area
 			void centerScaleArea();
 
+			// Scale the polygon by area
+			void scaleArea();
+
 
 			void boundaryLength0();
 			void boundaryLength();
@@ -206,6 +209,7 @@ namespace correa {
 	* @param iscale
 	*/
   	void Polygon::centerScale(double range, int iscale) {
+		std::cout << "centerScale is called" << std::endl;
 		Vector2D center, a;
 
 		center[0] = 0; center[1] = 0;
@@ -241,6 +245,7 @@ namespace correa {
 	* Automatically recenters to the center of mass of the vertices.
 	*/
   	void Polygon::centerScaleArea() {
+		std::cout << "centerScaleArea is called" << std::endl;
 		Vector2D center, a;
 
 		center[0] = 0; center[1] = 0;
@@ -269,6 +274,25 @@ namespace correa {
 		assert(std::abs(currentArea - 100.0) < 1e-10 && "Area should be 100 after scaling");
 	}
 
+
+/*!
+	* Rescale the polygon.
+	* Automatically recenters to the center of mass of the vertices.
+	*/
+  	void Polygon::scaleArea() {
+		std::cout << "scaleArea is called" << std::endl;
+		double scale = sqrt(100/area());
+		std::cout << "scale is " << scale << std::endl;
+		for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
+			v->position *= scale;	
+		}
+	
+			void boundaryLength0();
+			void boundaryLength();
+			void distorsion();
+		double currentArea = area();
+		assert(std::abs(currentArea - 100.0) < 1e-10 && "Area should be 100 after scaling");
+	}
 
   /* ===========================================================================================
  * Shift the polygon

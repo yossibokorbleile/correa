@@ -97,17 +97,17 @@ namespace correa{
 		}
 		pbuilder.buildPolygon(npoint, X, polygon);
 		// polygon.labelPolygon(polygon);
-		polygon.originalArea_ = polygon.area();
 
 		if (convert_to_microns_factor != 1.0) {
 			pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
 		}
+		polygon.originalArea_ = polygon.area();
 		// Center polygon
 		if (scale_by_area) {
 			polygon.centerScaleArea();
 		} else {
 			double iscale = 0;
-		double range = 100;
+			double range = 100;
 			polygon.centerScale(range,iscale);
 		}
 		return polygon;
@@ -153,17 +153,17 @@ namespace correa{
 		
 		// Shift polygon to focal point
 		polygon.shift(focal);
-		polygon.originalArea_ = polygon.area();
 		if (convert_to_microns_factor != 1.0) {
 			pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
 		}
+		polygon.originalArea_ = polygon.area();
 		if (scale_by_area) {
-			polygon.centerScaleArea();
-		} else {
-			double iscale = 0;
-			double range = 100;
-			polygon.centerScale(range,iscale);
-		}
+			polygon.scaleArea();
+		} // else {
+		// 	double iscale = 0;
+		// 	double range = 100;
+		// 	polygon.centerScale(range,iscale);
+		// }
 		return polygon;
 	}
 
@@ -191,14 +191,17 @@ namespace correa{
 		std::cout << "build the polygon with " << npoint << " points" << std::endl;
 		// Shift polygon to focal point
 		polygon.shift(focal);
+		if (convert_to_microns_factor != 1.0) {
+			pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
+		}
 		polygon.originalArea_ = polygon.area();
 		if (scale_by_area) {
-			polygon.centerScaleArea();
-		} else {
-			double iscale = 0;
-			double range = 100;
-			polygon.centerScale(range,iscale);
-		}
+			polygon.scaleArea();
+		} //else {
+		// 	double iscale = 0;
+		// 	double range = 100;
+		// 	polygon.centerScale(range,iscale);
+		// }
 		return polygon;
 	}
 
