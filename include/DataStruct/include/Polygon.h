@@ -93,6 +93,9 @@ namespace correa {
 	*/
 	double Polygon::area()
 	{
+		// for (const auto& v : vertices) {
+		// 	std::cerr << "vertex: (" << v.position.x << ", " << v.position.y << ")" << std::endl;
+		// }
 		double surface = 0.0;
 		Vector2D a,b;
 
@@ -103,7 +106,6 @@ namespace correa {
 		}
 
 		surface *= 0.5;
-
 
 		return surface;
 	}
@@ -281,8 +283,10 @@ namespace correa {
 	*/
   	void Polygon::scaleArea() {
 		std::cout << "scaleArea is called" << std::endl;
-		double scale = sqrt(100/area());
-		std::cout << "scale is " << scale << std::endl;
+		double originalArea = area();
+		std::cerr << "originalArea is " << originalArea << std::endl;
+		double scale = sqrt(100/originalArea);
+		std::cerr << "scale is " << scale << std::endl;
 		for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
 			v->position *= scale;	
 		}
