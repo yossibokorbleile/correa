@@ -51,5 +51,6 @@ NB_MODULE(_correa, m) {
     m.def("print_polygon", &correa::print_polygon);
 	m.def("wasserstein_distance", &correa::wasserstein_distance);
 	m.def("willmore_distance", &correa::willmore_distance);
+	m.def("hera_wasserstein_distance", &correa::hera_wasserstein_distance);
 }
 
