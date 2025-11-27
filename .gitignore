@@ -7,4 +7,7 @@ CPackSourceConfig.cmake
 cmake_install.cmake
 libnanobind-static.a
 *.so
-docs
+docs/
+test.py
+.vscode/
+

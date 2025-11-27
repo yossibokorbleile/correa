@@ -77,7 +77,7 @@ namespace correa{
 		return w_q_dist;
 	};
 	// construct a polygon with focal point center of mass of the vertices supplied
-	auto initialise_polygon(std::string path_to_vertices) {
+	auto initialise_polygon(std::string path_to_vertices, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -88,17 +88,32 @@ namespace correa{
 		X = nullptr;
 
 		inout.read(path_to_vertices, &ndim, &npoint, &X);
-		pbuilder.clean_points(&npoint, X);
-		pbuilder.buildPolygon(npoint, X, polygon);
+		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		if (clean_points) {
+			pbuilder.clean_points(&npoint, X);
+		} else {
+			std::cout << "No cleaning of points" << std::endl;
 		
+		}
+		pbuilder.buildPolygon(npoint, X, polygon);
+		// polygon.labelPolygon(polygon);
+
+		if (convert_to_microns_factor != 1.0) {
+			pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
+		}
+		polygon.originalArea_ = polygon.area();
 		// Center polygon
-		int iscale = 0;
-		double range = 100;
-		polygon.centerScale(range,iscale);
+		if (scale_by_area) {
+			polygon.centerScaleArea();
+		} else {
+			double iscale = 0;
+			double range = 100;
+			polygon.centerScale(range,iscale);
+		}
 		return polygon;
 	} 
 
-	auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point) {
+	auto initialise_polygon(std::string path_to_vertices, std::string path_to_focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -127,14 +142,32 @@ namespace correa{
 			};
 		};
 		Vector2D focal(focal_[0], focal_[1]);
-		pbuilder.clean_points(&npoint, X);
+		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		if (clean_points) {
+			pbuilder.clean_points(&npoint, X);
+		} else {
+			std::cout << "No cleaning of points" << std::endl;
+		
+		}
 		pbuilder.buildPolygon(npoint, X, polygon);
+		
 		// Shift polygon to focal point
 		polygon.shift(focal);
+		if (convert_to_microns_factor != 1.0) {
+			pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
+		}
+		polygon.originalArea_ = polygon.area();
+		if (scale_by_area) {
+			polygon.scaleArea();
+		} // else {
+		// 	double iscale = 0;
+		// 	double range = 100;
+		// 	polygon.centerScale(range,iscale);
+		// }
 		return polygon;
 	}
 
-	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point) {
+	auto initialise_polygon(std::string path_to_vertices, std::vector<double> focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 		PolygonBuilder pbuilder;
 		Polygon polygon;
 		INOUT inout; 
@@ -147,26 +180,44 @@ namespace correa{
 		inout.read(path_to_vertices , &ndim, &npoint, &X);
 		Vector2D focal (focal_point[0], focal_point[1]); 
 		std::cout << "focal is (" << focal.x << ", " << focal.y << ")." << std::endl;
-		pbuilder.clean_points(&npoint, X);
+		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		if (clean_points) {
+			pbuilder.clean_points(&npoint, X);
+		} else {
+			std::cout << "No cleaning of points, so we still have " << npoint << " points" << std::endl;
+		}
+		
 		pbuilder.buildPolygon(npoint, X, polygon);
+		std::cout << "build the polygon with " << npoint << " points" << std::endl;
 		// Shift polygon to focal point
 		polygon.shift(focal);
+		if (convert_to_microns_factor != 1.0) {
+			pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
+		}
+		polygon.originalArea_ = polygon.area();
+		if (scale_by_area) {
+			polygon.scaleArea();
+		} //else {
+		// 	double iscale = 0;
+		// 	double range = 100;
+		// 	polygon.centerScale(range,iscale);
+		// }
 		return polygon;
 	}
 
 
-	 auto load_polygon(std::string file_path) {
-		Polygon polygon = initialise_polygon(file_path);
+	 auto load_polygon(std::string file_path, bool clean_points, bool scale_by_area, double convert_to_microns_factor = 1.0) {
+		Polygon polygon = initialise_polygon(file_path, clean_points, scale_by_area, convert_to_microns_factor);
 		return polygon;
 	}
 
-	auto load_polygon(std::string path_to_vertices, std::string path_to_focal) {
-		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal);
+	auto load_polygon(std::string path_to_vertices, std::string path_to_focal, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
+		Polygon polygon = initialise_polygon(path_to_vertices, path_to_focal, clean_points, scale_by_area, convert_to_microns_factor);
 		return polygon;
 	}
 
-	auto load_polygon(std::string path_to_vertices, std::vector<double> focal) {
-		Polygon polygon = initialise_polygon(path_to_vertices, focal);
+	auto load_polygon(std::string path_to_vertices, std::vector<double> focal, bool clean_points, bool scale_by_area, double convert_to_microns_factor = 1.0) {
+		Polygon polygon = initialise_polygon(path_to_vertices, focal, clean_points, scale_by_area, convert_to_microns_factor);
 		return polygon;
 	}
 
@@ -182,11 +233,20 @@ namespace correa{
 			double willmore_;
 			PersistenceDiagram  persistence_diagram_;
 
-
 		public:
 			Polygon polygon;
-			PyPolygon(std::string file_path) {
-				polygon = load_polygon(file_path);
+			PyPolygon(bool test, std::string file_path, std::vector<double> focal_point, bool scale_by_area, double convert_to_microns_factor) {
+				polygon = load_polygon(file_path, focal_point, test, scale_by_area, convert_to_microns_factor);
+				std::cout << "polygon loaded with test " << test << std::endl;
+				PH0 f(polygon.vertices);
+				f.Persistence();
+				std::cout << "persistence diagram calculated" << std::endl;
+				persistence_diagram_ = f.persistence_diagram();
+			}
+
+			PyPolygon(std::string file_path, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
+				polygon = load_polygon(file_path, clean_points, scale_by_area, convert_to_microns_factor);
+				
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
@@ -209,8 +269,8 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, std::string focal_path) {
-				polygon = load_polygon(file_path, focal_path);
+			PyPolygon(std::string file_path, std::string focal_path, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
+				polygon = load_polygon(file_path, focal_path, clean_points, scale_by_area, convert_to_microns_factor);
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
@@ -233,8 +293,12 @@ namespace correa{
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
-			PyPolygon(std::string file_path, std::vector<double> focal_point) {
-				polygon = load_polygon(file_path, focal_point);
+			PyPolygon(std::string file_path, std::vector<double> focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
+				polygon = load_polygon(file_path, focal_point, clean_points, scale_by_area, convert_to_microns_factor);
+				if (convert_to_microns_factor != 1.0) {
+					PolygonBuilder pbuilder;
+					pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
+				}
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 
@@ -414,6 +478,27 @@ namespace correa{
 				//std::cerr << "willmore enegery is: " << willmore_ << "." << std::endl;
 				return willmore_;
 			};
+
+			/*!
+			* Convert polygon coordinates from pixels to micrometers using the given scale factor
+			* @param scale the scale factor to convert pixels to micrometers
+			*/
+			void convertPixelsToMicrometers(double scale) {
+				PolygonBuilder pbuilder;
+				pbuilder.convertPixelsToMicrometers(polygon, scale);
+				
+				// Recompute persistence diagram after coordinate conversion
+				PH0 f(polygon.vertices);
+				f.Persistence();
+				persistence_diagram_ = f.persistence_diagram();
+			};
+
+			/*!
+			* @return original area of the polygon
+			*/
+			auto originalArea() {
+				return polygon.originalArea();
+			}
 
 			/*!
 			* print information about the polygon

@@ -13,6 +13,7 @@ set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 option(CORREA_BUILD_EXECUTABLES "build executables" OFF)	
 option(CORREA_BUILD_PYTHON_BINDINGS "build python bindings" ON)
 # Boost
+
 find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 find_package(BLAS)
