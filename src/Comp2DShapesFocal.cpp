@@ -19,6 +19,58 @@
 
 
 /* ===============================================================================================
+   Helper function to parse focal point from either file or inline coordinates
+   =============================================================================================== */
+
+Vector2D parse_focal_point(const std::string& focal_input) {
+	std::vector<double> focal_coords;
+
+	// Try to open as a file first
+	std::ifstream infile(focal_input);
+	if (infile.good()) {
+		// Read from file
+		std::string line;
+		double val;
+		while (getline(infile, line)) {
+			size_t start_pos = 0;
+			while ((start_pos = line.find(",", start_pos)) != std::string::npos) {
+				line.replace(start_pos, 1, " ");
+				start_pos += 1;
+			}
+			std::istringstream iss(line);
+			while (iss >> val) {
+				std::cout << "val is " << val << std::endl;
+				focal_coords.push_back(val);
+			}
+		}
+		infile.close();
+	} else {
+		// Parse as inline coordinates (e.g., "698.678,816.662")
+		std::string coords_str = focal_input;
+		size_t start_pos = 0;
+		while ((start_pos = coords_str.find(",", start_pos)) != std::string::npos) {
+			coords_str.replace(start_pos, 1, " ");
+			start_pos += 1;
+		}
+		std::istringstream iss(coords_str);
+		double val;
+		while (iss >> val) {
+			std::cout << "val is " << val << std::endl;
+			focal_coords.push_back(val);
+		}
+	}
+
+	if (focal_coords.size() < 2) {
+		std::cerr << "Error: Could not parse focal point from '" << focal_input << "'" << std::endl;
+		std::cerr << "Expected either a file path or coordinates in format 'x,y'" << std::endl;
+		exit(1);
+	}
+
+	std::cout << "focal is (" << focal_coords[0] << ", " << focal_coords[1] << ")." << std::endl;
+	return Vector2D(focal_coords[0], focal_coords[1]);
+}
+
+/* ===============================================================================================
    Main program
    =============================================================================================== */
 
@@ -67,25 +119,7 @@ int main(int argc, char **argv)
 	X1 = nullptr;
 	inout.read(INfile1, &ndim, &npoint1, &X1);
 
-	std::vector<double> focal_1;
-   	std::ifstream in1(INfocal1);
-   	std::string line;
-   	double val;
-
-   	while (getline(in1, line)){
-			size_t start_pos = 0;
-			while ((start_pos = line.find(",", start_pos)) != std::string::npos)
-			{
-				line.replace(start_pos, 1, " ");
-				start_pos += 1; // Handles case where 'to' is a substring of 'from'
-			}
-       		istringstream iss(line);
-       		while (iss >> val){
-				std::cout << "val is " << val << std::endl;
-          		focal_1.push_back(val);
-   		};
-	};
-	Vector2D focal1(focal_1[0], focal_1[1]);
+	Vector2D focal1 = parse_focal_point(INfocal1);
 
 /*	==========================================================================================
 	Store polygon1 as a polygon
@@ -94,13 +128,13 @@ int main(int argc, char **argv)
 	Polygon polygon1;
 	pbuilder.clean_points(&npoint1, X1);
 	pbuilder.buildPolygon(npoint1, X1, polygon1);
-
+	polygon1.shift(focal1);
 	// Apply pixel-to-micron conversion to polygon 1 and its focal point
 	pbuilder.convertPixelsToMicrometers(polygon1, microns_per_pixel1);
-	focal1.x *= microns_per_pixel1;
-	focal1.y *= microns_per_pixel1;
+	// focal1.x *= microns_per_pixel1;
+	// focal1.y *= microns_per_pixel1;
 
-	polygon1.shift(focal1);
+	
 
 /*	==========================================================================================
 	Read in the polygon2 from input file2
@@ -112,23 +146,7 @@ int main(int argc, char **argv)
 	X2 = nullptr;
 	inout.read(INfile2, &ndim, &npoint2, &X2);
 
-	std::vector<double> focal_2;
-   	std::ifstream in2(INfocal2);
-
-   	while (getline(in2, line)){
-			size_t start_pos = 0;
-			while ((start_pos = line.find(",", start_pos)) != std::string::npos)
-			{
-				line.replace(start_pos, 1, " ");
-				start_pos += 1; // Handles case where 'to' is a substring of 'from'
-			}
-       		istringstream iss(line);
-       		while (iss >> val){
-				std::cout << "val is " << val << std::endl;
-          		focal_2.push_back(val);
-   		};
-	};
-	Vector2D focal2(focal_2[0], focal_2[1]);
+	Vector2D focal2 = parse_focal_point(INfocal2);
 
 /*	==========================================================================================
 	Store polygon2 as a polygon
@@ -137,19 +155,19 @@ int main(int argc, char **argv)
 	Polygon polygon2;
 	pbuilder.clean_points(&npoint2, X2);
 	pbuilder.buildPolygon(npoint2, X2, polygon2);
-
+	polygon2.shift(focal2);
 	// Apply pixel-to-micron conversion to polygon 2 and its focal point
 	pbuilder.convertPixelsToMicrometers(polygon2, microns_per_pixel2);
-	focal2.x *= microns_per_pixel2;
-	focal2.y *= microns_per_pixel2;
+	// focal2.x *= microns_per_pixel2;
+	// focal2.y *= microns_per_pixel2;
 
-	polygon2.shift(focal2);
+	
 
 /*	==========================================================================================
 	Compute distances
 	========================================================================================== */
 
-	double dFrechet, dE_M, dE_m, dE_l, dW, dcOT1;
+	double dFrechet, dE_M, dE_m, dE_l, dW, dcOT1, w_q_dist;
 	double a1_M, b1_M, r1_M, a2_M, b2_M, r2_M;
 	double a1_m, b1_m, r1_m, a2_m, b2_m, r2_m;
 	double a1_l, b1_l, r1_l, a2_l, b2_l, r2_l;
@@ -181,7 +199,7 @@ int main(int argc, char **argv)
 		const std::vector<std::pair<double,double>> pd1 = f1.persistence_diagram();
 		const std::vector<std::pair<double,double>> pd2 = f2.persistence_diagram();
 		const hera::AuctionParams<double> params = hera_params;
-		//double w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
+		w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
 	} else {
 		dFrechet = frechet.dFD(polygon1, polygon2);
 		dE_m = ellipse.dEllipseMin(polygon1, polygon2, &a1_m, &b1_m, &a2_m, &b2_m);
@@ -203,7 +221,7 @@ int main(int argc, char **argv)
 		const std::vector<std::pair<double,double>> pd1 = f1.persistence_diagram();
 		const std::vector<std::pair<double,double>> pd2 = f2.persistence_diagram();
 		const hera::AuctionParams<double> params = hera_params;
-		double w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
+		w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
 	}
 
 /*	==========================================================================================
@@ -290,8 +308,7 @@ int main(int argc, char **argv)
 		std::cout << "Distance (Wasserstein-curvature)                    : " << std::scientific << dcOT1 << std::endl;
 	}
 	if(disttype==3 || disttype == 4) {
-		std::cout << "Distance (2-Wasserstein between persitence diagrams): i need to figure out how hera works" <<  std::endl;
-	
+		std::cout << "Distance (2-Wasserstein between persitence diagrams): " << w_q_dist << std::endl;
 	}
 	
 	return 0;
@@ -315,9 +332,9 @@ static void usage(char** argv)
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     Required arguments:                                                                      ="<<std::endl;
     std::cout << "     " << "=               -i1 FILE1     --> Input file 1 (Curve; ascii or csv file with 1 point / line)  ="<<std::endl;
-    std::cout << "     " << "=               -f1 FOCAL1    --> Focal point 1 (Point; ascii or csv file with 1 point)        ="<<std::endl;
+    std::cout << "     " << "=               -f1 FOCAL1    --> Focal point 1 (file path or inline coords like \"x,y\")        ="<<std::endl;
 	std::cout << "     " << "=               -i2 FILE2     --> Input file 2 (Curve; ascii or csv file with 1 point / line)  ="<<std::endl;
-	std::cout << "     " << "=               -f2 FOCAL2    --> Focal point 2 (Point; ascii or csv file with 1 point)        ="<<std::endl;
+	std::cout << "     " << "=               -f2 FOCAL2    --> Focal point 2 (file path or inline coords like \"x,y\")        ="<<std::endl;
     std::cout << "     " << "=               -d disttype   --> Distance type flag:                                          ="<<std::endl;
     std::cout << "     " << "=                                   (0) Frechet distance                                       ="<<std::endl;
     std::cout << "     " << "=                                   (1) Aspect ratio distances (based on ellipses)             ="<<std::endl;

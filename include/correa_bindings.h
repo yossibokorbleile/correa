@@ -295,10 +295,7 @@ namespace correa{
 
 			PyPolygon(std::string file_path, std::vector<double> focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 				polygon = load_polygon(file_path, focal_point, clean_points, scale_by_area, convert_to_microns_factor);
-				if (convert_to_microns_factor != 1.0) {
-					PolygonBuilder pbuilder;
-					pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
-				}
+			// Conversion already done in load_polygon -> initialise_polygon, dont do it twice!
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 

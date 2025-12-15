@@ -50,8 +50,10 @@ int main(int argc, char **argv)
 	std::string INfile1;
 	std::string INfile2;
 	int disttype = 0;
+	double microns_per_pixel1 = 1.0; // default: no conversion (1 pixel = 1 micron)
+	double microns_per_pixel2 = 1.0; // default: no conversion (1 pixel = 1 micron)
 
-        if (!parse_args(argc, argv, &INfile1, &INfile2, &disttype)) return 1;
+        if (!parse_args(argc, argv, &INfile1, &INfile2, &disttype, &microns_per_pixel1, &microns_per_pixel2)) return 1;
 
 /*	==========================================================================================
 	Read in the polygon1 from input file1
@@ -71,6 +73,9 @@ int main(int argc, char **argv)
 	Polygon polygon1;
 	pbuilder.clean_points(&npoint1, X1);
 	pbuilder.buildPolygon(npoint1, X1, polygon1);
+
+	// Apply pixel-to-micron conversion
+	pbuilder.convertPixelsToMicrometers(polygon1, microns_per_pixel1);
 
 	// Center polygon
 	int iscale = 0;
@@ -95,6 +100,9 @@ int main(int argc, char **argv)
 	pbuilder.clean_points(&npoint2, X2);
 	pbuilder.buildPolygon(npoint2, X2, polygon2);
 
+	// Apply pixel-to-micron conversion
+	pbuilder.convertPixelsToMicrometers(polygon2, microns_per_pixel2);
+
 	// Center polygon
 	iscale = 0;
 	range = 100;
@@ -104,7 +112,7 @@ int main(int argc, char **argv)
 	Compute distances
 	========================================================================================== */
 
-	double dFrechet, dE_M, dE_m, dE_l, dW, dcOT1;
+	double dFrechet, dE_M, dE_m, dE_l, dW, dcOT1, w_q_dist;
 	double a1_M, b1_M, r1_M, a2_M, b2_M, r2_M;
 	double a1_m, b1_m, r1_m, a2_m, b2_m, r2_m;
 	double a1_l, b1_l, r1_l, a2_l, b2_l, r2_l;
@@ -136,7 +144,7 @@ int main(int argc, char **argv)
 		const std::vector<std::pair<double,double>> pd1 = f1.persistence_diagram();
 		const std::vector<std::pair<double,double>> pd2 = f2.persistence_diagram();
 		const hera::AuctionParams<double> params = hera_params;
-		//double w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
+		w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
 	} else {
 		dFrechet = frechet.dFD(polygon1, polygon2);
 		dE_m = ellipse.dEllipseMin(polygon1, polygon2, &a1_m, &b1_m, &a2_m, &b2_m);
@@ -158,7 +166,7 @@ int main(int argc, char **argv)
 		const std::vector<std::pair<double,double>> pd1 = f1.persistence_diagram();
 		const std::vector<std::pair<double,double>> pd2 = f2.persistence_diagram();
 		const hera::AuctionParams<double> params = hera_params;
-		double w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
+		w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
 	}
 
 /*	==========================================================================================
@@ -245,8 +253,7 @@ int main(int argc, char **argv)
 		std::cout << "Distance (Wasserstein-curvature)                    : " << std::scientific << dcOT1 << std::endl;
 	}
 	if(disttype==3 || disttype == 4) {
-		std::cout << "Distance (2-Wasserstein between persitence diagrams): i need to figure out how hera works" <<  std::endl;
-	
+		std::cout << "Distance (2-Wasserstein between persitence diagrams): " << w_q_dist << std::endl;
 	}
 	
 	return 0;
@@ -266,7 +273,7 @@ static void usage(char** argv)
     std::cout << "     " << "=                                  Comp2DShapes                                                ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     Usage is:                                                                                ="<<std::endl;
-    std::cout << "     " << "=          Comp2DShapes -i1 FILE1 -i2 FILE2 -d disttype                                        ="<<std::endl;
+    std::cout << "     " << "=          Comp2DShapes -i1 FILE1 -i2 FILE2 -d disttype [-mpp VALUE | -mpp1 V1 -mpp2 V2]      ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     where:                                                                                   ="<<std::endl;
     std::cout << "     " << "=               -c1 FILE1     --> Input file (Curve; ascii or csv file with 1 point / line)    ="<<std::endl;
@@ -277,6 +284,9 @@ static void usage(char** argv)
     std::cout << "     " << "=                                   (2) Curvature-based distances                              ="<<std::endl;
     std::cout << "     " << "=                                   (3) 2-Wasserstein distance between persistence diagrams    ="<<std::endl;
     std::cout << "     " << "=                                   (4) All                                                    ="<<std::endl;
+    std::cout << "     " << "=               -mpp VALUE    --> Microns per pixel (applies to both polygons, default: 1.0)   ="<<std::endl;
+    std::cout << "     " << "=               -mpp1 VALUE   --> Microns per pixel for polygon 1 (default: 1.0)               ="<<std::endl;
+    std::cout << "     " << "=               -mpp2 VALUE   --> Microns per pixel for polygon 2 (default: 1.0)               ="<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "\n\n" <<std::endl;
@@ -287,7 +297,7 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
-bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, int *disttype)
+bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, int *disttype, double *microns_per_pixel1, double *microns_per_pixel2)
 {
 //
 // Make sure we have at least two parameters....
@@ -311,6 +321,18 @@ bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, i
 			}
 			if (param == "-d") {
 				*disttype = std::atoi(argv[i + 1]);
+			}
+			if (param == "-mpp1") {
+				*microns_per_pixel1 = std::atof(argv[i + 1]);
+			}
+			if (param == "-mpp2") {
+				*microns_per_pixel2 = std::atof(argv[i + 1]);
+			}
+			// Backward compatibility: if -mpp is used, apply to both
+			if (param == "-mpp") {
+				double mpp = std::atof(argv[i + 1]);
+				*microns_per_pixel1 = mpp;
+				*microns_per_pixel2 = mpp;
 			}
 		}
   	}
