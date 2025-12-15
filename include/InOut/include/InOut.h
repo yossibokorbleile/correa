@@ -89,7 +89,7 @@ namespace correa {
 
 	*Coord = new double[n1*n2];
 	readPoints(input, n1, n2, *Coord);
-
+	std::cout << "Number of points loaded: " << n2 << std::endl;
 	input.close();
 
   }

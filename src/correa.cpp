@@ -22,10 +22,11 @@ NB_MODULE(_correa, m) {
 	* Bind PyPolygon
 	*/
     nb::class_<correa::PyPolygon>(m, "PyPolygon")
-        .def(nb::init<const std::string &>())
-		.def(nb::init<const std::string &, const std::string&>())
-		.def(nb::init<const std::string &, const std::vector<double>>())
-        //.def("extractVertices", &correa::PyPolygon::extractVertices)
+        .def(nb::init<const std::string , const bool&, const bool&, const double&>())
+		.def(nb::init<const std::string &, const std::string&, const bool&, const bool&, const double&>())
+		.def(nb::init<const std::string &, const std::vector<double>, const bool&, const bool&, const double&>())
+		.def(nb::init<const bool&, const std::string &,  const std::vector<double>, const bool&, const double&>())
+		.def(nb::init<const bool&, const std::string &,  const std::vector<double>, const bool&, const double&>())
         .def("vertices", &correa::PyPolygon::vertices)
         .def("ellipse_min_a", &correa::PyPolygon::ellipse_min_a)
 		.def("ellipse_min_b", &correa::PyPolygon::ellipse_min_b)
@@ -40,7 +41,10 @@ NB_MODULE(_correa, m) {
 		.def("ellipse_lsq_ratio", &correa::PyPolygon::ellipse_lsq_ratio)
         .def("willmore", &correa::PyPolygon::willmore)
         .def("size", &correa::PyPolygon::size)
-        .def("persistence_diagram", &correa::PyPolygon::persistence_diagram);
+		.def("area", &correa::PyPolygon::area)
+        .def("persistence_diagram", &correa::PyPolygon::persistence_diagram)
+        .def("convertPixelsToMicrometers", &correa::PyPolygon::convertPixelsToMicrometers)
+		.def("originalArea", &correa::PyPolygon::originalArea);	
 
     m.def("compare_polygons", &correa::compare_polygons);
 	m.def("curv_ot_distance", &correa::curv_ot_distance);
