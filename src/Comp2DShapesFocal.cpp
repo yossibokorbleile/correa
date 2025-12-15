@@ -51,8 +51,9 @@ int main(int argc, char **argv)
 	std::string INfocal1;
 	std::string INfocal2;
 	int disttype = 0;
+	double microns_per_pixel = 1.0; // default: no conversion (1 pixel = 1 micron)
 
-        if (!parse_args(argc, argv, &INfile1, &INfocal1, &INfile2, &INfocal2, &disttype)) return 1;
+        if (!parse_args(argc, argv, &INfile1, &INfocal1, &INfile2, &INfocal2, &disttype, &microns_per_pixel)) return 1;
 
 /*	==========================================================================================
 	Read in the polygon1 from input file1
@@ -64,6 +65,11 @@ int main(int argc, char **argv)
 	double *X1;
 	X1 = nullptr;
 	inout.read(INfile1, &ndim, &npoint1, &X1);
+
+	// Apply pixel-to-micron conversion to vertices
+	for (int i = 0; i < npoint1 * ndim; i++) {
+		X1[i] *= microns_per_pixel;
+	}
 
 	std::vector<double> focal_1;
    	std::ifstream in1(INfocal1);
@@ -83,7 +89,8 @@ int main(int argc, char **argv)
           		focal_1.push_back(val);
    		};
 	};
-	Vector2D focal1(focal_1[0], focal_1[1]);
+	// Apply pixel-to-micron conversion to focal point
+	Vector2D focal1(focal_1[0] * microns_per_pixel, focal_1[1] * microns_per_pixel);
 
 /*	==========================================================================================
 	Store polygon1 as a polygon
@@ -95,11 +102,6 @@ int main(int argc, char **argv)
 
 	polygon1.shift(focal1);
 
-	// Center polygon
-	int iscale = 0;
-	double range = 100;
-	polygon1.centerScale(range,iscale);
-
 /*	==========================================================================================
 	Read in the polygon2 from input file2
 	========================================================================================== */
@@ -109,6 +111,11 @@ int main(int argc, char **argv)
 	double *X2;
 	X2 = nullptr;
 	inout.read(INfile2, &ndim, &npoint2, &X2);
+
+	// Apply pixel-to-micron conversion to vertices
+	for (int i = 0; i < npoint2 * ndim; i++) {
+		X2[i] *= microns_per_pixel;
+	}
 
 	std::vector<double> focal_2;
    	std::ifstream in2(INfocal2);
@@ -126,7 +133,8 @@ int main(int argc, char **argv)
           		focal_2.push_back(val);
    		};
 	};
-	Vector2D focal2(focal_2[0], focal_2[1]);
+	// Apply pixel-to-micron conversion to focal point
+	Vector2D focal2(focal_2[0] * microns_per_pixel, focal_2[1] * microns_per_pixel);
 
 /*	==========================================================================================
 	Store polygon2 as a polygon
@@ -137,10 +145,6 @@ int main(int argc, char **argv)
 	pbuilder.buildPolygon(npoint2, X2, polygon2);
 
 	polygon2.shift(focal2);
-	// Center polygon
-	iscale = 0;
-	range = 100;
-	polygon2.centerScale(range,iscale);
 
 /*	==========================================================================================
 	Compute distances
@@ -308,7 +312,7 @@ static void usage(char** argv)
     std::cout << "     " << "=                                  Comp2DShapes                                                ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     Usage is:                                                                                ="<<std::endl;
-    std::cout << "     " << "=          Comp2DShapes -i1 FILE1 -f1 FOCAL1 -i2 FILE2 -f2 FILE2 -d disttype                   ="<<std::endl;
+    std::cout << "     " << "=          Comp2DShapes -i1 FILE1 -f1 FOCAL1 -i2 FILE2 -f2 FILE2 -d disttype [-mpp VALUE]      ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     where:                                                                                   ="<<std::endl;
     std::cout << "     " << "=               -c1 FILE1     --> Input file (Curve; ascii or csv file with 1 point / line)    ="<<std::endl;
@@ -321,6 +325,7 @@ static void usage(char** argv)
     std::cout << "     " << "=                                   (2) Curvature-based distances                              ="<<std::endl;
     std::cout << "     " << "=                                   (3) 2-Wasserstein distance between persistence diagrams    ="<<std::endl;
     std::cout << "     " << "=                                   (4) All                                                    ="<<std::endl;
+    std::cout << "     " << "=               -mpp VALUE    --> Microns per pixel (default: 1.0, no conversion)              ="<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "\n\n" <<std::endl;
@@ -331,7 +336,7 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
-bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype)
+bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype, double *microns_per_pixel)
 {
 //
 // Make sure we have at least two parameters....
@@ -361,6 +366,9 @@ bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, 
 			}
 			if (param == "-f2") {
 				*focal2 = argv[i + 1];
+			}
+			if (param == "-mpp") {
+				*microns_per_pixel = std::atof(argv[i + 1]);
 			}
 		}
   	}

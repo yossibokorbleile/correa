@@ -114,6 +114,14 @@ def willmore_distance(poly1 : _correa.PyPolygon, poly2 : _correa.PyPolygon):
 	"""
 	return _correa.willmore_distance(poly1, poly2)
 
+def hera_wasserstein_distance(pd1 : list[tuple[float, float]], pd2 : list[tuple[float, float]], q=2):
+	"""!	Given two persistence diagrams (pd1, pd2), calculate the hera wasserstein distance between them.
+			@param pd1 	first persistence diagram to compare.
+			@param pd2	second persistence diagram to compare.
+			@return 		distance.
+	"""
+	return _correa.hera_wasserstein_distance(pd1, pd2, q)
+
 def plot_persistence_diagram(poly : _correa.PyPolygon):
 	"""!	Plot the persistence diagram of a polygon.
 			@param poly the polygon you want to plot the persistence diagram of.
@@ -144,6 +152,5 @@ def test_sensitivity_polygon(poly_path : str, focal_point : list[float], scale_b
 	diff = _correa.wasserstein_distance(c_no_clean, c_clean, 2)
 	print("persistence diagram calculated")
 	return diff, c_no_clean, c_clean
-
 
 
