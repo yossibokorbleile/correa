@@ -51,8 +51,10 @@ int main(int argc, char **argv)
 	std::string INfocal1;
 	std::string INfocal2;
 	int disttype = 0;
+	double microns_per_pixel1 = 1.0; // default: no conversion (1 pixel = 1 micron)
+	double microns_per_pixel2 = 1.0; // default: no conversion (1 pixel = 1 micron)
 
-        if (!parse_args(argc, argv, &INfile1, &INfocal1, &INfile2, &INfocal2, &disttype)) return 1;
+        if (!parse_args(argc, argv, &INfile1, &INfocal1, &INfile2, &INfocal2, &disttype, &microns_per_pixel1, &microns_per_pixel2)) return 1;
 
 /*	==========================================================================================
 	Read in the polygon1 from input file1
@@ -93,12 +95,12 @@ int main(int argc, char **argv)
 	pbuilder.clean_points(&npoint1, X1);
 	pbuilder.buildPolygon(npoint1, X1, polygon1);
 
-	polygon1.shift(focal1);
+	// Apply pixel-to-micron conversion to polygon 1 and its focal point
+	pbuilder.convertPixelsToMicrometers(polygon1, microns_per_pixel1);
+	focal1.x *= microns_per_pixel1;
+	focal1.y *= microns_per_pixel1;
 
-	// Center polygon
-	int iscale = 0;
-	double range = 100;
-	polygon1.centerScale(range,iscale);
+	polygon1.shift(focal1);
 
 /*	==========================================================================================
 	Read in the polygon2 from input file2
@@ -136,11 +138,12 @@ int main(int argc, char **argv)
 	pbuilder.clean_points(&npoint2, X2);
 	pbuilder.buildPolygon(npoint2, X2, polygon2);
 
+	// Apply pixel-to-micron conversion to polygon 2 and its focal point
+	pbuilder.convertPixelsToMicrometers(polygon2, microns_per_pixel2);
+	focal2.x *= microns_per_pixel2;
+	focal2.y *= microns_per_pixel2;
+
 	polygon2.shift(focal2);
-	// Center polygon
-	iscale = 0;
-	range = 100;
-	polygon2.centerScale(range,iscale);
 
 /*	==========================================================================================
 	Compute distances
@@ -304,22 +307,30 @@ static void usage(char** argv)
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
-    std::cout << "     " << "=                                  Comp2DShapes                                                ="<<std::endl;
+    std::cout << "     " << "=                                Comp2DShapesFocal                                             ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     Usage is:                                                                                ="<<std::endl;
-    std::cout << "     " << "=          Comp2DShapes -i1 FILE1 -f1 FOCAL1 -i2 FILE2 -f2 FILE2 -d disttype                   ="<<std::endl;
+    std::cout << "     " << "=          Comp2DShapesFocal -i1 FILE1 -f1 FOCAL1 -i2 FILE2 -f2 FOCAL2 -d disttype [options]  ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
-    std::cout << "     " << "=     where:                                                                                   ="<<std::endl;
-    std::cout << "     " << "=               -c1 FILE1     --> Input file (Curve; ascii or csv file with 1 point / line)    ="<<std::endl;
-    std::cout << "     " << "=               -f1 FILE2     --> Input file (Point; ascii or csv file with 1 point, 1 line)   ="<<std::endl;
-	std::cout << "     " << "=               -c2 FILE3     --> Input file (Curve; ascii or csv file with 1 point / line)    ="<<std::endl;
-	std::cout << "     " << "=               -f2 FILE4     --> Input file (Point; ascii or csv file with 1 point, 1 line)   ="<<std::endl;
-    std::cout << "     " << "=               -d disttype   --> Flag:                                                        ="<<std::endl;
+    std::cout << "     " << "=     Required arguments:                                                                      ="<<std::endl;
+    std::cout << "     " << "=               -i1 FILE1     --> Input file 1 (Curve; ascii or csv file with 1 point / line)  ="<<std::endl;
+    std::cout << "     " << "=               -f1 FOCAL1    --> Focal point 1 (Point; ascii or csv file with 1 point)        ="<<std::endl;
+	std::cout << "     " << "=               -i2 FILE2     --> Input file 2 (Curve; ascii or csv file with 1 point / line)  ="<<std::endl;
+	std::cout << "     " << "=               -f2 FOCAL2    --> Focal point 2 (Point; ascii or csv file with 1 point)        ="<<std::endl;
+    std::cout << "     " << "=               -d disttype   --> Distance type flag:                                          ="<<std::endl;
     std::cout << "     " << "=                                   (0) Frechet distance                                       ="<<std::endl;
     std::cout << "     " << "=                                   (1) Aspect ratio distances (based on ellipses)             ="<<std::endl;
     std::cout << "     " << "=                                   (2) Curvature-based distances                              ="<<std::endl;
     std::cout << "     " << "=                                   (3) 2-Wasserstein distance between persistence diagrams    ="<<std::endl;
     std::cout << "     " << "=                                   (4) All                                                    ="<<std::endl;
+    std::cout << "     " << "=                                                                                              ="<<std::endl;
+    std::cout << "     " << "=     Optional arguments:                                                                      ="<<std::endl;
+    std::cout << "     " << "=               -mpp VALUE    --> Microns per pixel for both contours (default: 1.0)           ="<<std::endl;
+    std::cout << "     " << "=               -mpp1 VALUE   --> Microns per pixel for contour 1 (default: 1.0)               ="<<std::endl;
+    std::cout << "     " << "=               -mpp2 VALUE   --> Microns per pixel for contour 2 (default: 1.0)               ="<<std::endl;
+    std::cout << "     " << "=                                                                                              ="<<std::endl;
+    std::cout << "     " << "=     Note: Use -mpp1 and -mpp2 to specify different scales for each contour                   ="<<std::endl;
+    std::cout << "     " << "=           (useful when contours are from different imaging sessions/magnifications)          ="<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "\n\n" <<std::endl;
@@ -330,7 +341,7 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
-bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype)
+bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype, double *microns_per_pixel1, double *microns_per_pixel2)
 {
 //
 // Make sure we have at least two parameters....
@@ -360,6 +371,18 @@ bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, 
 			}
 			if (param == "-f2") {
 				*focal2 = argv[i + 1];
+			}
+			if (param == "-mpp1") {
+				*microns_per_pixel1 = std::atof(argv[i + 1]);
+			}
+			if (param == "-mpp2") {
+				*microns_per_pixel2 = std::atof(argv[i + 1]);
+			}
+			// Backward compatibility: if -mpp is used, apply to both
+			if (param == "-mpp") {
+				double mpp = std::atof(argv[i + 1]);
+				*microns_per_pixel1 = mpp;
+				*microns_per_pixel2 = mpp;
 			}
 		}
   	}
