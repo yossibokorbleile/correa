@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 	Compute distances
 	========================================================================================== */
 
-	double dFrechet, dE_M, dE_m, dE_l, dW, dcOT1;
+	double dFrechet, dE_M, dE_m, dE_l, dW, dcOT1, w_q_dist;
 	double a1_M, b1_M, r1_M, a2_M, b2_M, r2_M;
 	double a1_m, b1_m, r1_m, a2_m, b2_m, r2_m;
 	double a1_l, b1_l, r1_l, a2_l, b2_l, r2_l;
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
 		const std::vector<std::pair<double,double>> pd1 = f1.persistence_diagram();
 		const std::vector<std::pair<double,double>> pd2 = f2.persistence_diagram();
 		const hera::AuctionParams<double> params = hera_params;
-		//double w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
+		w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
 	} else {
 		dFrechet = frechet.dFD(polygon1, polygon2);
 		dE_m = ellipse.dEllipseMin(polygon1, polygon2, &a1_m, &b1_m, &a2_m, &b2_m);
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
 		const std::vector<std::pair<double,double>> pd1 = f1.persistence_diagram();
 		const std::vector<std::pair<double,double>> pd2 = f2.persistence_diagram();
 		const hera::AuctionParams<double> params = hera_params;
-		double w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
+		w_q_dist = hera::wasserstein_dist<std::vector<std::pair<double,double>>>(pd1, pd2, params);
 	}
 
 /*	==========================================================================================
@@ -287,8 +287,7 @@ int main(int argc, char **argv)
 		std::cout << "Distance (Wasserstein-curvature)                    : " << std::scientific << dcOT1 << std::endl;
 	}
 	if(disttype==3 || disttype == 4) {
-		std::cout << "Distance (2-Wasserstein between persitence diagrams): i need to figure out how hera works" <<  std::endl;
-	
+		std::cout << "Distance (2-Wasserstein between persitence diagrams): " << w_q_dist << std::endl;
 	}
 	
 	return 0;
