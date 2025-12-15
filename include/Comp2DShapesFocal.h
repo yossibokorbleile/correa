@@ -65,6 +65,6 @@ Curvature curv;
    =============================================================================================== */
 
 static void usage(char** argv);
-bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype, double *microns_per_pixel);
+bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype, double *microns_per_pixel1, double *microns_per_pixel2);
 
 #endif
