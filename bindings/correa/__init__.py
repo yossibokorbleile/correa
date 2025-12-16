@@ -144,13 +144,19 @@ def only_persistence_polygon(poly_path : str, focal_point : list[float], clean_p
 	return _correa.PyPolygon(clean_points, poly_path, focal_point, scale_by_area, convert_to_microns_factor)
 
 def test_sensitivity_polygon(poly_path : str, focal_point : list[float], scale_by_area : bool = False, convert_to_microns_factor : float = 1.0):
-	print("loading polygon")
 	c_clean = _correa.PyPolygon(True, poly_path, focal_point, scale_by_area, convert_to_microns_factor)
-	print("polygon loaded")
 	c_no_clean = _correa.PyPolygon(False, poly_path, focal_point, scale_by_area, convert_to_microns_factor)
-	print("polygon loaded")
 	diff = _correa.wasserstein_distance(c_no_clean, c_clean, 2)
-	print("persistence diagram calculated")
 	return diff, c_no_clean, c_clean
+
+
+def set_verbose(flag: bool = True) -> None:
+	"""Enable or disable verbose C++ logging for debugging."""
+	_correa.set_verbose(bool(flag))
+
+
+def get_verbose() -> bool:
+	"""Return current C++ verbosity flag."""
+	return bool(_correa.get_verbose())
 
 

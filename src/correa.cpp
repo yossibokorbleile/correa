@@ -56,5 +56,9 @@ NB_MODULE(_correa, m) {
 	m.def("wasserstein_distance", &correa::wasserstein_distance);
 	m.def("willmore_distance", &correa::willmore_distance);
 	m.def("hera_wasserstein_distance", &correa::hera_wasserstein_distance);
+
+	// Verbosity controls
+	m.def("set_verbose", &correa::set_verbose, "Enable or disable verbose logging from C++ bindings");
+	m.def("get_verbose", &correa::get_verbose, "Return current verbosity flag of C++ bindings");
 }
 

@@ -52,8 +52,9 @@ int main(int argc, char **argv)
 	int disttype = 0;
 	double microns_per_pixel1 = 1.0; // default: no conversion (1 pixel = 1 micron)
 	double microns_per_pixel2 = 1.0; // default: no conversion (1 pixel = 1 micron)
+	bool verbose = false; // default: no verbose output
 
-        if (!parse_args(argc, argv, &INfile1, &INfile2, &disttype, &microns_per_pixel1, &microns_per_pixel2)) return 1;
+        if (!parse_args(argc, argv, &INfile1, &INfile2, &disttype, &microns_per_pixel1, &microns_per_pixel2, &verbose)) return 1;
 
 /*	==========================================================================================
 	Read in the polygon1 from input file1
@@ -178,27 +179,29 @@ int main(int argc, char **argv)
 	double l1 = polygon1.length();
 	double A1 = polygon1.area();
 
-	std::cout << " " << std::endl;
-	std::cout << "Polygon 1 : " << std::endl;
-	std::cout << "===========" << std::endl;
-	std::cout << "Number of points in polygon       : " << npoint1 << std::endl;
-	std::cout << "Length of polygon                 : " << l1 << std::endl;
-	std::cout << "Area of polygon                   : " << A1 << std::endl;
-	std::cout << "Sphericity (4*Pi*Area/L^2)        : " << 4*M_PI*A1/(l1*l1) << std::endl;
-	if(disttype==1 || disttype==4) {
-		std::cout << "Maximum volume inscribed ellipse  : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a1_M << " b : " << b1_M << " Aspect ratio: " << r1_M << std::endl;
-		std::cout << "Minimum volume inscribing ellipse : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a1_m << " b : " << b1_m << " Aspect ratio: " << r1_m << std::endl;
-		std::cout << "Least square ellipse              : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a1_l << " b : " << b1_l << " Aspect ratio: " << r1_l << std::endl;
-	}
-	if(disttype==2 || disttype==4) {
-		std::cout << "Willmore energy of polygon        : " << willmore1 << std::endl;
-	}
-	if(disttype==3 || disttype==4) {
-		std::cout << "Persistence diagram of polygon 1  : ";
-		std::cout<< "There are " << f1.persistence_diagram().size() << " points in the persistence diagram." << std::endl;
-		for (int i = 0; i < f1.persistence_diagram().size(); i++){
-			std::cout << "(" << get<0>(f1.persistence_diagram()[i]) << ", " << get<1>(f1.persistence_diagram()[i]) << ")" << std::endl;
-		};
+	if (verbose) {
+		std::cout << " " << std::endl;
+		std::cout << "Polygon 1 : " << std::endl;
+		std::cout << "===========" << std::endl;
+		std::cout << "Number of points in polygon       : " << npoint1 << std::endl;
+		std::cout << "Length of polygon                 : " << l1 << std::endl;
+		std::cout << "Area of polygon                   : " << A1 << std::endl;
+		std::cout << "Sphericity (4*Pi*Area/L^2)        : " << 4*M_PI*A1/(l1*l1) << std::endl;
+		if(disttype==1 || disttype==4) {
+			std::cout << "Maximum volume inscribed ellipse  : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a1_M << " b : " << b1_M << " Aspect ratio: " << r1_M << std::endl;
+			std::cout << "Minimum volume inscribing ellipse : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a1_m << " b : " << b1_m << " Aspect ratio: " << r1_m << std::endl;
+			std::cout << "Least square ellipse              : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a1_l << " b : " << b1_l << " Aspect ratio: " << r1_l << std::endl;
+		}
+		if(disttype==2 || disttype==4) {
+			std::cout << "Willmore energy of polygon        : " << willmore1 << std::endl;
+		}
+		if(disttype==3 || disttype==4) {
+			std::cout << "Persistence diagram of polygon 1  : ";
+			std::cout<< "There are " << f1.persistence_diagram().size() << " points in the persistence diagram." << std::endl;
+			for (int i = 0; i < f1.persistence_diagram().size(); i++){
+				std::cout << "(" << get<0>(f1.persistence_diagram()[i]) << ", " << get<1>(f1.persistence_diagram()[i]) << ")" << std::endl;
+			};
+		}
 	}
 
 	// Info on polygon 2:
@@ -206,54 +209,56 @@ int main(int argc, char **argv)
 	double l2 = polygon2.length();
 	double A2 = polygon2.area();
 
-	std::cout << " " << std::endl;
-	std::cout << "Polygon 2 : " << std::endl;
-	std::cout << "===========" << std::endl;
-	std::cout << "Number of points in polygon       : " << npoint2 << std::endl;
-	std::cout << "Length of polygon                 : " << l2 << std::endl;
-	std::cout << "Area of polygon                   : " << A2 << std::endl;
-	std::cout << "Sphericity (4*Pi*Area/L^2)        : " << 4*M_PI*A2/(l2*l2) << std::endl;
-	if(disttype==1 || disttype==4) {
-		std::cout << "Maximum volume inscribed ellipse  : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a2_M << " b : " << b2_M << " Aspect ratio: " << r2_M << std::endl;
-		std::cout << "Minimum volume inscribing ellipse : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a2_m << " b : " << b2_m << " Aspect ratio: " << r2_m << std::endl;
-		std::cout << "Least square ellipse              : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a2_l << " b : " << b2_l << " Aspect ratio: " << r2_l << std::endl;
-	}
-	if(disttype==2 || disttype==4) {
-		std::cout << "Willmore energy of polygon        : " << willmore2 << std::endl;
-	}
-	if(disttype==3 || disttype==4) {
-		std::cout << "Persistence diagram of polygon 2  : ";
-		std::cout<< "There are " << f2.persistence_diagram().size() << " points in the persistence diagram." << std::endl;
-		for (int i = 0; i < f2.persistence_diagram().size(); i++){
-			std::cout << "(" << get<1>(f2.persistence_diagram()[i]) << ", " << get<1>(f2.persistence_diagram()[i]) << ")" << std::endl;
-		};
-	}
+	if (verbose) {
+		std::cout << " " << std::endl;
+		std::cout << "Polygon 2 : " << std::endl;
+		std::cout << "===========" << std::endl;
+		std::cout << "Number of points in polygon       : " << npoint2 << std::endl;
+		std::cout << "Length of polygon                 : " << l2 << std::endl;
+		std::cout << "Area of polygon                   : " << A2 << std::endl;
+		std::cout << "Sphericity (4*Pi*Area/L^2)        : " << 4*M_PI*A2/(l2*l2) << std::endl;
+		if(disttype==1 || disttype==4) {
+			std::cout << "Maximum volume inscribed ellipse  : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a2_M << " b : " << b2_M << " Aspect ratio: " << r2_M << std::endl;
+			std::cout << "Minimum volume inscribing ellipse : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a2_m << " b : " << b2_m << " Aspect ratio: " << r2_m << std::endl;
+			std::cout << "Least square ellipse              : a : " << std::setw(7) << std::fixed << std::setprecision(3) << a2_l << " b : " << b2_l << " Aspect ratio: " << r2_l << std::endl;
+		}
+		if(disttype==2 || disttype==4) {
+			std::cout << "Willmore energy of polygon        : " << willmore2 << std::endl;
+		}
+		if(disttype==3 || disttype==4) {
+			std::cout << "Persistence diagram of polygon 2  : ";
+			std::cout<< "There are " << f2.persistence_diagram().size() << " points in the persistence diagram." << std::endl;
+			for (int i = 0; i < f2.persistence_diagram().size(); i++){
+				std::cout << "(" << get<1>(f2.persistence_diagram()[i]) << ", " << get<1>(f2.persistence_diagram()[i]) << ")" << std::endl;
+			};
+		}
 
-	std::cout << " " << std::endl;
+		std::cout << " " << std::endl;
 
-	std::cout << std::setw(10) << std::fixed << std::setprecision(5);
+		std::cout << std::setw(10) << std::fixed << std::setprecision(5);
 
-	// Distances between the two polygons
-	std::cout << " " << std::endl;
-	std::cout << "Distances between the 2 polygons : " << std::endl;
-	std::cout << "===================================" << std::endl;
-	std::cout << "Sphericity 4*Pi*(A1/l1^2 - A2/l2^2) : " << 4*M_PI*std::abs(A1/(l1*l1)-A2/(l2*l2)) << std::endl;
-	if(disttype==0 || disttype == 4) {
-		std::cout << "Frechet distance                                    : " << dFrechet << std::endl;
-	}
-	if(disttype==1 || disttype == 4) {
-		std::cout << "Distance (inscribed ellipse)                        : " << dE_M << std::endl;
-		std::cout << "Distance (inscribing ellipse)                       : " << dE_m << std::endl;
-		std::cout << "Distance (least square ellipse)                     : " << dE_l << std::endl;
-	}
-	if(disttype==2 || disttype == 4) {
-		std::cout << "Distance (Willmore)                                 : " << dW << std::endl;
-	}
-	if(disttype == 4) {
-		std::cout << "Distance (Wasserstein-curvature)                    : " << std::scientific << dcOT1 << std::endl;
-	}
-	if(disttype==3 || disttype == 4) {
-		std::cout << "Distance (2-Wasserstein between persitence diagrams): " << w_q_dist << std::endl;
+		// Distances between the two polygons
+		std::cout << " " << std::endl;
+		std::cout << "Distances between the 2 polygons : " << std::endl;
+		std::cout << "===================================" << std::endl;
+		std::cout << "Sphericity 4*Pi*(A1/l1^2 - A2/l2^2) : " << 4*M_PI*std::abs(A1/(l1*l1)-A2/(l2*l2)) << std::endl;
+		if(disttype==0 || disttype == 4) {
+			std::cout << "Frechet distance                                    : " << dFrechet << std::endl;
+		}
+		if(disttype==1 || disttype == 4) {
+			std::cout << "Distance (inscribed ellipse)                        : " << dE_M << std::endl;
+			std::cout << "Distance (inscribing ellipse)                       : " << dE_m << std::endl;
+			std::cout << "Distance (least square ellipse)                     : " << dE_l << std::endl;
+		}
+		if(disttype==2 || disttype == 4) {
+			std::cout << "Distance (Willmore)                                 : " << dW << std::endl;
+		}
+		if(disttype == 4) {
+			std::cout << "Distance (Wasserstein-curvature)                    : " << std::scientific << dcOT1 << std::endl;
+		}
+		if(disttype==3 || disttype == 4) {
+			std::cout << "Distance (2-Wasserstein between persitence diagrams): " << w_q_dist << std::endl;
+		}
 	}
 	
 	return 0;
@@ -287,6 +292,7 @@ static void usage(char** argv)
     std::cout << "     " << "=               -mpp VALUE    --> Microns per pixel (applies to both polygons, default: 1.0)   ="<<std::endl;
     std::cout << "     " << "=               -mpp1 VALUE   --> Microns per pixel for polygon 1 (default: 1.0)               ="<<std::endl;
     std::cout << "     " << "=               -mpp2 VALUE   --> Microns per pixel for polygon 2 (default: 1.0)               ="<<std::endl;
+    std::cout << "     " << "=               -v, --verbose --> Enable verbose output (print detailed polygon info)           ="<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "\n\n" <<std::endl;
@@ -297,7 +303,7 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
-bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, int *disttype, double *microns_per_pixel1, double *microns_per_pixel2)
+bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, int *disttype, double *microns_per_pixel1, double *microns_per_pixel2, bool *verbose)
 {
 //
 // Make sure we have at least two parameters....
@@ -309,30 +315,45 @@ bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, i
 	}
 	else
 	{
-		for (int i = 1; i < argc - 1; i = i + 2)
+		for (int i = 1; i < argc; i++)
 		{
 			param = argv[i];
 
+			// Handle flag-only arguments (no value)
+			if (param == "-v" || param == "--verbose") {
+				*verbose = true;
+				continue;
+			}
+
+			// Skip if this is the last argument and it's not a flag
+			if (i >= argc - 1) continue;
+
 			if (param == "-i1") {
 				*file1 = argv[i + 1];
+				i++;
 			}
-			if (param == "-i2") {
+			else if (param == "-i2") {
 				*file2 = argv[i + 1];
+				i++;
 			}
-			if (param == "-d") {
+			else if (param == "-d") {
 				*disttype = std::atoi(argv[i + 1]);
+				i++;
 			}
-			if (param == "-mpp1") {
+			else if (param == "-mpp1") {
 				*microns_per_pixel1 = std::atof(argv[i + 1]);
+				i++;
 			}
-			if (param == "-mpp2") {
+			else if (param == "-mpp2") {
 				*microns_per_pixel2 = std::atof(argv[i + 1]);
+				i++;
 			}
 			// Backward compatibility: if -mpp is used, apply to both
-			if (param == "-mpp") {
+			else if (param == "-mpp") {
 				double mpp = std::atof(argv[i + 1]);
 				*microns_per_pixel1 = mpp;
 				*microns_per_pixel2 = mpp;
+				i++;
 			}
 		}
   	}
