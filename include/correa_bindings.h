@@ -5,7 +5,7 @@
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
 * @date December 2025
-* @version 1.1
+* @version 1.2
 * @copyright BSD 3-Clause License.
 */
 
