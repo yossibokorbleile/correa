@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
-project(correa VERSION 1.0.0 LANGUAGES CXX)
+project(correa VERSION 1.1.0 LANGUAGES CXX)
 find_package(Python 3.8 COMPONENTS Interpreter Development.Module REQUIRED)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
