@@ -3,8 +3,8 @@
 * @brief expose bindings for Correa.
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
-* @date April 2023
-* @version 1
+* @date December 2025
+* @version 1.1
 */
 
 #include <iostream>

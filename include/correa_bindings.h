@@ -4,8 +4,8 @@
 * @details Generate the Python bindings for Correa using nanobind. In particular the functions to comppare two polygons.
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
-* @date April 2023
-* @version 1
+* @date December 2025
+* @version 1.1
 * @copyright BSD 3-Clause License.
 */
 
