@@ -58,7 +58,20 @@ pthread_t threads[NUM_THREADS];
 #include "Frechet.h"
 #include "Vector2D.h"
 
-namespace correa{   
+namespace correa{
+
+	// Global verbosity flag for Python bindings (off by default)
+	inline bool g_verbose = false;
+
+	inline void set_verbose(bool v) {
+		g_verbose = v;
+	}
+
+	inline bool get_verbose() {
+		return g_verbose;
+	}
+
+#define CORREA_IF_VERBOSE if (correa::g_verbose)
 
 	/*!
 	* Caculate the Wasserstein distance between two persistence diagrams using Hera.
@@ -88,12 +101,11 @@ namespace correa{
 		X = nullptr;
 
 		inout.read(path_to_vertices, &ndim, &npoint, &X);
-		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		CORREA_IF_VERBOSE std::cout << "Number of points before cleaning: " << npoint << std::endl;
 		if (clean_points) {
 			pbuilder.clean_points(&npoint, X);
 		} else {
-			std::cout << "No cleaning of points" << std::endl;
-		
+			CORREA_IF_VERBOSE std::cout << "No cleaning of points" << std::endl;
 		}
 		pbuilder.buildPolygon(npoint, X, polygon);
 		// polygon.labelPolygon(polygon);
@@ -142,12 +154,11 @@ namespace correa{
 			};
 		};
 		Vector2D focal(focal_[0], focal_[1]);
-		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		CORREA_IF_VERBOSE std::cout << "Number of points before cleaning: " << npoint << std::endl;
 		if (clean_points) {
 			pbuilder.clean_points(&npoint, X);
 		} else {
-			std::cout << "No cleaning of points" << std::endl;
-		
+			CORREA_IF_VERBOSE std::cout << "No cleaning of points" << std::endl;
 		}
 		pbuilder.buildPolygon(npoint, X, polygon);
 		
@@ -179,16 +190,16 @@ namespace correa{
 
 		inout.read(path_to_vertices , &ndim, &npoint, &X);
 		Vector2D focal (focal_point[0], focal_point[1]); 
-		std::cout << "focal is (" << focal.x << ", " << focal.y << ")." << std::endl;
-		std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		CORREA_IF_VERBOSE std::cout << "focal is (" << focal.x << ", " << focal.y << ")." << std::endl;
+		CORREA_IF_VERBOSE std::cout << "Number of points before cleaning: " << npoint << std::endl;
 		if (clean_points) {
 			pbuilder.clean_points(&npoint, X);
 		} else {
-			std::cout << "No cleaning of points, so we still have " << npoint << " points" << std::endl;
+			CORREA_IF_VERBOSE std::cout << "No cleaning of points, so we still have " << npoint << " points" << std::endl;
 		}
 		
 		pbuilder.buildPolygon(npoint, X, polygon);
-		std::cout << "build the polygon with " << npoint << " points" << std::endl;
+		CORREA_IF_VERBOSE std::cout << "build the polygon with " << npoint << " points" << std::endl;
 		// Shift polygon to focal point
 		polygon.shift(focal);
 		if (convert_to_microns_factor != 1.0) {
@@ -237,10 +248,10 @@ namespace correa{
 			Polygon polygon;
 			PyPolygon(bool test, std::string file_path, std::vector<double> focal_point, bool scale_by_area, double convert_to_microns_factor) {
 				polygon = load_polygon(file_path, focal_point, test, scale_by_area, convert_to_microns_factor);
-				std::cout << "polygon loaded with test " << test << std::endl;
+				CORREA_IF_VERBOSE std::cout << "polygon loaded with test " << test << std::endl;
 				PH0 f(polygon.vertices);
 				f.Persistence();
-				std::cout << "persistence diagram calculated" << std::endl;
+				CORREA_IF_VERBOSE std::cout << "persistence diagram calculated" << std::endl;
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
@@ -295,10 +306,7 @@ namespace correa{
 
 			PyPolygon(std::string file_path, std::vector<double> focal_point, bool clean_points, bool scale_by_area, double convert_to_microns_factor) {
 				polygon = load_polygon(file_path, focal_point, clean_points, scale_by_area, convert_to_microns_factor);
-				if (convert_to_microns_factor != 1.0) {
-					PolygonBuilder pbuilder;
-					pbuilder.convertPixelsToMicrometers(polygon, convert_to_microns_factor);
-				}
+			// Conversion already done in load_polygon -> initialise_polygon, dont do it twice!
 				Ellipse ellipse;
 				Curvature curv;
 				double a, b; 

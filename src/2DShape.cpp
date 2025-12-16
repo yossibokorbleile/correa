@@ -28,6 +28,24 @@
    Main program
    =============================================================================================== */
 
+/*!
+ * @brief Main function for analyzing a single 2D shape
+ *
+ * This program analyzes a single 2D polygon and computes various geometric and topological
+ * properties. The polygon is centered and scaled to a normalized range before analysis.
+ *
+ * Computed properties include:
+ * - Basic metrics: number of points, length, area, sphericity (4πA/L²)
+ * - Ellipse fits: maximum inscribed, minimum inscribing, and least-squares ellipses with aspect ratios
+ * - Willmore energy: measures the bending energy of the curve
+ * - Persistence diagram: topological shape descriptor from persistent homology
+ *
+ * @param argc Number of command-line arguments
+ * @param argv Array of command-line argument strings
+ * @return 0 on success, 1 on failure
+ *
+ * @see parse_args() for command-line argument details
+ */
 int main(int argc, char **argv)
 {
 	correa::INOUT inout;
@@ -57,8 +75,9 @@ int main(int argc, char **argv)
 	========================================================================================== */
 
 	std::string INfile;
+	bool verbose = false; // default: no verbose output
 
-        if (!parse_args(argc, argv, &INfile)) return 1;
+        if (!parse_args(argc, argv, &INfile, &verbose)) return 1;
 
 /*	==========================================================================================
 	Read in the polygon from input file
@@ -113,20 +132,22 @@ int main(int argc, char **argv)
 	double l = polygon.length();
 	double A = polygon.area();
 
-	std::cout << " " << std::endl;
-	std::cout << "Polygon  : " << std::endl;
-	std::cout << "===========" << std::endl;
-	std::cout << "Number of points in polygon       			: " << npoint << std::endl;
-	std::cout << "Length of polygon                 			: " << l << std::endl;
-	std::cout << "Area of polygon                   			: " << A << std::endl;
-	std::cout << "Sphericity (4*Pi*Area/L^2)        			: " << 4*M_PI*A/(l*l) << std::endl;
-	std::cout << "Maximum volume inscribed ellipse  			: a : " << std::setw(7) << std::fixed << std::setprecision(3) << a_M << " b : " << b_M << " Aspect ratio: " << r_M << std::endl;
-	std::cout << "Minimum volume inscribing ellipse 			: a : " << std::setw(7) << std::fixed << std::setprecision(3) << a_m << " b : " << b_m << " Aspect ratio: " << r_m << std::endl;
-	std::cout << "Least square ellipse              			: a : " << std::setw(7) << std::fixed << std::setprecision(3) << a_l << " b : " << b_l << " Aspect ratio: " << r_l << std::endl;
-	std::cout << "Willmore energy of polygon        			: " << willmore << std::endl;
-	std::cout << "Number of points in the persistence diagram 	: " << f.persistence_diagram().size() ;
-	f.printPD();
-	std::cout << " " << std::endl;
+	if (verbose) {
+		std::cout << " " << std::endl;
+		std::cout << "Polygon  : " << std::endl;
+		std::cout << "===========" << std::endl;
+		std::cout << "Number of points in polygon       			: " << npoint << std::endl;
+		std::cout << "Length of polygon                 			: " << l << std::endl;
+		std::cout << "Area of polygon                   			: " << A << std::endl;
+		std::cout << "Sphericity (4*Pi*Area/L^2)        			: " << 4*M_PI*A/(l*l) << std::endl;
+		std::cout << "Maximum volume inscribed ellipse  			: a : " << std::setw(7) << std::fixed << std::setprecision(3) << a_M << " b : " << b_M << " Aspect ratio: " << r_M << std::endl;
+		std::cout << "Minimum volume inscribing ellipse 			: a : " << std::setw(7) << std::fixed << std::setprecision(3) << a_m << " b : " << b_m << " Aspect ratio: " << r_m << std::endl;
+		std::cout << "Least square ellipse              			: a : " << std::setw(7) << std::fixed << std::setprecision(3) << a_l << " b : " << b_l << " Aspect ratio: " << r_l << std::endl;
+		std::cout << "Willmore energy of polygon        			: " << willmore << std::endl;
+		std::cout << "Number of points in the persistence diagram 	: " << f.persistence_diagram().size() ;
+		f.printPD();
+		std::cout << " " << std::endl;
+	}
 
 	return 0;
 
@@ -145,10 +166,11 @@ static void usage(char** argv)
     std::cout << "     " << "=                                       2DShape                                                ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     Usage is:                                                                                ="<<std::endl;
-    std::cout << "     " << "=          2DShape -i INFILE                                                                   ="<<std::endl;
+    std::cout << "     " << "=          2DShape -i INFILE [-v|--verbose]                                                    ="<<std::endl;
     std::cout << "     " << "=                                                                                              ="<<std::endl;
     std::cout << "     " << "=     where:                                                                                   ="<<std::endl;
     std::cout << "     " << "=                 -i  INFILE    --> Input file (Curve; ascii or csv file with 1 point / line)  ="<<std::endl;
+    std::cout << "     " << "=                 -v, --verbose --> Enable verbose output (print detailed polygon info)        ="<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "     " << "================================================================================================"<<std::endl;
     std::cout << "\n\n" <<std::endl;
@@ -159,7 +181,20 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
-bool parse_args(int argc, char **argv, std::string *infile)
+/*!
+ * @brief Parse command-line arguments for 2DShape
+ *
+ * Parses command-line arguments for the 2DShape program, extracting
+ * the input file path and verbose flag. This is the simplest version
+ * that analyzes a single polygon.
+ *
+ * @param argc Argument count from main()
+ * @param argv Argument vector from main()
+ * @param[out] infile Path to input polygon file (set by -i flag)
+ * @param[out] verbose Enable verbose output (set by -v or --verbose flag, default: false)
+ * @return true if arguments were parsed successfully, false otherwise
+ */
+bool parse_args(int argc, char **argv, std::string *infile, bool *verbose)
 {
 //
 // Make sure we have at least two parameters....
@@ -171,12 +206,22 @@ bool parse_args(int argc, char **argv, std::string *infile)
 	}
 	else
 	{
-		for (int i = 1; i < argc - 1; i = i + 2)
+		for (int i = 1; i < argc; i++)
 		{
 			param = argv[i];
 
+			// Handle flag-only arguments (no value)
+			if (param == "-v" || param == "--verbose") {
+				*verbose = true;
+				continue;
+			}
+
+			// Skip if this is the last argument and it's not a flag
+			if (i >= argc - 1) continue;
+
 			if (param == "-i") {
 				*infile = argv[i + 1];
+				i++;
 			}
 		}
   	}

@@ -15,6 +15,16 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+// Check if Python bindings are being built
+#ifdef CORREA_PYTHON_BINDINGS
+namespace correa {
+	extern bool g_verbose;
+}
+#define CORREA_VERBOSE_PRINT(x) if (correa::g_verbose) { x; }
+#else
+#define CORREA_VERBOSE_PRINT(x) x;
+#endif
+
 namespace correa {
   /* ===============================================================================================
    class
@@ -89,7 +99,7 @@ namespace correa {
 
 	*Coord = new double[n1*n2];
 	readPoints(input, n1, n2, *Coord);
-	std::cout << "Number of points loaded: " << n2 << std::endl;
+	CORREA_VERBOSE_PRINT(std::cout << "Number of points loaded: " << n2 << std::endl)
 	input.close();
 
   }

@@ -106,10 +106,7 @@ namespace correa {
 
 /* Height of the vertex */
 double Vertex::height(){
-	std::cout << "position[0] is " << position[0] << std::endl;
-	std::cout << "position[1] is " << position[1] << std::endl;
 	double height = sqrt(pow(position[0],2) + pow(position[1], 2));
-	std::cout << "height is " << height << std::endl;
 	return height;
 };
 
