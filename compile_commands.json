@@ -61,7 +61,7 @@
 },
 {
   "directory": "/home/ybleile/correa",
-  "command": "/usr/bin/c++ -D_correa_EXPORTS -I/home/ybleile/correa/include/Clustering/include -I/home/ybleile/correa/include/Curvature/include -I/home/ybleile/correa/include/DataStruct/include -I/home/ybleile/correa/include/InOut/include -I/home/ybleile/correa/include/Metrics/include -I/home/ybleile/correa/include/OT1/include -I/home/ybleile/correa/include/PH0/include -I/home/ybleile/correa/include -I/home/ybleile/correa/ext/hera/include -I/home/ybleile/correa/bindings -I/usr/include/python3.12 -I/home/ybleile/correa/ext/nanobind/include -I/home/ybleile/correa/ext/hera/extern -O3 -DNDEBUG -std=gnu++17 -fPIC -fvisibility=hidden -fno-stack-protector -Os -ffunction-sections -fdata-sections -o CMakeFiles/_correa.dir/src/correa.cpp.o -c /home/ybleile/correa/src/correa.cpp",
+  "command": "/usr/bin/c++ -DCORREA_PYTHON_BINDINGS -D_correa_EXPORTS -I/home/ybleile/correa/include/Clustering/include -I/home/ybleile/correa/include/Curvature/include -I/home/ybleile/correa/include/DataStruct/include -I/home/ybleile/correa/include/InOut/include -I/home/ybleile/correa/include/Metrics/include -I/home/ybleile/correa/include/OT1/include -I/home/ybleile/correa/include/PH0/include -I/home/ybleile/correa/include -I/home/ybleile/correa/ext/hera/include -I/home/ybleile/correa/bindings -I/usr/include/python3.12 -I/home/ybleile/correa/ext/nanobind/include -I/home/ybleile/correa/ext/hera/extern -O3 -DNDEBUG -std=gnu++17 -fPIC -fvisibility=hidden -fno-stack-protector -Os -ffunction-sections -fdata-sections -o CMakeFiles/_correa.dir/src/correa.cpp.o -c /home/ybleile/correa/src/correa.cpp",
   "file": "/home/ybleile/correa/src/correa.cpp",
   "output": "CMakeFiles/_correa.dir/src/correa.cpp.o"
 },

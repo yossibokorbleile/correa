@@ -9,6 +9,190 @@
 * @copyright BSD 3-Clause License.
 */
 
+/*!
+ * @page distances Distance Metrics for 2D Shape Comparison
+ *
+ * @section distances_overview Overview
+ *
+ * This page describes the various distance metrics implemented in the Correa shape comparison
+ * library. These metrics quantify the dissimilarity between two 2D polygonal shapes from different
+ * geometric and topological perspectives.
+ *
+ * @section distances_types Available Distance Metrics
+ *
+ * @subsection frechet_distance Fréchet Distance (Type 0)
+ *
+ * The Fréchet distance measures the similarity between two curves by considering their trajectories.
+ * It can be intuitively understood as the minimum length of a leash required for a person walking
+ * along one curve and their dog walking along another curve, where both can control their speed
+ * but cannot go backwards.
+ *
+ * **Mathematical Definition:**
+ * Given two curves P and Q, the Fréchet distance is:
+ * \f[
+ * \delta_F(P, Q) = \inf_{\alpha, \beta} \max_{t \in [0,1]} d(P(\alpha(t)), Q(\beta(t)))
+ * \f]
+ * where α and β are continuous monotone reparameterizations.
+ *
+ * **Properties:**
+ * - Captures both location and ordering of points along curves
+ * - Sensitive to the shape of the entire trajectory
+ * - Metric: satisfies triangle inequality, symmetry, and non-negativity
+ *
+ * **Use Cases:**
+ * - Comparing shapes where the ordering of points matters
+ * - Path similarity analysis
+ * - Shape matching where global structure is important
+ *
+ * @subsection ellipse_distances Ellipse-Based Distances (Type 1)
+ *
+ * These metrics compare shapes based on the properties of fitted ellipses. Three types of
+ * ellipse fits are computed for each polygon:
+ *
+ * **1. Maximum Volume Inscribed Ellipse:**
+ * - The largest ellipse that fits completely inside the polygon
+ * - Provides a measure of the polygon's interior capacity
+ *
+ * **2. Minimum Volume Inscribing Ellipse:**
+ * - The smallest ellipse that completely contains the polygon
+ * - Provides an outer bound on the shape
+ *
+ * **3. Least-Squares Ellipse:**
+ * - Ellipse fitted by minimizing squared distances to polygon vertices
+ * - Balances interior and exterior fit
+ *
+ * **Distance Computation:**
+ * For each ellipse type, we compute the aspect ratio r = a/b (where a and b are semi-major
+ * and semi-minor axes). The distance between two polygons is the absolute difference in
+ * their aspect ratios:
+ * \f[
+ * d_E(P_1, P_2) = |r_1 - r_2|
+ * \f]
+ *
+ * **Properties:**
+ * - Captures overall elongation and orientation
+ * - Robust to small perturbations in polygon vertices
+ * - Scale-invariant when comparing aspect ratios
+ *
+ * **Use Cases:**
+ * - Comparing overall shape elongation
+ * - Orientation-independent shape classification
+ * - Quality control in manufacturing (elliptical objects)
+ *
+ * @subsection curvature_distances Curvature-Based Distances (Type 2)
+ *
+ * These metrics analyze shapes based on their curvature properties, capturing local geometric
+ * features and bending characteristics.
+ *
+ * **1. Willmore Energy:**
+ * The Willmore energy measures the total squared curvature of a curve:
+ * \f[
+ * W = \int \kappa^2 \, ds
+ * \f]
+ * where κ is the curvature and s is arc length.
+ *
+ * The distance between two polygons is:
+ * \f[
+ * d_W(P_1, P_2) = |W_1 - W_2|
+ * \f]
+ *
+ * **Properties:**
+ * - Measures the "bending energy" of the curve
+ * - Minimized by circles (constant curvature)
+ * - Sensitive to sharp corners and irregularities
+ *
+ * **2. Wasserstein Distance on Curvature Distributions:**
+ * Treats the curvature distribution along each polygon as a probability measure and
+ * computes the optimal transport distance between them.
+ *
+ * \f[
+ * d_{OT}(\mu_1, \mu_2) = \inf_{\gamma \in \Gamma(\mu_1, \mu_2)} \int |x - y| \, d\gamma(x, y)
+ * \f]
+ *
+ * **Properties:**
+ * - Captures differences in local curvature patterns
+ * - More informative than global curvature measures
+ * - Robust metric structure (satisfies triangle inequality)
+ *
+ * **Use Cases:**
+ * - Detecting shape deformations and irregularities
+ * - Smoothness comparison
+ * - Medical imaging (comparing organ boundaries)
+ *
+ * @subsection persistence_distance Persistence Diagram Distance (Type 3)
+ *
+ * This metric uses topological data analysis to compare shapes based on their persistent
+ * homology features, specifically 0-dimensional persistence (connected components).
+ *
+ * **Persistence Diagrams:**
+ * A persistence diagram is a multiset of points (b, d) in the plane, where:
+ * - b (birth): the scale at which a topological feature appears
+ * - d (death): the scale at which the feature disappears
+ * - Persistence = d - b measures feature significance
+ *
+ * **2-Wasserstein Distance:**
+ * The distance between two persistence diagrams D₁ and D₂ is:
+ * \f[
+ * W_2(D_1, D_2) = \left( \inf_{\gamma: D_1 \to D_2} \sum_{p \in D_1} \|p - \gamma(p)\|_2^2 \right)^{1/2}
+ * \f]
+ * where the infimum is over all bijections γ (including the diagonal).
+ *
+ * **Properties:**
+ * - Topologically robust: insensitive to small perturbations
+ * - Captures multi-scale shape features
+ * - Mathematically well-founded metric
+ * - Stable under continuous deformations
+ *
+ * **Use Cases:**
+ * - Shape classification with topological invariance
+ * - Robust feature detection in noisy data
+ * - Multi-scale shape analysis
+ * - Pattern recognition in scientific data
+ *
+ * @section distances_sphericity Sphericity Measure
+ *
+ * All comparison programs also compute the sphericity difference:
+ * \f[
+ * d_S(P_1, P_2) = 4\pi \left| \frac{A_1}{L_1^2} - \frac{A_2}{L_2^2} \right|
+ * \f]
+ * where A is area and L is perimeter length.
+ *
+ * **Properties:**
+ * - Measures how close a shape is to a circle (circle has sphericity = 1)
+ * - Scale-invariant (dimensionless quantity)
+ * - Simple and computationally efficient
+ *
+ * @section distances_choosing Choosing a Distance Metric
+ *
+ * Different metrics are appropriate for different applications:
+ *
+ * | Metric | Best For | Computational Cost |
+ * |--------|----------|-------------------|
+ * | Fréchet | Path similarity, ordered matching | Medium |
+ * | Ellipse-based | Overall shape, elongation | Low |
+ * | Curvature-based | Local features, smoothness | Medium |
+ * | Persistence | Topological features, noisy data | High |
+ * | Sphericity | Quick comparison, roundness | Very Low |
+ *
+ * **Recommendations:**
+ * - Use **Type 4 (All)** for comprehensive analysis when computational cost is not a concern
+ * - Use **Fréchet** for ordered point sequences and path matching
+ * - Use **Ellipse-based** for fast, orientation-independent comparison
+ * - Use **Curvature-based** when local shape details matter
+ * - Use **Persistence** for robust topological comparison resistant to noise
+ *
+ * @section distances_implementation Implementation Notes
+ *
+ * All distance metrics are implemented in the following programs:
+ * - Comp2DShapesFocal: User-specified focal points for alignment
+ * - Comp2DShapes: Automatic centroid-based alignment
+ *
+ * The distance type is selected via the `-d` command-line flag.
+ *
+ * @see Comp2DShapesFocal.cpp
+ * @see Comp2DShapes.cpp
+ * @see parse_args()
+ */
 
 
 /* ===============================================================================================
@@ -22,6 +206,19 @@
    Helper function to parse focal point from either file or inline coordinates
    =============================================================================================== */
 
+/*!
+ * @brief Parse focal point from either a file path or inline coordinates
+ *
+ * This function accepts either a file path containing focal point coordinates
+ * or a string with inline coordinates in the format "x,y". If a valid file
+ * exists at the path, it reads the coordinates from the file. Otherwise, it
+ * parses the string as inline coordinates.
+ *
+ * @param focal_input String containing either a file path or inline coordinates (e.g., "698.678,816.662")
+ * @param verbose If true, prints debug information during parsing (default: false)
+ * @return Vector2D containing the parsed focal point coordinates
+ * @throws std::exit(1) if the focal point cannot be parsed or has fewer than 2 coordinates
+ */
 Vector2D parse_focal_point(const std::string& focal_input, bool verbose = false) {
 	std::vector<double> focal_coords;
 
@@ -74,6 +271,26 @@ Vector2D parse_focal_point(const std::string& focal_input, bool verbose = false)
    Main program
    =============================================================================================== */
 
+/*!
+ * @brief Main function for comparing 2D shapes with specified focal points
+ *
+ * This program compares two 2D polygons using various distance metrics, with user-specified
+ * focal points for each polygon. The polygons are shifted so that their focal points are at
+ * the origin before comparison, allowing for focal-point-relative shape analysis.
+ *
+ * The program supports multiple distance metrics:
+ * - Fréchet distance: Measures curve similarity (minimum leash length)
+ * - Ellipse-based: Compares fitted ellipse properties (inscribed, inscribing, least-squares)
+ * - Curvature-based: Willmore energy and Wasserstein distance on curvature distributions
+ * - Persistence diagrams: Topological comparison using persistent homology
+ *
+ * @param argc Number of command-line arguments
+ * @param argv Array of command-line argument strings
+ * @return 0 on success, 1 on failure
+ *
+ * @see parse_args() for command-line argument details
+ * @see parse_focal_point() for focal point specification format
+ */
 int main(int argc, char **argv)
 {
 
@@ -367,6 +584,34 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
+/*!
+ * @brief Parse command-line arguments for Comp2DShapesFocal
+ *
+ * Parses command-line arguments for the Comp2DShapesFocal program, extracting
+ * input files, focal points, distance type, microns per pixel settings, and
+ * verbose flag.
+ *
+ * @param argc Argument count from main()
+ * @param argv Argument vector from main()
+ * @param[out] file1 Path to first input polygon file (set by -i1 flag)
+ * @param[out] focal1 Focal point for first polygon - file path or "x,y" format (set by -f1 flag)
+ * @param[out] file2 Path to second input polygon file (set by -i2 flag)
+ * @param[out] focal2 Focal point for second polygon - file path or "x,y" format (set by -f2 flag)
+ * @param[out] disttype Distance type flag (set by -d flag):
+ *                      - 0: Fréchet distance - measures similarity between curves, representing the minimum
+ *                           leash length needed for a person walking a dog along each curve
+ *                      - 1: Ellipse-based distances - compares aspect ratios of inscribed, inscribing,
+ *                           and least-squares fitted ellipses
+ *                      - 2: Curvature-based distances - includes Willmore energy (bending energy) and
+ *                           Wasserstein distance between curvature distributions
+ *                      - 3: 2-Wasserstein distance between persistence diagrams - topological shape descriptor
+ *                           based on persistent homology
+ *                      - 4: All distances - computes all of the above metrics
+ * @param[out] microns_per_pixel1 Microns per pixel conversion for polygon 1 (set by -mpp1 or -mpp flag, default: 1.0)
+ * @param[out] microns_per_pixel2 Microns per pixel conversion for polygon 2 (set by -mpp2 or -mpp flag, default: 1.0)
+ * @param[out] verbose Enable verbose output (set by -v or --verbose flag, default: false)
+ * @return true if arguments were parsed successfully, false otherwise
+ */
 bool parse_args(int argc, char **argv, std::string *file1, std::string *focal1, std::string *file2, std::string *focal2, int *disttype, double *microns_per_pixel1, double *microns_per_pixel2, bool *verbose)
 {
 //

@@ -307,7 +307,7 @@ void Polygon::shift(Vector2D center, bool verbose = false) {
 		v->position -= center;
 		if (verbose) std::cout << "v was: (" << v->position.x << ", " << v->position.y << ")";
 	};
-	std::cout << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
+	if (verbose) std::cout << "shifting has occured, center was selected as (" << center.x << ", " << center.y << ")." << std::endl;
 	/*for(int v = 0; v < vertices.size(); v++) {
 		if (verbose) std::cerr << "v was: (" << vertices[v].x() << ", " << vertices[v].y() << ")";
 		vertices[v].shift(center.x, center.y);

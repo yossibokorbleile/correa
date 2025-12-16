@@ -28,6 +28,24 @@
    Main program
    =============================================================================================== */
 
+/*!
+ * @brief Main function for analyzing a single 2D shape
+ *
+ * This program analyzes a single 2D polygon and computes various geometric and topological
+ * properties. The polygon is centered and scaled to a normalized range before analysis.
+ *
+ * Computed properties include:
+ * - Basic metrics: number of points, length, area, sphericity (4πA/L²)
+ * - Ellipse fits: maximum inscribed, minimum inscribing, and least-squares ellipses with aspect ratios
+ * - Willmore energy: measures the bending energy of the curve
+ * - Persistence diagram: topological shape descriptor from persistent homology
+ *
+ * @param argc Number of command-line arguments
+ * @param argv Array of command-line argument strings
+ * @return 0 on success, 1 on failure
+ *
+ * @see parse_args() for command-line argument details
+ */
 int main(int argc, char **argv)
 {
 	correa::INOUT inout;
@@ -163,6 +181,19 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
+/*!
+ * @brief Parse command-line arguments for 2DShape
+ *
+ * Parses command-line arguments for the 2DShape program, extracting
+ * the input file path and verbose flag. This is the simplest version
+ * that analyzes a single polygon.
+ *
+ * @param argc Argument count from main()
+ * @param argv Argument vector from main()
+ * @param[out] infile Path to input polygon file (set by -i flag)
+ * @param[out] verbose Enable verbose output (set by -v or --verbose flag, default: false)
+ * @return true if arguments were parsed successfully, false otherwise
+ */
 bool parse_args(int argc, char **argv, std::string *infile, bool *verbose)
 {
 //

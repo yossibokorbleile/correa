@@ -20,6 +20,16 @@
 #include "Polygon.h"
 #include <set>
 
+// Check if Python bindings are being built
+#ifdef CORREA_PYTHON_BINDINGS
+namespace correa {
+	extern bool g_verbose;
+}
+#define CORREA_VERBOSE_PRINT(x) if (correa::g_verbose) { x; }
+#else
+#define CORREA_VERBOSE_PRINT(x) x;
+#endif
+
 /* ===========================================================================================
  The MeshBuilder class
  ==============================================================================================*/
@@ -575,8 +585,8 @@ namespace correa {
 		double angle;
 		int im1, ip1;
 
-		std::cout << std::endl;
-		std::cout << "Initial number of points in polygon      : " << Npoint << std::endl;
+		CORREA_VERBOSE_PRINT(std::cout << std::endl)
+		CORREA_VERBOSE_PRINT(std::cout << "Initial number of points in polygon      : " << Npoint << std::endl)
 
 		do {
 
@@ -617,8 +627,8 @@ namespace correa {
 		} while (nchanges !=0);
 
 		*Np = Npoint;
-		std::cout << "Number of points in polygon after cleanup: " << Npoint << std::endl;
-		std::cout << std::endl;
+		CORREA_VERBOSE_PRINT(std::cout << "Number of points in polygon after cleanup: " << Npoint << std::endl)
+		CORREA_VERBOSE_PRINT(std::cout << std::endl)
 
 	}
 

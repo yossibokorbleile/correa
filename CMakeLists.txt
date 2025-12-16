@@ -43,6 +43,11 @@ if(CORREA_BUILD_PYTHON_BINDINGS)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/nanobind)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/bindings)
 	nanobind_add_module(_correa src/correa.cpp)
+	target_compile_definitions(_correa PRIVATE CORREA_PYTHON_BINDINGS)
 	target_link_libraries(_correa PRIVATE ${libraries} ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} hera)
 	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bindings/correa/__init__.py DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/correa)
+	# Copy the compiled module to build/correa after it's built
+	add_custom_command(TARGET _correa POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:_correa> ${CMAKE_CURRENT_SOURCE_DIR}/build/correa/
+	)
 endif()

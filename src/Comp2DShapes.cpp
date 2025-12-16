@@ -23,6 +23,25 @@
    Main program
    =============================================================================================== */
 
+/*!
+ * @brief Main function for comparing 2D shapes with automatic focal point computation
+ *
+ * This program compares two 2D polygons using various distance metrics. Unlike Comp2DShapesFocal,
+ * this version automatically computes focal points (centroids) for each polygon and centers them
+ * before comparison. The polygons are also scaled to a normalized range for comparison.
+ *
+ * The program supports multiple distance metrics:
+ * - Fréchet distance: Measures curve similarity (minimum leash length)
+ * - Ellipse-based: Compares fitted ellipse properties (inscribed, inscribing, least-squares)
+ * - Curvature-based: Willmore energy and Wasserstein distance on curvature distributions
+ * - Persistence diagrams: Topological comparison using persistent homology
+ *
+ * @param argc Number of command-line arguments
+ * @param argv Array of command-line argument strings
+ * @return 0 on success, 1 on failure
+ *
+ * @see parse_args() for command-line argument details
+ */
 int main(int argc, char **argv)
 {
 
@@ -303,6 +322,32 @@ static void usage(char** argv)
 
    =============================================================================================== */
 
+/*!
+ * @brief Parse command-line arguments for Comp2DShapes
+ *
+ * Parses command-line arguments for the Comp2DShapes program, extracting
+ * input files, distance type, microns per pixel settings, and verbose flag.
+ * This version automatically computes focal points (unlike Comp2DShapesFocal).
+ *
+ * @param argc Argument count from main()
+ * @param argv Argument vector from main()
+ * @param[out] file1 Path to first input polygon file (set by -i1 flag)
+ * @param[out] file2 Path to second input polygon file (set by -i2 flag)
+ * @param[out] disttype Distance type flag (set by -d flag):
+ *                      - 0: Fréchet distance - measures similarity between curves, representing the minimum
+ *                           leash length needed for a person walking a dog along each curve
+ *                      - 1: Ellipse-based distances - compares aspect ratios of inscribed, inscribing,
+ *                           and least-squares fitted ellipses
+ *                      - 2: Curvature-based distances - includes Willmore energy (bending energy) and
+ *                           Wasserstein distance between curvature distributions
+ *                      - 3: 2-Wasserstein distance between persistence diagrams - topological shape descriptor
+ *                           based on persistent homology
+ *                      - 4: All distances - computes all of the above metrics
+ * @param[out] microns_per_pixel1 Microns per pixel conversion for polygon 1 (set by -mpp1 or -mpp flag, default: 1.0)
+ * @param[out] microns_per_pixel2 Microns per pixel conversion for polygon 2 (set by -mpp2 or -mpp flag, default: 1.0)
+ * @param[out] verbose Enable verbose output (set by -v or --verbose flag, default: false)
+ * @return true if arguments were parsed successfully, false otherwise
+ */
 bool parse_args(int argc, char **argv, std::string *file1, std::string *file2, int *disttype, double *microns_per_pixel1, double *microns_per_pixel2, bool *verbose)
 {
 //
