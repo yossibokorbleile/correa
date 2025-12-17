@@ -59,6 +59,6 @@ pthread_t threads[NUM_THREADS];
    =============================================================================================== */
 
 static void usage(char** argv);
-bool parse_args(int argc, char **argv, std::string *INFILE);
+bool parse_args(int argc, char **argv, std::string *INFILE, bool *verbose);
 
 #endif
