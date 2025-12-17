@@ -1,7 +1,9 @@
-"""Correa 
+"""Correa
 
 Documentation for the Python functions in Correa.
 """
+
+__version__ = "1.2.3"
 
 import _correa
 import pandas

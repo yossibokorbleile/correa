@@ -3,9 +3,8 @@
 * @brief compare polygons with specific focal points
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
-* @date April 2023
-* @version 1
-* @copyright BSD 3-Clause License.
+* @date December 2025
+* @version 1.1
 * @copyright BSD 3-Clause License.
 */
 
@@ -32,7 +31,7 @@
  * \f[
  * \delta_F(P, Q) = \inf_{\alpha, \beta} \max_{t \in [0,1]} d(P(\alpha(t)), Q(\beta(t)))
  * \f]
- * where α and β are continuous monotone reparameterizations.
+ * where $\alpha$ and $\beta$ are continuous monotone reparameterizations.
  *
  * **Properties:**
  * - Captures both location and ordering of points along curves
@@ -89,7 +88,7 @@
  * \f[
  * W = \int \kappa^2 \, ds
  * \f]
- * where κ is the curvature and s is arc length.
+ * where $\kappa$ is the curvature and s is arc length.
  *
  * The distance between two polygons is:
  * \f[
@@ -131,11 +130,11 @@
  * - Persistence = d - b measures feature significance
  *
  * **2-Wasserstein Distance:**
- * The distance between two persistence diagrams D₁ and D₂ is:
+ * The distance between two persistence diagrams $D_1$ and $D_2$ is:
  * \f[
  * W_2(D_1, D_2) = \left( \inf_{\gamma: D_1 \to D_2} \sum_{p \in D_1} \|p - \gamma(p)\|_2^2 \right)^{1/2}
  * \f]
- * where the infimum is over all bijections γ (including the diagonal).
+ * where the infimum is over all bijections $\gamma$ (including the diagonal).
  *
  * **Properties:**
  * - Topologically robust: insensitive to small perturbations
@@ -346,6 +345,13 @@ int main(int argc, char **argv)
 	Polygon polygon1;
 	pbuilder.clean_points(&npoint1, X1);
 	pbuilder.buildPolygon(npoint1, X1, polygon1);
+
+	// Check if focal point 1 is inside the polygon
+	if (!polygon1.isPointInside(focal1)) {
+		std::cerr << "WARNING: Focal point 1 (" << focal1.x << ", " << focal1.y
+		          << ") is NOT inside polygon 1!" << std::endl;
+	}
+
 	polygon1.shift(focal1);
 	// Apply pixel-to-micron conversion to polygon 1 and its focal point
 	pbuilder.convertPixelsToMicrometers(polygon1, microns_per_pixel1);
@@ -373,6 +379,13 @@ int main(int argc, char **argv)
 	Polygon polygon2;
 	pbuilder.clean_points(&npoint2, X2);
 	pbuilder.buildPolygon(npoint2, X2, polygon2);
+
+	// Check if focal point 2 is inside the polygon
+	if (!polygon2.isPointInside(focal2)) {
+		std::cerr << "WARNING: Focal point 2 (" << focal2.x << ", " << focal2.y
+		          << ") is NOT inside polygon 2!" << std::endl;
+	}
+
 	polygon2.shift(focal2);
 	// Apply pixel-to-micron conversion to polygon 2 and its focal point
 	pbuilder.convertPixelsToMicrometers(polygon2, microns_per_pixel2);

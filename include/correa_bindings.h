@@ -5,7 +5,7 @@
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
 * @date December 2025
-* @version 1.2
+* @version 1.3
 * @copyright BSD 3-Clause License.
 */
 
@@ -101,11 +101,17 @@ namespace correa{
 		X = nullptr;
 
 		inout.read(path_to_vertices, &ndim, &npoint, &X);
-		CORREA_IF_VERBOSE std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		CORREA_IF_VERBOSE {
+			std::cout << "Number of points before cleaning: " << npoint << std::endl;
+			std::cout.flush();
+		}
 		if (clean_points) {
 			pbuilder.clean_points(&npoint, X);
 		} else {
-			CORREA_IF_VERBOSE std::cout << "No cleaning of points" << std::endl;
+			CORREA_IF_VERBOSE {
+				std::cout << "No cleaning of points" << std::endl;
+				std::cout.flush();
+			}
 		}
 		pbuilder.buildPolygon(npoint, X, polygon);
 		// polygon.labelPolygon(polygon);
@@ -154,14 +160,36 @@ namespace correa{
 			};
 		};
 		Vector2D focal(focal_[0], focal_[1]);
-		CORREA_IF_VERBOSE std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		CORREA_IF_VERBOSE {
+			std::cout << "Number of points before cleaning: " << npoint << std::endl;
+			std::cout.flush();
+		}
 		if (clean_points) {
 			pbuilder.clean_points(&npoint, X);
 		} else {
-			CORREA_IF_VERBOSE std::cout << "No cleaning of points" << std::endl;
+			CORREA_IF_VERBOSE {
+				std::cout << "No cleaning of points" << std::endl;
+				std::cout.flush();
+			}
 		}
 		pbuilder.buildPolygon(npoint, X, polygon);
-		
+
+		// Check if focal point is inside the polygon
+		CORREA_IF_VERBOSE {
+			std::cout << "Checking if focal point (" << focal.x << ", " << focal.y << ") is inside polygon..." << std::endl;
+			std::cout.flush();
+		}
+		bool isInside = polygon.isPointInside(focal);
+		CORREA_IF_VERBOSE {
+			std::cout << "isPointInside returned: " << (isInside ? "true" : "false") << std::endl;
+			std::cout.flush();
+		}
+		if (!isInside) {
+			std::cerr << "WARNING: Focal point (" << std::fixed << std::setprecision(6) << focal.x << ", " << focal.y
+			          << ") is NOT inside the polygon!" << std::endl;
+			std::cerr.flush();
+		}
+
 		// Shift polygon to focal point
 		polygon.shift(focal);
 		if (convert_to_microns_factor != 1.0) {
@@ -190,16 +218,45 @@ namespace correa{
 
 		inout.read(path_to_vertices , &ndim, &npoint, &X);
 		Vector2D focal (focal_point[0], focal_point[1]); 
-		CORREA_IF_VERBOSE std::cout << "focal is (" << focal.x << ", " << focal.y << ")." << std::endl;
-		CORREA_IF_VERBOSE std::cout << "Number of points before cleaning: " << npoint << std::endl;
+		CORREA_IF_VERBOSE {
+			std::cout << "focal is (" << focal.x << ", " << focal.y << ")." << std::endl;
+			std::cout.flush();
+		}
+		CORREA_IF_VERBOSE {
+			std::cout << "Number of points before cleaning: " << npoint << std::endl;
+			std::cout.flush();
+		}
 		if (clean_points) {
 			pbuilder.clean_points(&npoint, X);
 		} else {
-			CORREA_IF_VERBOSE std::cout << "No cleaning of points, so we still have " << npoint << " points" << std::endl;
+			CORREA_IF_VERBOSE {
+				std::cout << "No cleaning of points, so we still have " << npoint << " points" << std::endl;
+				std::cout.flush();
+			}
 		}
 		
 		pbuilder.buildPolygon(npoint, X, polygon);
-		CORREA_IF_VERBOSE std::cout << "build the polygon with " << npoint << " points" << std::endl;
+		CORREA_IF_VERBOSE {
+			std::cout << "build the polygon with " << npoint << " points" << std::endl;
+			std::cout.flush();
+		}
+
+		// Check if focal point is inside the polygon
+		CORREA_IF_VERBOSE {
+			std::cout << "Checking if focal point (" << focal.x << ", " << focal.y << ") is inside polygon..." << std::endl;
+			std::cout.flush();
+		}
+		bool isInside = polygon.isPointInside(focal);
+		CORREA_IF_VERBOSE {
+			std::cout << "isPointInside returned: " << (isInside ? "true" : "false") << std::endl;
+			std::cout.flush();
+		}
+		if (!isInside) {
+			std::cerr << "WARNING: Focal point (" << std::fixed << std::setprecision(6) << focal.x << ", " << focal.y
+			          << ") is NOT inside the polygon!" << std::endl;
+			std::cerr.flush();
+		}
+
 		// Shift polygon to focal point
 		polygon.shift(focal);
 		if (convert_to_microns_factor != 1.0) {
@@ -248,10 +305,16 @@ namespace correa{
 			Polygon polygon;
 			PyPolygon(bool test, std::string file_path, std::vector<double> focal_point, bool scale_by_area, double convert_to_microns_factor) {
 				polygon = load_polygon(file_path, focal_point, test, scale_by_area, convert_to_microns_factor);
-				CORREA_IF_VERBOSE std::cout << "polygon loaded with test " << test << std::endl;
+				CORREA_IF_VERBOSE {
+					std::cout << "polygon loaded with test " << test << std::endl;
+					std::cout.flush();
+				}
 				PH0 f(polygon.vertices);
 				f.Persistence();
-				CORREA_IF_VERBOSE std::cout << "persistence diagram calculated" << std::endl;
+				CORREA_IF_VERBOSE {
+					std::cout << "persistence diagram calculated" << std::endl;
+					std::cout.flush();
+				}
 				persistence_diagram_ = f.persistence_diagram();
 			}
 
@@ -584,6 +647,7 @@ namespace correa{
 			std::cerr << "LSQ Ellipse distance:"  << std::setw(14+digit) << std::fixed << dLSQ << std::endl;
 			std::cerr << "Willmore distance:"  << std::setw(17+digit) << std::fixed << dWillmore << std::endl;
 			std::cerr << "Curv OT distance:"  << std::setw(18+digit) << std::fixed << dCurvOT << std::endl;
+			std::cerr.flush();
 		}
 		return {dWasserstein, dFrechet, dMax, dMin, dLSQ, dWillmore, dCurvOT};
 	};		

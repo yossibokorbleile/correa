@@ -35,7 +35,7 @@
  * properties. The polygon is centered and scaled to a normalized range before analysis.
  *
  * Computed properties include:
- * - Basic metrics: number of points, length, area, sphericity (4πA/L²)
+ * - Basic metrics: number of points, length, area, sphericity ($4\ppi A/L^2$)
  * - Ellipse fits: maximum inscribed, minimum inscribing, and least-squares ellipses with aspect ratios
  * - Willmore energy: measures the bending energy of the curve
  * - Persistence diagram: topological shape descriptor from persistent homology
