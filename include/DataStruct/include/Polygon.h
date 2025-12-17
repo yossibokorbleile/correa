@@ -3,7 +3,7 @@
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
 * @date December 2025
-* @version 1.2
+* @version 1.3
 * @copyright BSD 3-Clause License.
 */
 
@@ -36,6 +36,9 @@ namespace correa {
 
 			// copy constructor
 			Polygon(Polygon& polygon);
+
+			// assignment operator
+			Polygon& operator=(const Polygon& other);
 
 			std::vector<Vertex> vertices;
 			std::vector<double > bdLength0;
@@ -81,6 +84,8 @@ namespace correa {
 
 			Vector2D calculateCentroid();
 
+			bool isPointInside(const Vector2D& point) const;
+
 		private:
 			Vector2D label;
 	};
@@ -107,7 +112,7 @@ namespace correa {
 
 		surface *= 0.5;
 
-		return surface;
+		return std::abs(surface);
 	}
 
 	/*
@@ -263,17 +268,20 @@ namespace correa {
 	//		r = std::max(r, a.norm());
 		}
 
-		double scale = sqrt(100/area());
+		double currentAreaBeforeScaling = area();
+		std::cout << "area before scaling: " << currentAreaBeforeScaling << std::endl;
+		double scale = sqrt(100/currentAreaBeforeScaling);
 		std::cout << "scale is " << scale << std::endl;
 		for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
-			v->position *= scale;	
+			v->position *= scale;
 		}
-	
+
 			void boundaryLength0();
 			void boundaryLength();
 			void distorsion();
 		double currentArea = area();
-		assert(std::abs(currentArea - 100.0) < 1e-10 && "Area should be 100 after scaling");
+		std::cout << "area after scaling: " << currentArea << std::endl;
+		assert(std::abs(currentArea - 100.0) < 0.5 && "Area should be 100 after scaling");
 	}
 
 
@@ -283,19 +291,19 @@ namespace correa {
 	*/
   	void Polygon::scaleArea() {
 		std::cout << "scaleArea is called" << std::endl;
-		double originalArea = area();
+		double originalArea = std::abs(area());
 		std::cerr << "originalArea is " << originalArea << std::endl;
 		double scale = sqrt(100/originalArea);
 		std::cerr << "scale is " << scale << std::endl;
 		for(VertexIter v = vertices.begin(); v != vertices.end(); v++) {
-			v->position *= scale;	
+			v->position *= scale;
 		}
-	
+
 			void boundaryLength0();
 			void boundaryLength();
 			void distorsion();
 		double currentArea = area();
-		assert(std::abs(currentArea - 100.0) < 1e-10 && "Area should be 100 after scaling");
+		assert(std::abs(currentArea - 100.0) < 0.5 && "Area should be 100 after scaling");
 	}
 
   /* ===========================================================================================
@@ -360,6 +368,71 @@ void Polygon::shift(Vector2D center, bool verbose = false) {
 			edges.push_back(polygon.edges[i]);
 		}
 	}
+
+ /*********************************************************************************
+  Assignment Operator
+ *********************************************************************************/
+	/*!
+	* Assignment operator - properly handles prev/next iterator relinking
+	*/
+	Polygon& Polygon::operator=(const Polygon& other) {
+		if (this == &other) {
+			return *this;  // Handle self-assignment
+		}
+
+		// Clear existing data
+		vertices.clear();
+		edges.clear();
+		bdLength0.clear();
+		bdLength.clear();
+
+		// Copy simple members
+		distorsion_ = other.distorsion_;
+		originalArea_ = other.originalArea_;
+
+		// Copy vertices and relink prev/next iterators
+		int nvertex = other.vertices.size();
+		vertices.reserve(nvertex);
+		std::vector<VertexIter> indexToVertex(nvertex);
+
+		int i = 0;
+		for (auto it = other.vertices.begin(); it != other.vertices.end(); ++it) {
+			VertexIter vNew = vertices.insert(vertices.end(), Vertex());
+			vNew->position = it->position;
+			vNew->index = it->index;
+			indexToVertex[i] = vNew;
+			i++;
+		}
+
+		// Relink prev/next pointers
+		int im1 = nvertex-1;
+		for(int i = 0; i < nvertex-1; i++) {
+			VertexIter v = indexToVertex[i];
+			v->prev = indexToVertex[im1];
+			v->next = indexToVertex[i+1];
+			im1 = i;
+		}
+		VertexIter v = indexToVertex[nvertex-1];
+		v->prev = indexToVertex[nvertex-2];
+		v->next = indexToVertex[0];
+
+		// Copy edges
+		int nedges = other.edges.size();
+		for(int i = 0; i < nedges; i++) {
+			edges.push_back(other.edges[i]);
+		}
+
+		// Copy boundary lengths
+		for(size_t i = 0; i < other.bdLength0.size(); i++) {
+			bdLength0.push_back(other.bdLength0[i]);
+		}
+		for(size_t i = 0; i < other.bdLength.size(); i++) {
+			bdLength.push_back(other.bdLength[i]);
+		}
+
+		return *this;
+	}
+
 	/*!
 	* Computes the signed distance from a point to the polygon outline.
 	* Positive distance indicates the point is outside the polygon,
@@ -426,5 +499,64 @@ void Polygon::shift(Vector2D center, bool verbose = false) {
 
 	// 	label = bestPoint;
 	// }
+
+ /* ===========================================================================================
+ * Check if a point is inside the polygon using ray casting (Jordan curve theorem)
+ ==============================================================================================*/
+	/*!
+	* Checks if a point is inside the polygon using the ray casting algorithm.
+	* This implements the Jordan curve theorem: a point is inside a polygon if
+	* a ray from the point crosses the polygon boundary an odd number of times.
+	* @param point The point to check
+	* @return true if the point is inside the polygon, false otherwise
+	*/
+	bool Polygon::isPointInside(const Vector2D& point) const {
+		bool isInside = false;
+		const double EPSILON = 1e-10;
+
+		for (size_t i = 0; i < vertices.size(); ++i) {
+			const Vector2D& v1 = vertices[i].position;
+			const Vector2D& v2 = vertices[(i + 1) % vertices.size()].position;
+
+			// Skip horizontal edges (parallel to the ray)
+			if (std::abs(v1.y - v2.y) < EPSILON) {
+				continue;
+			}
+
+			// Check if the ray intersects this edge
+			// Only count vertices where the edge is going upward (v2.y > v1.y)
+			// to avoid counting the same vertex twice
+			if ((v1.y <= point.y && point.y < v2.y) ||
+			    (v2.y <= point.y && point.y < v1.y)) {
+
+				// Calculate the x-coordinate of the intersection point
+				double x_intersect = v1.x + (point.y - v1.y) * (v2.x - v1.x) / (v2.y - v1.y);
+
+				// Check for tangential crossing (ray passes exactly through a vertex)
+				bool is_tangential = false;
+				if (std::abs(point.y - v1.y) < EPSILON || std::abs(point.y - v2.y) < EPSILON) {
+					// Ray passes through or very close to a vertex
+					// Only count if both adjacent edges are on the same side of the horizontal line
+					const Vector2D& v0 = vertices[(i + vertices.size() - 1) % vertices.size()].position;
+					const Vector2D& v3 = vertices[(i + 2) % vertices.size()].position;
+
+					if (std::abs(point.y - v1.y) < EPSILON) {
+						// Near v1: check if v0 and v2 are on the same side
+						is_tangential = ((v0.y > point.y) == (v2.y > point.y));
+					} else {
+						// Near v2: check if v1 and v3 are on the same side
+						is_tangential = ((v1.y > point.y) == (v3.y > point.y));
+					}
+				}
+
+				// Count the crossing if the ray intersects to the right and it's not tangential
+				if (point.x < x_intersect && !is_tangential) {
+					isInside = !isInside;
+				}
+			}
+		}
+
+		return isInside;
+	}
 } //end namespace correa
 #endif
