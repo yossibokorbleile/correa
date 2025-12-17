@@ -3,8 +3,8 @@
 * @brief compare 2 polygons with automatic focal points 
 * @author Patrice Koehl
 * @author Yossi Bokor Bleile
-* @date April 2023
-* @version 1
+* @date December 2025
+* @version 1.1
 * @copyright BSD 3-Clause License.
 */
 

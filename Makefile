@@ -48,27 +48,27 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/bin/cmake -E rm -f
+RM = /opt/homebrew/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ybleile/correa
+CMAKE_SOURCE_DIR = /Users/yossi/correa
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ybleile/correa
+CMAKE_BINARY_DIR = /Users/yossi/correa
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "No interactive CMake dialog available..."
-	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
+	/opt/homebrew/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -78,7 +78,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	/usr/local/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/opt/homebrew/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ybleile/correa/CMakeFiles /home/ybleile/correa//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/yossi/correa/CMakeFiles /Users/yossi/correa//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ybleile/correa/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/yossi/correa/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -141,45 +141,6 @@ nanobind-static: cmake_check_build_system
 nanobind-static/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/nanobind-static.dir/build.make CMakeFiles/nanobind-static.dir/build
 .PHONY : nanobind-static/fast
-
-#=============================================================================
-# Target rules for targets named 2DShape
-
-# Build rule for target.
-2DShape: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 2DShape
-.PHONY : 2DShape
-
-# fast build rule for target.
-2DShape/fast:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/2DShape.dir/build.make src/CMakeFiles/2DShape.dir/build
-.PHONY : 2DShape/fast
-
-#=============================================================================
-# Target rules for targets named Comp2DShapes
-
-# Build rule for target.
-Comp2DShapes: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Comp2DShapes
-.PHONY : Comp2DShapes
-
-# fast build rule for target.
-Comp2DShapes/fast:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/Comp2DShapes.dir/build.make src/CMakeFiles/Comp2DShapes.dir/build
-.PHONY : Comp2DShapes/fast
-
-#=============================================================================
-# Target rules for targets named Comp2DShapesFocal
-
-# Build rule for target.
-Comp2DShapesFocal: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Comp2DShapesFocal
-.PHONY : Comp2DShapesFocal
-
-# fast build rule for target.
-Comp2DShapesFocal/fast:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/Comp2DShapesFocal.dir/build.make src/CMakeFiles/Comp2DShapesFocal.dir/build
-.PHONY : Comp2DShapesFocal/fast
 
 ext/nanobind/src/common.o: ext/nanobind/src/common.cpp.o
 .PHONY : ext/nanobind/src/common.o
@@ -453,9 +414,6 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... 2DShape"
-	@echo "... Comp2DShapes"
-	@echo "... Comp2DShapesFocal"
 	@echo "... _correa"
 	@echo "... nanobind-static"
 	@echo "... ext/nanobind/src/common.o"

@@ -287,8 +287,7 @@ namespace correa {
 	* @param polygon	polygon containing the points
 	* @param ia 		index of point A in polygon
 	* @param ib 		index of point B in polygon
-	* @param iv 		index of point C in polygon
-	* @param ia 		index of point A in polygon
+	* @param ic 		index of point C in polygon
 	* @return 			true if colinear, false otherwise
 	*/
 	bool PolygonBuilder::collinear(Polygon& polygon, int ia, int ib, int ic)
