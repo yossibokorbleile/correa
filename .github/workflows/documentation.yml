@@ -30,8 +30,9 @@ jobs:
 
       - name: Update site files
         run: |
-          rm -rf deploy/sites/correa.yossi.eu/*
-          cp -r ./docs/html/* deploy/sites/correa.yossi.eu/
+          mkdir -p deploy/sites/yossi.eu/correa
+          rm -rf deploy/sites/yossi.eu/correa/*
+          cp -r ./docs/html/* deploy/sites/yossi.eu/correa/
 
       - name: Push to deploy repo
         run: |
